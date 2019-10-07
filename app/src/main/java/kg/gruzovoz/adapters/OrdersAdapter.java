@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.main.MainContract;
 import kg.gruzovoz.models.Order;
@@ -18,7 +19,7 @@ import kg.gruzovoz.models.Order;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
     private List<Order> ordersList;
-    private MainContract.OnItemClickListener clickListener;
+    private BaseContract.OnItemClickListener clickListener;
 
     public OrdersAdapter(MainContract.OnItemClickListener clickListener) {
         ordersList = new ArrayList<>();

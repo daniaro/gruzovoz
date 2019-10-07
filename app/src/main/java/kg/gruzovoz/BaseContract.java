@@ -16,6 +16,6 @@ public interface BaseContract {
 
     }
     interface onItemClickListener {
-
+        void onItemClick(Order order);
     }
 }
