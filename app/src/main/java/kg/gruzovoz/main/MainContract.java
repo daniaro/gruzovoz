@@ -3,22 +3,16 @@ package kg.gruzovoz.main;
 import java.util.List;
 
 import kg.gruzovoz.models.Order;
-
+import kg.gruzovoz.BaseContract;
 public interface MainContract {
 
-    interface View {
+    interface View extends BaseContract.BaseView{
         void logOut();
         void openHistoryScreen();
-        void setoOrders(List<Order> orders);
 
     }
 
-    interface Presenter {
-        void populateOrders();
+    interface Presenter extends BaseContract.BasePresenter{
         void openDetailScreen(Order order);
-    }
-
-    interface OnItemClickListener {
-        void onItemClick(Order order);
     }
 }

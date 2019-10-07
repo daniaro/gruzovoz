@@ -14,13 +14,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import kg.gruzovoz.R;
+import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.models.Order;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private MainContract.Presenter presenter;
     private RecyclerView recyclerView;
-    private TextView mTextMessage;
+    private OrdersAdapter adapter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -28,13 +29,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_orders);
-                    // asdasdasdasdsadasdas
-                    //sdasdasdasdasdasdasd
+                case R.id.navigation_orders:
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_history);
+                case R.id.navigation_history:
                     return true;
             }
             return false;
@@ -46,13 +43,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        presenter = new MainPresenter(this);
     }
 
     @Override
     public void logOut() {
-        //TODO to implement the log out feature
+
     }
 
     @Override
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setoOrders(List<Order> orders) {
+    public void setOrders(List<Order> orders) {
 
     }
 }
