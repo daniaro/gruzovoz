@@ -15,7 +15,7 @@ public interface BaseContract {
         void openDetailScreen(Order order);
 
     }
-    interface onItemClickListener {
+    interface OnItemClickListener {
         void onItemClick(Order order);
     }
 }

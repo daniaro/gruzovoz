@@ -21,7 +21,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     private List<Order> ordersList;
     private BaseContract.OnItemClickListener clickListener;
 
-    public OrdersAdapter(MainContract.OnItemClickListener clickListener) {
+    public OrdersAdapter(BaseContract.OnItemClickListener clickListener) {
         ordersList = new ArrayList<>();
         this.clickListener = clickListener;
     }
@@ -62,7 +62,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             addressTextView = itemView.findViewById(R.id.addressTextView);
         }
 
-        public void bind(final Order order, final MainContract.OnItemClickListener onItemClickListener) {
+        public void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
