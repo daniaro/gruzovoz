@@ -3,4 +3,7 @@
     <string name="title_orders">Все заказы</string>
     <string name="title_history">История</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
 </resources>

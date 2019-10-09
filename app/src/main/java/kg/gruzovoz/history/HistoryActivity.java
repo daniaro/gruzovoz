@@ -1,4 +1,15 @@
 package kg.gruzovoz.history;
 
-public class HistoryActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import kg.gruzovoz.R;
+
+import android.os.Bundle;
+
+public class HistoryActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_history);
+    }
 }
