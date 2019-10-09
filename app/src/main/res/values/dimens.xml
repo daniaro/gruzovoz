@@ -7,4 +7,5 @@
     <dimen name="main_сar_type_text_size">16sp</dimen>
     <dimen name="main_address_text_size">14sp</dimen>
     <dimen name="main_payment_text_size">12sp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
