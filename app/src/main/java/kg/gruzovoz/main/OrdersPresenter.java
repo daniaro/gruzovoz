@@ -4,11 +4,11 @@ import java.util.List;
 
 import kg.gruzovoz.models.Order;
 
-public class MainPresenter implements MainContract.Presenter {
+public class OrdersPresenter implements OrdersContract.Presenter {
 
-    MainContract.View view;
+    OrdersContract.View view;
 
-    public MainPresenter(MainContract.View view) {
+    public OrdersPresenter(OrdersContract.View view) {
         this.view = view;
     }
 

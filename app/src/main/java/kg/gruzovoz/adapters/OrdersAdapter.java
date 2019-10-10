@@ -13,7 +13,6 @@ import java.util.List;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
-import kg.gruzovoz.main.MainContract;
 import kg.gruzovoz.models.Order;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {

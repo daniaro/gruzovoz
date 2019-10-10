@@ -1,4 +1,4 @@
-package kg.gruzovoz.main;
+package kg.gruzovoz;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +15,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.history.HistoryFragment;
+import kg.gruzovoz.main.OrdersFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
 
     final Fragment ordersFragment = new OrdersFragment();
     final Fragment historyFragment = new HistoryFragment();

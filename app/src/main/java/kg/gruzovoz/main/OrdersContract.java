@@ -4,11 +4,11 @@ import java.util.List;
 
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.BaseContract;
-public interface MainContract {
+public interface OrdersContract {
 
     interface View extends BaseContract.BaseView{
         void logOut();
-        void openHistoryScreen();
+        void openistoryScreen();
 
     }
 
