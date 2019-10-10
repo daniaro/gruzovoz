@@ -1,32 +1,26 @@
 package kg.gruzovoz.main;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.MenuItem;
-import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
-
-import java.util.List;
-
 import kg.gruzovoz.R;
-import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.history.HistoryFragment;
-import kg.gruzovoz.models.Order;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity {
 
     final Fragment ordersFragment = new OrdersFragment();
     final Fragment historyFragment = new HistoryFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
-    Fragment active = ordersFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +31,39 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setSupportActionBar(toolbar);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        presenter = new MainPresenter(this);
+        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction().add(R.id.main_container, historyFragment, "2").commit();
+        }
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.navigation_orders:
+                            fragmentManager.beginTransaction().replace(R.id.main_container, ordersFragment).commit();
+                            return true;
+                        case R.id.navigation_history:
+                            fragmentManager.beginTransaction().replace(R.id.main_container, historyFragment).commit();
+                            return true;
+                    }
+                    return false;
+                }
+            };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public void logOut() {
-
-    }
-
-    @Override
-    public void openHistoryScreen() {
-
-    }
-
-    @Override
-    public void setOrders(List<Order> orders) {
-
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            //TODO implement the log out feature
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
