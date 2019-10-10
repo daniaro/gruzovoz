@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().add(R.id.main_container, historyFragment, "2").commit();
+            fragmentManager.beginTransaction().add(R.id.main_container, ordersFragment, "2").commit();
         }
     }
 

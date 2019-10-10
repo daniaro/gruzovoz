@@ -1,4 +1,4 @@
-package kg.gruzovoz.history;
+package kg.gruzovoz.history.fragments;
 
 import java.util.List;
 
