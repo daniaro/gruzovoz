@@ -8,6 +8,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="thanks_1_textView">Спасибо за принятый заказ</string>
+    <string name="thanks_2_textView">Свяжитесь с заказчиком</string>
+    <string name="call_button">Позвонить</string>
+    <string name="all_orders_button">Все заказы</string>
+    <string name="title_detail">Детали заказа</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_call">CallActivity</string>
 </resources>
