@@ -12,8 +12,10 @@ public class OrdersPresenter implements OrdersContract.Presenter {
         this.view = view;
     }
 
+
+
     @Override
-    public void populateOrders(List<Order> orders) {
+    public void populateOrders() {
         view.logOut();
     }
 

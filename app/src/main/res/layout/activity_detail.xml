@@ -13,18 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="20dp"
-            app:srcCompat="@drawable/ic_close">
-
-        </ImageView>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/app_bar"
@@ -32,74 +21,75 @@
             android:layout_height="?attr/actionBarSize"
             app:title="@string/title_detail"
             android:fontFamily="serif"
+            app:navigationIcon="@drawable/ic_close"
             app:titleTextColor="@color/colorAccent">
 
         </androidx.appcompat.widget.Toolbar>
-        </LinearLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
     <LinearLayout
-        android:id="@+id/icons_linearLayout"
-        android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical">
+        android:layout_height="450dp"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
-            app:srcCompat="@drawable/ic_car">
-        </ImageView>
+        <LinearLayout
+            android:id="@+id/icons_linearLayout"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_location_from">
-        </ImageView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                app:srcCompat="@drawable/ic_car">
+            </ImageView>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_location_to">
-        </ImageView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@drawable/ic_location_from">
+            </ImageView>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_price">
-        </ImageView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_furniture">
-        </ImageView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/ic_description_24px_1">
-        </ImageView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@drawable/ic_location_to">
+            </ImageView>
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@drawable/ic_price">
+            </ImageView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@drawable/ic_furniture">
+            </ImageView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@drawable/ic_description_24px_1">
+            </ImageView>
+
+        </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/text_linearLayout"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="450dp"
         android:orientation="vertical">
 
         <TextView
@@ -111,8 +101,103 @@
             android:textColor="@color/blackTextColor">
 
         </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:textSize="15dp"
+            android:text="ул. Байтик-Баатыра, 70"
+            android:textColor="@color/blackTextColor">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:textSize="15dp"
+            android:text="ул. Байтик-Баатыра, 70"
+            android:textColor="@color/blackTextColor">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:textSize="15dp"
+            android:text="Спринтер"
+            android:textColor="@color/blackTextColor">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textSize="15dp"
+            android:text="5000 сом + 10%"
+            android:textColor="@color/blackTextColor">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:textSize="15dp"
+            android:text="Хочу чтобы все четко доставили"
+            android:textColor="@color/blackTextColor">
+
+        </TextView>
 
     </LinearLayout>
+
+
 </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="215dp">
+
+        <Button
+            android:id="@+id/callButton"
+            android:layout_width="244dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="serif"
+            android:text="Позвонить"
+            android:visibility="gone"
+            android:textColor="@color/colorAccent"
+            android:background="@drawable/call_rounded_button">
+        </Button>
+
+        <Button
+            android:id="@+id/accept"
+            android:layout_width="244dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="130dp"
+            android:fontFamily="serif"
+            android:text="Принять"
+            android:textColor="@color/blackTextColor"
+            android:background="@drawable/yellow_rounded_button">
+        </Button>
+
+
+
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="244dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="130dp"
+            android:fontFamily="serif"
+            android:text="Завершить"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            android:background="@drawable/red_rounded_button">
+        </Button>
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>

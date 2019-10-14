@@ -57,9 +57,9 @@
 
     <Button
         android:id="@+id/callButton"
-        android:layout_width="300dp"
+        android:layout_width="244dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="80dp"
         android:layout_marginTop="90dp"
         android:text="@string/call_button"
         android:textColor="@color/colorAccent"
@@ -69,15 +69,16 @@
 
     <Button
         android:id="@+id/allOrdersButton"
-        android:layout_width="300dp"
+        android:layout_width="244dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="80dp"
         android:layout_marginTop="40dp"
         android:fontFamily="serif"
         android:text="@string/all_orders_button"
         android:textColor="@color/blackTextColor"
         android:background="@drawable/yellow_rounded_button">
     </Button>
+
 
 
 

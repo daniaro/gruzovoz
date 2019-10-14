@@ -8,4 +8,5 @@
     <color name="blackTextColor">#000000</color>
     <color name="callButtonColor">#148629</color>
     <color name="yellowButtonColor">#f8c602</color>
+    <color name="redButtonColor">#F01212</color>
 </resources>
