@@ -2,6 +2,7 @@ package kg.gruzovoz.models;
 
 public class Order {
 
+    private int id;
     private String carType;
     private String date;
     private String initialDestination;
@@ -15,7 +16,8 @@ public class Order {
         return date;
     }
 
-    public Order(String carType, String date, String initialDestination, String finalDestination, double payment, double commission, String cargoType, String description) {
+    public Order(int id, String carType, String date, String initialDestination, String finalDestination, double payment, double commission, String cargoType, String description) {
+        this.id = id;
         this.carType = carType;
         this.date = date;
         this.initialDestination = initialDestination;
@@ -52,5 +54,9 @@ public class Order {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getId() {
+        return id;
     }
 }

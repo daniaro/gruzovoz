@@ -16,6 +16,10 @@
         <item name="android:layout_marginTop">@dimen/list_item_vertical_margin</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/roboto_slab</item>
+        <item name="android:textSize">@dimen/toolbar_title_text_size</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

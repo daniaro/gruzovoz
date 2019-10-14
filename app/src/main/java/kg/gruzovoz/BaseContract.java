@@ -11,7 +11,7 @@ public interface BaseContract {
     }
 
     interface BasePresenter {
-        void populateOrders(List<Order> orders);
+        void populateOrders();
         void openDetailScreen(Order order);
 
     }
