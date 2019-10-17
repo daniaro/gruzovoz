@@ -44,6 +44,7 @@ public class CallActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent allOrdersIntent  = new Intent(CallActivity.this, BaseActivity.class);
                 startActivity(allOrdersIntent);
+                finish();
             }
         });
     }
@@ -61,6 +62,7 @@ public class CallActivity extends AppCompatActivity {
             }else {
                 String dail  = "tel:" + phoneNumber;
                 startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dail)));
+                finish();
             }
 
         }else {

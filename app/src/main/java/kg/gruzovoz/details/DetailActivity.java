@@ -42,7 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //тоже работа с pi
+                //тоже работа с api
             }
         });
 
@@ -52,6 +52,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 Intent acceptIntent = new Intent(DetailActivity.this,CallActivity.class);
                 startActivity(acceptIntent);
+                finish();
                 acceptButton.setVisibility(View.GONE);
                 finishButton.setVisibility(View.VISIBLE);
                 callButton.setVisibility(View.VISIBLE);
@@ -79,6 +80,7 @@ public class DetailActivity extends AppCompatActivity {
             }else {
                 String dail  = "tel:" + phoneNumber;
                 startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dail)));
+                finish();
             }
 
         }else {

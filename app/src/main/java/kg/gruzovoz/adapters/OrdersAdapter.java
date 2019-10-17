@@ -26,8 +26,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     }
 
     public void setValues(List<Order> values) {
-        ordersList = values;
-        notifyDataSetChanged();
+        ordersList.clear();
+        ordersList.addAll(values);
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -43,7 +44,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     @Override
     public int getItemCount() {
-        return 0;
+        return ordersList.size();
     }
 
     class OrderViewHolder extends RecyclerView.ViewHolder {
@@ -69,7 +70,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 }
             });
             dateTextView.setText(order.getDate());
-            paymentTextView.setText(String.format("%d + %d%", order.getPayment(), order.getCommission()));
+            paymentTextView.setText(String.valueOf(order.getPayment()));
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getFinalDestination());
         }
