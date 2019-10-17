@@ -18,12 +18,13 @@ import android.widget.Toast;
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 
-public class CallActivity extends AppCompatActivity {
+public class CallActivity extends AppCompatActivity implements CallActivityContract.CallView{
 
     private static final int  REQUEST_CALL = 1;
 
     Button callButton;
     Button allOrdersButton;
+    CallActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class CallActivity extends AppCompatActivity {
         allOrdersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent allOrdersIntent  = new Intent(CallActivity.this, BaseActivity.class);
-                startActivity(allOrdersIntent);
+                onBackPressed();
                 finish();
             }
         });
@@ -51,8 +51,7 @@ public class CallActivity extends AppCompatActivity {
 
 
     public void makePhoneCall(){
-        //get phone number from api , now let in be string var
-        String phoneNumber = " ";
+        String phoneNumber =presenter.getPhoneNumber();
         if (phoneNumber.trim().length() >0){
             if (ContextCompat.checkSelfPermission(CallActivity.this,
                     Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
