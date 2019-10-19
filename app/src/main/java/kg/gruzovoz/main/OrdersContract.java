@@ -8,12 +8,11 @@ public interface OrdersContract {
 
     interface View extends BaseContract.BaseView{
         void logOut();
-        void openHistoryScreen();
         void showDetailScreen(long id);
+        void stopRefreshingOrders();
 
     }
 
     interface Presenter extends BaseContract.BasePresenter{
-
     }
 }

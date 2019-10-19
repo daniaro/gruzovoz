@@ -1,62 +1,51 @@
 package kg.gruzovoz.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Order {
 
-    private int id;
+    private long id;
+    @SerializedName("type_of_car")
     private String carType;
-    private String date;
-    private String initialDestination;
-    private String finalDestination;
-    private double payment;
-    private double commission;
-    private String cargoType;
-    private String description;
+    @SerializedName("start_address")
+    private String address;
+    @SerializedName("order_price")
+    private double price;
+    private String comission;
+    @SerializedName("lead_time")
+    private int time;
 
-    public String getDate() {
-        return date;
-    }
-
-    public Order(int id, String carType, String date, String initialDestination, String finalDestination, double payment, double commission, String cargoType, String description) {
+    public Order(long id, String carType, String address, double price, String comission, int time) {
         this.id = id;
         this.carType = carType;
-        this.date = date;
-        this.initialDestination = initialDestination;
-        this.finalDestination = finalDestination;
-        this.payment = payment;
-        this.commission = commission;
-        this.cargoType = cargoType;
-        this.description = description;
+        this.address = address;
+        this.price = price;
+        this.comission = comission;
+        this.time = time;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getCarType() {
         return carType;
     }
 
-    public String getInitialDestination() {
-        return initialDestination;
+    public String getAddress() {
+        return address;
     }
 
-    public String getFinalDestination() {
-        return finalDestination;
+    public double getPrice() {
+        return price;
     }
 
-    public double getPayment() {
-        return payment;
+    public String getComission() {
+        return comission;
     }
 
-    public double getCommission() {
-        return commission;
-    }
-
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getId() {
-        return id;
+    public int getTime() {
+        return time;
     }
 }
+

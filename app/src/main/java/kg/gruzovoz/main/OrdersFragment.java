@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -22,25 +24,22 @@ import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
+import kg.gruzovoz.network.CargoService;
+import kg.gruzovoz.network.RetrofitClientInstance;
+import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class OrdersFragment extends Fragment implements OrdersContract.View{
 
-
     private OrdersContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public OrdersFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -49,6 +48,29 @@ public class OrdersFragment extends Fragment implements OrdersContract.View{
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
+        initSwipeRefreshLayout(root);
+        initRecyclerViewWithAdapter(root);
+
+        presenter = new OrdersPresenter(this);
+        presenter.populateOrders();
+
+
+
+        return root;
+    }
+
+    private void initSwipeRefreshLayout(View root) {
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.populateOrders();
+            }
+        });
+    }
+
+    private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -61,16 +83,10 @@ public class OrdersFragment extends Fragment implements OrdersContract.View{
         });
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        presenter = new OrdersPresenter(this);
-        presenter.populateOrders();
-        Log.e("log", String.valueOf(adapter.getItemCount()));
-        return root;
     }
-
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     @Override
@@ -79,15 +95,15 @@ public class OrdersFragment extends Fragment implements OrdersContract.View{
     }
 
     @Override
-    public void openHistoryScreen() {
-
-    }
-
-    @Override
     public void showDetailScreen(long id) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("id", id);
         startActivity(intent);
+    }
+
+    @Override
+    public void stopRefreshingOrders() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

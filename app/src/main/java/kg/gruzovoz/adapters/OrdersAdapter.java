@@ -69,10 +69,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     onItemClickListener.onItemClick(order);
                 }
             });
-            dateTextView.setText(order.getDate());
-            paymentTextView.setText(String.valueOf(order.getPayment()));
+            dateTextView.setText(String.valueOf(order.getTime()));
+            paymentTextView.setText(String.valueOf(order.getPrice()));
             carTypeTextView.setText(order.getCarType());
-            addressTextView.setText(order.getFinalDestination());
+            addressTextView.setText(order.getAddress());
         }
     }
 }
