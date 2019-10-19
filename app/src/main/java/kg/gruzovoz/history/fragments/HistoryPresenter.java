@@ -13,8 +13,9 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void populateOrders() {
-
+        List<Order> orders;
     }
+
 
     @Override
     public void openDetailScreen(Order order) {

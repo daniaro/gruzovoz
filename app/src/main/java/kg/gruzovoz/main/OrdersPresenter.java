@@ -22,8 +22,11 @@ public class OrdersPresenter implements OrdersContract.Presenter {
         this.view = view;
     }
 
+
+
     @Override
     public void populateOrders() {
+<<<<<<< HEAD
 //        ArrayList<Order> ordersList = new ArrayList<>();
 //        for (int i = 0; i < 15; i++) {
 //            Order order = new Order(i, "Спринтер", "Сегодня", "Байтик Баатыра 70", "Байтик Баатыра 110а", 16487, 10, "Доступно", "Хочу чтобы все четко доставили");
@@ -44,6 +47,17 @@ public class OrdersPresenter implements OrdersContract.Presenter {
                 //TODO to implement this feature
             }
         });
+=======
+        view.logOut();
+        ArrayList<Order> ordersList = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            Order order = new Order(i, "Спринтер", "Сегодня", "Байтик Баатыра 70", "Байтик Баатыра 110а", 16487, 10, "Доступно", "Хочу чтобы все четко доставили");
+            ordersList.add(order);
+            Log.e("log", order.toString());
+        }
+
+        view.setOrders(ordersList);
+>>>>>>> cb07cc48759e5df724684c7d0055f0c6e1c3453b
     }
 
     @Override
