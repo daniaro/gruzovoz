@@ -2,11 +2,13 @@ package kg.gruzovoz.login;
 
 interface LoginContract {
 
-    interface  LoginScreenView{
+    interface  LoginView{
+       void errorToast();
 
     }
 
-    interface LoginScreenPresenter{
-
+    interface LoginPresenter{
+         void login();
+//         void getAllOrders();
     }
 }

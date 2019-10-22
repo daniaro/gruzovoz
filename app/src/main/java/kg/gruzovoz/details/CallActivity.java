@@ -1,11 +1,5 @@
 package kg.gruzovoz.details;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActivityChooserView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import kg.gruzovoz.BaseActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import kg.gruzovoz.R;
 
 public class CallActivity extends AppCompatActivity implements CallActivityContract.CallView{
@@ -24,7 +22,7 @@ public class CallActivity extends AppCompatActivity implements CallActivityContr
 
     Button callButton;
     Button allOrdersButton;
-    CallActivityPresenter presenter;
+    CallActivityPresenter presenter = new CallActivityPresenter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

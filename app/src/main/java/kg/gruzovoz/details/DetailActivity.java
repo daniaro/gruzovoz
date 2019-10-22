@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     Button acceptButton;
     Button finishButton;
     Button callButton;
-    DetailPresenter presenter;
+    DetailPresenter presenter = new DetailPresenter();
     ImageView closeIcon;
 
     private static final int  REQUEST_CALL = 1;
