@@ -3,19 +3,16 @@ package kg.gruzovoz.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,9 +21,6 @@ import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
-import kg.gruzovoz.network.CargoService;
-import kg.gruzovoz.network.RetrofitClientInstance;
-import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
