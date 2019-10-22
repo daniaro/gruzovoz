@@ -23,8 +23,6 @@ public class OrdersPresenter implements OrdersContract.Presenter {
         this.view = view;
     }
 
-
-
     @Override
     public void populateOrders() {
         Call<List<Order>> call = service.getAllOrders("Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7");

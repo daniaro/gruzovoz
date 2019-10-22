@@ -1,6 +1,7 @@
 package kg.gruzovoz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.history.HistoryFragment;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.main.OrdersFragment;
 
 public class BaseActivity extends AppCompatActivity {
@@ -26,13 +28,20 @@ public class BaseActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     SharedPreferences sharedPreferences;
+    static String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-
+        sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        authToken = sharedPreferences.getString("authToken", null);
+        if (authToken == null) {
+            Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.app_bar);
