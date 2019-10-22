@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".history.fragments.FinishedFragment">
+    tools:context=".history.fragments.CompletedFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCompleted"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text=" finished fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

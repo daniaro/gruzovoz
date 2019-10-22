@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import kg.gruzovoz.R;
 
-public class LoginScreenActivity extends AppCompatActivity implements LoginScreenContract.LoginScreenView{
+public class LoginActivity extends AppCompatActivity implements LoginContract.LoginScreenView{
 
 
 

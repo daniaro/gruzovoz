@@ -1,6 +1,6 @@
 package kg.gruzovoz.login;
 
-interface LoginScreenContract {
+interface LoginContract {
 
     interface  LoginScreenView{
 

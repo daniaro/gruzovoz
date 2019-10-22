@@ -1,14 +1,11 @@
 package kg.gruzovoz.history.fragments;
 
-import java.util.List;
-
 import kg.gruzovoz.BaseContract;
-import kg.gruzovoz.models.Order;
 
 public interface HistoryContract {
 
     interface View extends BaseContract.BaseView {
-        void setOrders(List<Order> orders);
+        void showError();
     }
 
     interface Presenter extends BaseContract.BasePresenter{
