@@ -10,6 +10,7 @@ public interface OrdersContract {
         void logOut();
         void showDetailScreen(long id);
         void stopRefreshingOrders();
+        void showError();
 
     }
 

@@ -31,7 +31,7 @@ import retrofit2.Call;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrdersFragment extends Fragment implements OrdersContract.View{
+public class OrdersFragment extends Fragment implements OrdersContract.View {
 
     private OrdersContract.Presenter presenter;
     private OrdersAdapter adapter;
@@ -53,8 +53,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View{
 
         presenter = new OrdersPresenter(this);
         presenter.populateOrders();
-
-
 
         return root;
     }
@@ -104,6 +102,11 @@ public class OrdersFragment extends Fragment implements OrdersContract.View{
     @Override
     public void stopRefreshingOrders() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showError() {
+        Toast.makeText(getContext(), getString(R.string.orders_unavailable), Toast.LENGTH_LONG).show();
     }
 
     @Override

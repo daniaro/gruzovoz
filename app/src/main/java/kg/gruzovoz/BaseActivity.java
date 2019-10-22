@@ -1,5 +1,7 @@
 package kg.gruzovoz;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,9 +25,14 @@ public class BaseActivity extends AppCompatActivity {
     final Fragment historyFragment = new HistoryFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.app_bar);
