@@ -23,9 +23,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
     @Override
-    public void login() {
+    public void login(String phoneNumber, String password) {
 
-        Login login = new Login("+996551234567","trueadminpass");
+        Login login = new Login(phoneNumber,password);
         Call<User> call =  service.login(login);
         call.enqueue(new Callback<User>() {
             @Override

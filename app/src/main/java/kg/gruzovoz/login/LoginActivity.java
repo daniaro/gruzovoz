@@ -1,24 +1,25 @@
 package kg.gruzovoz.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
-
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.Login;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.LoginView{
 
     Button loginButton;
-    TextInputLayout phoneEditText;
-    TextInputLayout passwordEditText;
+    EditText phoneEditText;
+    EditText passwordEditText;
     public Login login;
     LoginPresenter presenterL = new LoginPresenter(this);
     SharedPreferences sharedPreferences;
@@ -32,8 +33,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         setContentView(R.layout.activity_login_screen);
 
         loginButton = findViewById(R.id.loginButton);
-        passwordEditText = findViewById(R.id.password_text_field);
-        phoneEditText = findViewById(R.id.phone_text_field);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        phoneEditText = findViewById(R.id.loginEditText);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenterL.login();
+                presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
 
@@ -61,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     @Override
     public void addAuthToken(String authToken) {
         editor.putString("authToken", authToken).commit();
+        startActivity(new Intent(LoginActivity.this, BaseActivity.class));
+        finish();
     }
-
-
 }

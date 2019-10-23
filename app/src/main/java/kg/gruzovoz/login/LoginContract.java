@@ -9,7 +9,7 @@ interface LoginContract {
     }
 
     interface LoginPresenter{
-         void login();
+         void login(String phoneNumber, String password);
 //         void getAllOrders();
     }
 }
