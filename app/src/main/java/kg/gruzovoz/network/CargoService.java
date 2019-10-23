@@ -16,7 +16,6 @@ public interface CargoService {
     @GET("order/all/")
     Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
 
-
     @POST("auth/login/")
     Call<User> login (@Body Login login);
 

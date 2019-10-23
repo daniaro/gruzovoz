@@ -3,7 +3,8 @@ package kg.gruzovoz.login;
 interface LoginContract {
 
     interface  LoginView{
-       void errorToast();
+       void showErrorToast();
+       void addAuthToken(String authToken);
 
     }
 

@@ -4,7 +4,6 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
 
     DetailContract.DetailView view;
 
-    public void CallActivityPresenter(DetailContract.DetailView  view){this.view = view;}
 
     @Override
     public String getPhoneNumber() {

@@ -1,7 +1,5 @@
 package kg.gruzovoz.login;
 
-import android.util.Log;
-
 import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
@@ -15,7 +13,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     OrdersPresenter ordersPresenter;
     LoginContract.LoginView loginView;
-    public   String token;
+    public String token;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
 
@@ -27,26 +25,24 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     @Override
     public void login() {
 
-        Login login = new Login("+996707707707","zxcvbnm12");
+        Login login = new Login("+996551234567","trueadminpass");
         Call<User> call =  service.login(login);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    token = response.body().getToken();
-                    Log.i(token,"token");
-                    ordersPresenter.populateOrders();
+                    loginView.addAuthToken(response.body().getToken());
 
 //                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
 
-                }else {
-                    loginView.errorToast();
+                } else {
+                    loginView.showErrorToast();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                   loginView.errorToast();
+                   loginView.showErrorToast();
             }
         });
 

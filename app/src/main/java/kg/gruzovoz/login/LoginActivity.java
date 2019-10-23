@@ -1,5 +1,7 @@
 package kg.gruzovoz.login;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +19,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     Button loginButton;
     TextInputLayout phoneEditText;
     TextInputLayout passwordEditText;
-     public Login login;
+    public Login login;
     LoginPresenter presenterL = new LoginPresenter(this);
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
 
 
@@ -30,6 +34,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginButton = findViewById(R.id.loginButton);
         passwordEditText = findViewById(R.id.password_text_field);
         phoneEditText = findViewById(R.id.phone_text_field);
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
          //login = new Login(phoneEditText.getText().toString(),passwordEditText.getText().toString());
 
@@ -46,9 +53,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
 
     @Override
-    public void errorToast() {
+    public void showErrorToast() {
         Toast.makeText(this, "Неверные данные, попробуйте снова", Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void addAuthToken(String authToken) {
+        editor.putString("authToken", authToken).commit();
     }
 
 

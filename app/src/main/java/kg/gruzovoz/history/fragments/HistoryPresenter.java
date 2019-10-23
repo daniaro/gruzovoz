@@ -26,7 +26,6 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     }
 
 
-    public void HistoryPresenter(HistoryContract.View view){this.view = view;}
 
     @Override
     public void populateOrders() {
