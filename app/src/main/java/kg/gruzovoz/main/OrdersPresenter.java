@@ -1,13 +1,11 @@
 package kg.gruzovoz.main;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.login.LoginPresenter;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -19,6 +17,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
 
     OrdersContract.View view;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
+    LoginPresenter loginPresenter;
 
     public OrdersPresenter(OrdersContract.View view) {
         this.view = view;

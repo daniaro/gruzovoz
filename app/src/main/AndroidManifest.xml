@@ -3,6 +3,7 @@
     package="kg.gruzovoz">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -11,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".details.CallActivity"></activity>
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".details.CallActivity" />
         <activity android:name=".details.DetailActivity" />
         <activity android:name=".login.LoginActivity"/>
         <activity
-            android:name=".BaseActivity"
+            android:name=".login.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +30,5 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
 </manifest>

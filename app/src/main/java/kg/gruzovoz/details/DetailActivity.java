@@ -1,10 +1,5 @@
 package kg.gruzovoz.details;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,8 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import kg.gruzovoz.R;
 
 public class DetailActivity extends AppCompatActivity {
@@ -21,7 +20,8 @@ public class DetailActivity extends AppCompatActivity {
     Button acceptButton;
     Button finishButton;
     Button callButton;
-    DetailPresenter presenter;
+    DetailPresenter presenter = new DetailPresenter();
+    ImageView closeIcon;
 
     private static final int  REQUEST_CALL = 1;
 
@@ -33,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
         acceptButton = findViewById(R.id.accept);
         finishButton = findViewById(R.id.finish);
         callButton = findViewById(R.id.callButton2);
+        closeIcon = findViewById(R.id.close_icon);
 
 //        if (acceptButton.isPressed()){
 //            acceptButton.setVisibility(View.GONE);
@@ -62,6 +63,14 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 makePhoneCall();
+            }
+        });
+
+        closeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
             }
         });
     }

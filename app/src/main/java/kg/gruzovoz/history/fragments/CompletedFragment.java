@@ -23,14 +23,14 @@ import kg.gruzovoz.models.Order;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActiveFragment extends Fragment implements HistoryContract.View{
+public class CompletedFragment extends Fragment implements HistoryContract.View {
     private HistoryContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
-    public ActiveFragment() {
+    public CompletedFragment() {
         // Required empty public constructor
     }
 
@@ -39,18 +39,16 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =  inflater.inflate(R.layout.fragment_active, container, false);
+        View root =  inflater.inflate(R.layout.fragment_completed, container, false);
 
         presenter = new HistoryPresenter(this);
         presenter.populateOrders();
-
         initRecyclerViewWithAdapter(root);
-
         return root;
-    }
 
+    }
     private void initRecyclerViewWithAdapter(View root) {
-        recyclerView = root.findViewById(R.id.recyclerViewActive);
+        recyclerView = root.findViewById(R.id.recyclerViewCompleted);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -63,6 +61,8 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
+
+
     @Override
     public void setOrders(List<Order> orders) {
         adapter.setValues(orders);

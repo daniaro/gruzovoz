@@ -55,15 +55,14 @@
         android:layout_marginTop="20dp"
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@+id/phone_text_field"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:inputType="textPassword"
             app:hintTextColor="@color/colorAccent"
             android:hint="@string/hint_password"
             />
@@ -72,7 +71,7 @@
 
 
     <Button
-        android:id="@+id/callButton"
+        android:id="@+id/loginButton"
         android:layout_width="244dp"
         android:layout_height="50dp"
         android:layout_marginBottom="83dp"

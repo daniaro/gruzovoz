@@ -13,14 +13,10 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
 import kg.gruzovoz.history.fragments.ActiveFragment;
-import kg.gruzovoz.history.fragments.FinishedFragment;
-import kg.gruzovoz.history.fragments.HistoryContract;
-import kg.gruzovoz.models.Order;
+import kg.gruzovoz.history.fragments.CompletedFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +39,7 @@ public class HistoryFragment extends Fragment  {
 
         adapter = new FixedTabsPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ActiveFragment(),"Активные");
-        adapter.addFragment(new FinishedFragment(),"Завершенные");
+        adapter.addFragment(new CompletedFragment(),"Завершенные");
         viewPager.setAdapter(adapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Активные"));
