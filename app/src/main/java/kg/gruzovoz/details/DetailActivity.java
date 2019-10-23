@@ -8,33 +8,41 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import kg.gruzovoz.R;
+import kg.gruzovoz.models.OrderDetail;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
+
+    private DetailContract.DetailPresenter presenter;
 
     Button acceptButton;
     Button finishButton;
     Button callButton;
-    DetailPresenter presenter = new DetailPresenter();
     ImageView closeIcon;
 
-    private static final int  REQUEST_CALL = 1;
+    TextView carTypeTextView;
+    TextView initialAddressTextView;
+    TextView finalAddressTextView;
+    TextView paymentTextView;
+    TextView cargoTypeTextView;
+    TextView commentTextView;
+
+    private static final int REQUEST_CALL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        acceptButton = findViewById(R.id.accept);
-        finishButton = findViewById(R.id.finish);
-        callButton = findViewById(R.id.callButton2);
-        closeIcon = findViewById(R.id.close_icon);
+        presenter = new DetailPresenter(this, getIntent().getLongExtra("id", 0));
 
+        initViews();
 //        if (acceptButton.isPressed()){
 //            acceptButton.setVisibility(View.GONE);
 //            finishButton.setVisibility(View.VISIBLE);
@@ -75,6 +83,18 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    private void initViews() {
+        acceptButton = findViewById(R.id.accept);
+        finishButton = findViewById(R.id.finish);
+        callButton = findViewById(R.id.callButton2);
+        closeIcon = findViewById(R.id.close_icon);
+        carTypeTextView = findViewById(R.id.textView);
+        initialAddressTextView = findViewById(R.id.textView2);
+        finalAddressTextView = findViewById(R.id.textView3);
+        paymentTextView = findViewById(R.id.textView4);
+        cargoTypeTextView = findViewById(R.id.textView5);
+        commentTextView = findViewById(R.id.textView6);
+    }
 
     public void makePhoneCall(){
         //get phone number from api , now let in be string var
@@ -107,5 +127,11 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    public void setViewInfo(OrderDetail order) {
+        carTypeTextView.setText(order.getCarType());
+
     }
 }

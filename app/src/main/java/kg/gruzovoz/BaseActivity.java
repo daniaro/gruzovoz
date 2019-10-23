@@ -34,7 +34,6 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         authToken = sharedPreferences.getString("authToken", null);
         if (authToken == null) {

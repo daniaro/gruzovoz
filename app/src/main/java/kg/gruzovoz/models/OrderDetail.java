@@ -59,4 +59,44 @@ public class OrderDetail {
         this.active = active;
         this.done = done;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getCarType() {
+        return carType;
+    }
+
+    public String getStartAddress() {
+        return startAddress;
+    }
+
+    public String getFinishAddress() {
+        return finishAddress;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getComission() {
+        return comission;
+    }
+
+    public String getLeadTime() {
+        return leadTime;
+    }
+
+    public String getCargoType() {
+        return cargoType;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getComments() {
+        return comments;
+    }
 }
