@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import kg.gruzovoz.R;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.LoginScreenView{
+public class LoginActivity extends AppCompatActivity implements LoginContract.LoginView{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

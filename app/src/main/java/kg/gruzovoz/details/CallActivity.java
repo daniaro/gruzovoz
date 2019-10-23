@@ -2,7 +2,6 @@ package kg.gruzovoz.details;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActivityChooserView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -15,21 +14,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 
-public class CallActivity extends AppCompatActivity implements CallActivityContract.CallView{
+public class CallActivity extends AppCompatActivity implements CallContract.CallView{
 
     private static final int  REQUEST_CALL = 1;
 
     Button callButton;
     Button allOrdersButton;
-    CallActivityPresenter presenter;
+    CallPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_call2);
+        setContentView(R.layout.activity_call);
 
         callButton = findViewById(R.id.callButton);
         callButton.setOnClickListener(new View.OnClickListener() {

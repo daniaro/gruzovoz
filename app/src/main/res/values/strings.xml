@@ -21,4 +21,7 @@
     <string name="hint_phone">телефон</string>
     <string name="hint_password">пароль</string>
     <string name="login_text">ВОЙТИ</string>
+    <string name="date_today">Сегодня</string>
+    <string name="date_tomorrow">Завтра</string>
+    <string name="date_now">Срочно</string>
 </resources>

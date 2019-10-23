@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -25,7 +26,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
 
     @Override
     public void populateOrders() {
-        Call<List<Order>> call = service.getAllOrders("Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7");
+        Call<List<Order>> call = service.getAllOrders(BaseActivity.authToken);
         call.enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {

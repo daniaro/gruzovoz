@@ -28,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     SharedPreferences sharedPreferences;
-    static String authToken;
+    public static String authToken = "Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

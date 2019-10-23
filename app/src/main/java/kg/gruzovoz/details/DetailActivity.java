@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 
 public class DetailActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detal2);
+        setContentView(R.layout.activity_detail);
 
         acceptButton = findViewById(R.id.accept);
         finishButton = findViewById(R.id.finish);
@@ -43,15 +42,14 @@ public class DetailActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //тоже работа с api
+                //TODO NUJNO ETO SDELAT'
             }
         });
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent acceptIntent = new Intent(DetailActivity.this,CallActivity.class);
+                Intent acceptIntent = new Intent(DetailActivity.this, CallActivity.class);
                 startActivity(acceptIntent);
                 finish();
                 acceptButton.setVisibility(View.GONE);
@@ -71,25 +69,21 @@ public class DetailActivity extends AppCompatActivity {
 
     public void makePhoneCall(){
         //get phone number from api , now let in be string var
-        String phoneNumber =presenter.getPhoneNumber();
+        String phoneNumber = presenter.getPhoneNumber();
         if (phoneNumber.trim().length() >0){
             if (ContextCompat.checkSelfPermission(DetailActivity.this,
                     Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
                 ActivityCompat.requestPermissions(DetailActivity.this,
                         new String[] {Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-
-            }else {
-                String dial  = "tel:" + phoneNumber;
+            } else {
+                String dial = "tel:" + phoneNumber;
                 startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
                 finish();
             }
-
-        }else {
+        } else {
             Toast.makeText(DetailActivity.this,"Невозможно позвонить, пожалуйста свяжитесь с диспетчером",Toast.LENGTH_LONG).show();
         }
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -105,5 +99,4 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     }
-
 }

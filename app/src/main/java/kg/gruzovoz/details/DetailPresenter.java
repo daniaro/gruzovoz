@@ -1,15 +1,19 @@
 package kg.gruzovoz.details;
 
+import kg.gruzovoz.network.CargoService;
+import kg.gruzovoz.network.RetrofitClientInstance;
+
 public class DetailPresenter implements DetailContract.DetailPresenter {
 
     DetailContract.DetailView view;
+    CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
-    public void CallActivityPresenter(DetailContract.DetailView  view){this.view = view;}
+    public DetailPresenter(DetailContract.DetailView view) {
+        this.view = view;
+    }
 
     @Override
-    public String getPhoneNumber() {
-        //get phone number from api , now let in be string var
-        String phoneNumber = " ";
-        return  phoneNumber;
+    public void populateInfo() {
+
     }
 }

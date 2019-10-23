@@ -1,64 +1,62 @@
 package kg.gruzovoz.models;
 
+import android.content.res.Resources;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+import java.security.PrivateKey;
+
+import kg.gruzovoz.R;
+
 public class OrderDetail {
 
-
-    private int id;
+    private long id;
+    @SerializedName("type_of_car")
     private String carType;
-    private String date;
-    private String initialDestination;
-    private String finalDestination;
-    private double payment;
-    private double commission;
+    @SerializedName("start_address")
+    private String startAddress;
+    @SerializedName("finish_address")
+    private String finishAddress;
+    @SerializedName("order_price")
+    private double price;
+    @SerializedName("comission")
+    private String comission;
+    @SerializedName("lead_time")
+    private String leadTime;
+    @SerializedName("type_of_transportation")
     private String cargoType;
-    private String description;
+    @SerializedName("phone_number")
+    private String phoneNumber;
+    @SerializedName("comments")
+    private String comments;
+    @SerializedName("active")
+    private boolean active;
+    @SerializedName("done")
+    private boolean done;
 
-    public String getDate() {
-        return date;
-    }
-
-    public OrderDetail(int id, String carType, String date, String initialDestination, String finalDestination, double payment, double commission, String cargoType, String description) {
+    public OrderDetail(long id, String carType, String startAddress, String finishAddress, double price, String comission, int leadTime, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
         this.carType = carType;
-        this.date = date;
-        this.initialDestination = initialDestination;
-        this.finalDestination = finalDestination;
-        this.payment = payment;
-        this.commission = commission;
+        this.startAddress = startAddress;
+        this.finishAddress = finishAddress;
+        this.price = price;
+        this.comission = comission;
+        switch (leadTime) {
+            case 1:
+                this.leadTime = Resources.getSystem().getString(R.string.date_today);
+                break;
+            case 2:
+                this.leadTime = Resources.getSystem().getString(R.string.date_tomorrow);
+                break;
+            case 3: 
+                this.leadTime = Resources.getSystem().getString(R.string.date_now);
+                break;
+        }
         this.cargoType = cargoType;
-        this.description = description;
+        this.phoneNumber = phoneNumber;
+        this.comments = comments;
+        this.active = active;
+        this.done = done;
     }
-
-    public String getCarType() {
-        return carType;
-    }
-
-    public String getInitialDestination() {
-        return initialDestination;
-    }
-
-    public String getFinalDestination() {
-        return finalDestination;
-    }
-
-    public double getPayment() {
-        return payment;
-    }
-
-    public double getCommission() {
-        return commission;
-    }
-
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
 }

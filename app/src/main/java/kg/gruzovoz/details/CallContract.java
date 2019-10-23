@@ -1,6 +1,6 @@
 package kg.gruzovoz.details;
 
-public interface CallActivityContract {
+public interface CallContract {
 
     interface CallView {
 

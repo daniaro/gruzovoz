@@ -1,10 +1,10 @@
 package kg.gruzovoz.details;
 
-public class CallActivityPresenter implements CallActivityContract.CallPresenter {
+public class CallPresenter implements CallContract.CallPresenter {
 
-    CallActivityContract.CallView view;
+    CallContract.CallView view;
 
-    public void CallActivityPresenter(CallActivityContract.CallView  view){this.view = view;}
+    public void CallActivityPresenter(CallContract.CallView  view){this.view = view;}
 
     @Override
     public String getPhoneNumber() {
