@@ -98,7 +98,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     public void makePhoneCall(){
         //get phone number from api , now let in be string var
-        String phoneNumber = presenter.getPhoneNumber();
+//        String phoneNumber = presenter.getPhoneNumber();
+        String phoneNumber = "2222222222";
         if (phoneNumber.trim().length() >0){
             if (ContextCompat.checkSelfPermission(DetailActivity.this,
                     Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){

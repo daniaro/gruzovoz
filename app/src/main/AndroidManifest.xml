@@ -12,12 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BaseActivity" />
+        <activity android:name="login.LoginActivity" 
+            android:label="@string/app_name"
+            android:noHistory="true" android:excludeFromRecents="true">
+        </activity>
         <activity android:name=".details.CallActivity" />
         <activity android:name=".details.DetailActivity" />
         <activity android:name=".login.LoginActivity"/>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".BaseActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

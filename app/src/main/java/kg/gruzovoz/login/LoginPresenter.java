@@ -1,8 +1,5 @@
 package kg.gruzovoz.login;
 
-<<<<<<< HEAD
-public class LoginPresenter implements LoginContract.LoginPresenter {
-=======
 import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
@@ -26,9 +23,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
     @Override
-    public void login() {
+    public void login(String phoneNumber, String password) {
 
-        Login login = new Login("+996551234567","trueadminpass");
+        Login login = new Login(phoneNumber,password);
         Call<User> call =  service.login(login);
         call.enqueue(new Callback<User>() {
             @Override
@@ -50,27 +47,4 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         });
 
     }
-
-//    public void getAllOrders(){
-//        Call<List<Order>> call = service.getAllOrders(token);
-//        call.enqueue(new Callback<List<Order>>() {
-//            @Override
-//            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-//                if (response.isSuccessful()) {
-//                    token = response.body().toString();
-////                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
-//
-//                }else {
-//                    loginView.errorToast();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Order>> call, Throwable t) {
-//                loginView.errorToast();
-//            }
-//        });
-//
-//    }
->>>>>>> f673a7142aad3f39ead094d52d75482ba7718ef4
 }
