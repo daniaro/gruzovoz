@@ -24,4 +24,7 @@ public interface CargoService {
     @GET("order/all/{id}/")
     Call<OrderDetail> getDetailedOrder(@Path("id") long id);
 
+    //@PUT("order/done/{id}/")
+
+
 }

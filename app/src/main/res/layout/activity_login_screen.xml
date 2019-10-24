@@ -24,10 +24,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
+    
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phone_text_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="328dp"
         android:layout_height="64dp"
         android:layout_marginTop="53dp"
@@ -36,6 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         tools:ignore="MissingConstraints">
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginEditText"
@@ -50,7 +51,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_text_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="328dp"
         android:layout_height="64dp"
         android:layout_marginTop="20dp"
