@@ -20,22 +20,25 @@ import kg.gruzovoz.R;
 import kg.gruzovoz.history.HistoryFragment;
 import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.main.OrdersFragment;
+import kg.gruzovoz.models.Login;
 
 public class BaseActivity extends AppCompatActivity {
 
-    final Fragment ordersFragment = new OrdersFragment();
+    Fragment ordersFragment = new OrdersFragment();
     final Fragment historyFragment = new HistoryFragment();
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     SharedPreferences sharedPreferences;
-    public static String authToken = "Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7";
+    public static String authToken;
+//    "Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        authToken = sharedPreferences.getString("authToken", null);
+        authToken = "Token " + sharedPreferences.getString("authToken", null);
+        Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
         if (authToken == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
             startActivity(intent);

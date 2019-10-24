@@ -1,19 +1,26 @@
 package kg.gruzovoz.details;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.OrderDetail;
 
@@ -40,7 +47,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        presenter = new DetailPresenter(this, getIntent().getLongExtra("id", 0));
+        presenter = new DetailPresenter(this);
+        presenter.populateInfo(getIntent().getLongExtra("id", 0), BaseActivity.authToken);
 
         initViews();
 //        if (acceptButton.isPressed()){
@@ -58,12 +66,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent acceptIntent = new Intent(DetailActivity.this, CallActivity.class);
-                startActivity(acceptIntent);
-                finish();
-                acceptButton.setVisibility(View.GONE);
-                finishButton.setVisibility(View.VISIBLE);
-                callButton.setVisibility(View.VISIBLE);
+//                Intent acceptIntent = new Intent(DetailActivity.this, CallActivity.class);
+//                startActivity(acceptIntent);
+//                finish();
+//                acceptButton.setVisibility(View.GONE);
+//                finishButton.setVisibility(View.VISIBLE);
+//                callButton.setVisibility(View.VISIBLE);
+                showAcceptAlertDialog();
             }
         });
 
@@ -93,7 +102,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         finalAddressTextView = findViewById(R.id.textView3);
         paymentTextView = findViewById(R.id.textView4);
         cargoTypeTextView = findViewById(R.id.textView5);
-        commentTextView = findViewById(R.id.textView6);
+        commentTextView = findViewById(R.id.commentsTextView);
     }
 
     public void makePhoneCall(){
@@ -123,7 +132,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
             if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 makePhoneCall();
-            }else {
+            } else {
                 Toast.makeText(DetailActivity.this,"Невозможно позвонить, пожалуйста свяжитесь с диспетчером",Toast.LENGTH_LONG).show();
 
             }
@@ -133,6 +142,27 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void setViewInfo(OrderDetail order) {
         carTypeTextView.setText(order.getCarType());
+        initialAddressTextView.setText(order.getStartAddress());
+        finalAddressTextView.setText(order.getFinishAddress());
+        String commission = order.getCommission();
+        // Here we check if the admin entered the commission's value with or without the percent sign
+        if (commission.charAt(commission.length() - 1) == '%') {
+            paymentTextView.setText(String.format("%s сом - %s", String.valueOf((int) order.getPrice()), commission));
+        } else {
+            paymentTextView.setText(String.format("%s сом - %s%%", String.valueOf((int) order.getPrice()), commission));
+        }
+        cargoTypeTextView.setText(order.getCargoType());
+        Log.i(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + order.getCommission());
+        commentTextView.setText(order.getComments());
 
+    }
+
+    @Override
+    public void showAcceptAlertDialog() {
+        AlertDialog alertDialogBuilder = new MaterialAlertDialogBuilder(getApplicationContext())
+                .setTitle(getString(R.string.acceptOrder_title))
+                .setMessage(getString(R.string.acceptOrder_dialog))
+                .setPositiveButton(getString(R.string.button_accept), null)
+                .setNegativeButton(getString(R.string.cancel_order), null).show();
     }
 }
