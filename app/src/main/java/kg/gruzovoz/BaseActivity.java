@@ -29,7 +29,7 @@ public class BaseActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     SharedPreferences sharedPreferences;
-    public static String authToken = "Token ";
+    public static String authToken;
 //    "Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7"
 
     @Override
@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        authToken += sharedPreferences.getString("authToken", null);
+        authToken = "Token " + sharedPreferences.getString("authToken", null);
         Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
         if (authToken == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);

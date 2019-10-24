@@ -31,7 +31,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    loginView.addAuthToken(response.body().getToken());
+                    loginView.addAuthToken(String.format("Token  %s", response.body().getToken()));
 
 //                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
 

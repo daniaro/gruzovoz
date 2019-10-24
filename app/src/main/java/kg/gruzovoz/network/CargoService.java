@@ -22,6 +22,6 @@ public interface CargoService {
     Call<User> login(@Body Login login);
 
     @GET("order/all/{id}/")
-    Call<OrderDetail> getDetailedOrder(@Path("id") long id);
+    Call<OrderDetail> getDetailedOrder(@Path("id") long id, @Header("Authorization") String authToken);
 
 }

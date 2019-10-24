@@ -4,9 +4,6 @@ import android.content.res.Resources;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.security.PrivateKey;
-
 import kg.gruzovoz.R;
 
 public class OrderDetail {
@@ -20,8 +17,8 @@ public class OrderDetail {
     private String finishAddress;
     @SerializedName("order_price")
     private double price;
-    @SerializedName("comission")
-    private String comission;
+    @SerializedName("commission")
+    private String commission;
     @SerializedName("lead_time")
     private String leadTime;
     @SerializedName("type_of_transportation")
@@ -35,13 +32,13 @@ public class OrderDetail {
     @SerializedName("done")
     private boolean done;
 
-    public OrderDetail(long id, String carType, String startAddress, String finishAddress, double price, String comission, int leadTime, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
+    public OrderDetail(long id, String carType, String startAddress, String finishAddress, double price, String commission, int leadTime, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
         this.carType = carType;
         this.startAddress = startAddress;
         this.finishAddress = finishAddress;
         this.price = price;
-        this.comission = comission;
+        this.commission = commission;
         switch (leadTime) {
             case 1:
                 this.leadTime = Resources.getSystem().getString(R.string.date_today);
@@ -80,8 +77,8 @@ public class OrderDetail {
         return price;
     }
 
-    public String getComission() {
-        return comission;
+    public String getCommission() {
+        return commission;
     }
 
     public String getLeadTime() {

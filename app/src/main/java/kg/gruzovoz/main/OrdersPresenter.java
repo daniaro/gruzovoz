@@ -39,6 +39,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
+                Log.e(getClass().getSimpleName(), t.getMessage());
                 view.showError();
             }
         });

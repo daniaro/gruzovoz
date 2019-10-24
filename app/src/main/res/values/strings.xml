@@ -24,4 +24,10 @@
     <string name="date_today">Сегодня</string>
     <string name="date_tomorrow">Завтра</string>
     <string name="date_now">Срочно</string>
+    <string name="button_call">Позвонить</string>
+    <string name="button_finish">Завершить</string>
+    <string name="button_accept">Принять</string>
+    <string name="acceptOrder_dialog">Вы уверены, что хотите принять этот заказ?</string>
+    <string name="acceptOrder_title">Принять заказ</string>
+    <string name="cancel_order">Отменить</string>
 </resources>

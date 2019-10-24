@@ -7,9 +7,10 @@ public interface DetailContract {
 
     interface DetailView {
         void setViewInfo(OrderDetail order);
+        void showAcceptAlertDialog();
     }
 
     interface DetailPresenter {
-        void populateInfo(long id);
+        void populateInfo(long id, String authToken);
     }
 }
