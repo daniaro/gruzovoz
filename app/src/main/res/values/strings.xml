@@ -18,8 +18,8 @@
     <string name="title_activity_call">CallActivity</string>
     <string name="no_orders_available">Нет доступных заказов :(</string>
     <string name="orders_unavailable">Невозможно получить список заказов</string>
-    <string name="hint_phone">телефон</string>
-    <string name="hint_password">пароль</string>
+    <string name="hint_phone">Телефон</string>
+    <string name="hint_password">Пароль</string>
     <string name="login_text">ВОЙТИ</string>
     <string name="date_today">Сегодня</string>
     <string name="date_tomorrow">Завтра</string>
@@ -38,4 +38,5 @@
     <string name="enter_phone_number">Введите номер телефона</string>
     <string name="enter_password">Введите пароль</string>
     <string name="number">+996</string>
+    <string name="no_internet">Отсутствует интернет-соединение</string>
 </resources>
