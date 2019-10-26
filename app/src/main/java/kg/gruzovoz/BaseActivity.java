@@ -16,11 +16,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import kg.gruzovoz.R;
 import kg.gruzovoz.history.HistoryFragment;
 import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.main.OrdersFragment;
-import kg.gruzovoz.models.Login;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        authToken = "Token " + sharedPreferences.getString("authToken", null);
+        authToken = sharedPreferences.getString("authToken", null);
         Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
         if (authToken == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
