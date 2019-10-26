@@ -129,7 +129,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 BaseActivity.authToken = null;
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("mySharedPreferences", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("authToken").apply();
                 String token = sharedPreferences.getString("authToken", "haha");
