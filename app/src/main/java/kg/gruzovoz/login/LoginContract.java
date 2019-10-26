@@ -7,6 +7,7 @@ interface LoginContract {
        void showLoginError();
        void addAuthToken(String authToken);
        void registerUser();
+       boolean isConnected();
     }
 
     interface LoginPresenter{

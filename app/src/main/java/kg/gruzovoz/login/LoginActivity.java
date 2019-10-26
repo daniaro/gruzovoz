@@ -3,6 +3,8 @@ package kg.gruzovoz.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
@@ -10,6 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -98,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
     }
 
-
     @Override
     public void showLoginError() {
         passwordInputLayout.setError(getString(R.string.shr_error_password));
@@ -107,9 +109,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
     @Override
     public void showErrorToast() {
-        //        Toast.makeText(this, "Неверные данные, попробуйте снова", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getString(R.string.no_internet) , Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     public void addAuthToken(String authToken) {
@@ -124,6 +125,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             phoneInputLayout.setError(getString(R.string.enter_phone_number));
             return;
         }
+    }
+
+    @Override
+    public boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
 }

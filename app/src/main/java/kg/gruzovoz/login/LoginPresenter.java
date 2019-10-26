@@ -13,7 +13,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     OrdersPresenter ordersPresenter;
     LoginContract.LoginView loginView;
-    public String token;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
 
@@ -28,22 +27,27 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         Login login = new Login(phoneNumber,password);
         Call<User> call =  service.login(login);
         call.enqueue(new Callback<User>() {
+
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     loginView.addAuthToken(String.format("Token %s", response.body().getToken()));
-
-//                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
-
                 } else {
-
-                    loginView.showLoginError();
+                    if (loginView.isConnected()) {
+                        loginView.showLoginError();
+                    } else {
+                        loginView.showErrorToast();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                   loginView.showLoginError();
+                if (loginView.isConnected()) {
+                    loginView.showLoginError();
+                } else {
+                    loginView.showErrorToast();
+                }
             }
         });
 
