@@ -13,6 +13,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="60dp"
+        android:src="@drawable/ic_asset_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,23 +36,28 @@
     
 
     <com.google.android.material.textfield.TextInputLayout
+        android:textColorHint="@color/textColorPrimary"
+        app:hintTextColor="@color/colorAccent"
         android:id="@+id/phone_text_field"
         android:layout_width="328dp"
-        android:layout_height="64dp"
+        android:layout_height="80dp"
         android:layout_marginTop="53dp"
+        app:errorEnabled="true"
+        app:boxStrokeColor="@color/login_text_field"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         tools:ignore="MissingConstraints">
 
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginEditText"
+            android:textColor="@color/colorAccent"
             android:layout_width="match_parent"
+            android:singleLine="true"
             android:layout_height="56dp"
-            app:hintTextColor="@color/colorAccent"
-            android:hint="@string/hint_phone"
+            android:text="@string/number"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,10 +65,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_text_field"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="328dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="90dp"
+        android:textColorHint="@color/textColorPrimary"
+        app:boxStrokeColor="@color/login_text_field"
         app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_hide"
+        app:errorEnabled="true"
+        app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_text_field"
@@ -72,10 +83,10 @@
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:inputType="textPassword"
-            app:hintTextColor="@color/colorAccent"
             android:hint="@string/hint_password"
-            />
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="@color/colorAccent" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

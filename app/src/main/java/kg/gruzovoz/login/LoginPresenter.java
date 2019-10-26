@@ -37,13 +37,13 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                 } else {
 
-                    loginView.showErrorToast();
+                    loginView.showLoginError();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                   loginView.showErrorToast();
+                   loginView.showLoginError();
             }
         });
 
