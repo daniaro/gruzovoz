@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.Collections;
 import java.util.List;
 import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.login.LoginPresenter;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -17,7 +16,6 @@ public class OrdersPresenter implements OrdersContract.Presenter {
 
     OrdersContract.View view;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-    LoginPresenter loginPresenter;
 
     public OrdersPresenter(OrdersContract.View view) {
         this.view = view;
@@ -30,7 +28,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 for (int i = 0; i < response.body().size(); i++) {
-                    Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getAddress());
+                    Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getStartAddress());
                 }
                 Collections.reverse(response.body());
                 view.setOrders(response.body());
@@ -43,10 +41,5 @@ public class OrdersPresenter implements OrdersContract.Presenter {
                 view.showError();
             }
         });
-    }
-
-    @Override
-    public void openDetailScreen(Order order) {
-        view.showDetailScreen(order.getId());
     }
 }

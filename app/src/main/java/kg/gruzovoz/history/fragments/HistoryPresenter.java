@@ -34,7 +34,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 for (int i = 0; i < response.body().size(); i++) {
-                    Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getAddress());
+                    Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getFinishAddress());
                 }
                 Collections.reverse(response.body());
                 view.setOrders(response.body());
@@ -45,12 +45,6 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                 view.showError();
             }
         });
-
-    }
-
-
-    @Override
-    public void openDetailScreen(Order order) {
 
     }
 }

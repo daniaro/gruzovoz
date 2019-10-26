@@ -37,9 +37,9 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        authToken = "Token " + sharedPreferences.getString("authToken", null);
+        authToken = sharedPreferences.getString("authToken", null);
         Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
-        if (authToken == null) {
+        if (sharedPreferences.getString("authToken", null) == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -71,18 +71,4 @@ public class BaseActivity extends AppCompatActivity {
                     return false;
                 }
             };
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            //TODO implement the log out feature
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

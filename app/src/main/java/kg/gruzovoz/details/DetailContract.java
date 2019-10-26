@@ -1,16 +1,17 @@
 package kg.gruzovoz.details;
 
-import kg.gruzovoz.BaseContract;
-import kg.gruzovoz.models.OrderDetail;
+import kg.gruzovoz.models.Order;
 
 public interface DetailContract {
 
     interface DetailView {
-        void setViewInfo(OrderDetail order);
+        void setViewInfo();
         void showAcceptAlertDialog();
+        void startCallActivity();
     }
 
     interface DetailPresenter {
-        void populateInfo(long id, String authToken);
+        String getPhoneNumber();
+        void acceptOrder(long id, String authToken);
     }
 }

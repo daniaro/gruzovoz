@@ -1,13 +1,25 @@
 package kg.gruzovoz.main;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
@@ -41,7 +54,10 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
+        Toolbar toolbar = root.findViewById(R.id.app_bar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
 
@@ -70,7 +86,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
             @Override
             public void onItemClick(Order order) {
-                presenter.openDetailScreen(order);
+                showDetailScreen(order);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -87,9 +103,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
-    public void showDetailScreen(long id) {
+    public void showDetailScreen(Order order) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra("order", order);
         startActivity(intent);
     }
 
@@ -104,7 +120,47 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
+    public void showConfirmLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        builder.setTitle(getString(R.string.logout_title));
+        builder.setMessage(getString(R.string.logout_message));
+        builder.setNegativeButton(R.string.cancel_order, null);
+        builder.setPositiveButton(getString(R.string.action_logout), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                BaseActivity.authToken = null;
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("mySharedPreferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("authToken").apply();
+                String token = sharedPreferences.getString("authToken", "haha");
+                Intent intent = new Intent(getContext(), BaseActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
     public void setOrders(List<Order> orders) {
         adapter.setValues(orders);
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                showConfirmLogoutDialog();
+                return true;
+        }
+        return false;
+    }
 }
+

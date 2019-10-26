@@ -57,7 +57,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
             @Override
             public void onItemClick(Order order) {
-                presenter.openDetailScreen(order);
+                //TODO to implement this
             }
         });
         recyclerView.setAdapter(adapter);

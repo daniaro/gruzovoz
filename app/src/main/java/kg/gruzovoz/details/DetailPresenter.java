@@ -1,9 +1,9 @@
 package kg.gruzovoz.details;
 
 import android.util.Log;
-import android.widget.Toast;
 
-import kg.gruzovoz.models.OrderDetail;
+import kg.gruzovoz.models.AcceptOrder;
+import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -15,24 +15,31 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
     private long id;
     private DetailContract.DetailView view;
     private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
+    private Order order;
+    private final AcceptOrder acceptOrder = new AcceptOrder();
 
     public DetailPresenter(DetailContract.DetailView view) {
         this.view = view;
     }
 
     @Override
-    public void populateInfo(long id, String authToken) {
-        Call<OrderDetail> call = service.getDetailedOrder(id, authToken);
-        call.enqueue(new Callback<OrderDetail>() {
+    public String getPhoneNumber() {
+        return order.getPhoneNumber();
+    }
+
+    @Override
+    public void acceptOrder(long id, String authToken) {
+        Call<Void> call = service.acceptOrder(id, authToken, acceptOrder);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<OrderDetail> call, Response<OrderDetail> response) {
-                Log.i(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAA" + response.body().getCarType() + response.body().getPhoneNumber());
-                view.setViewInfo(response.body());
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.i(DetailPresenter.class.getName(), "Заказ успешно принят");
+                view.startCallActivity();
             }
 
             @Override
-            public void onFailure(Call<OrderDetail> call, Throwable t) {
-                Log.e(getClass().getSimpleName(), t.getMessage());
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(DetailPresenter.class.getName(), "Невозможно принять заказ");
             }
         });
     }

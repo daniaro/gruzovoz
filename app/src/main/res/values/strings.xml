@@ -30,4 +30,8 @@
     <string name="acceptOrder_dialog">Вы уверены, что хотите принять этот заказ?</string>
     <string name="acceptOrder_title">Принять заказ</string>
     <string name="cancel_order">Отменить</string>
+    <string name="call_unavailable">Невозможно позвонить, пожалуйста свяжитесь с диспетчером</string>
+    <string name="logout_title">Выйти из аккаунта</string>
+    <string name="logout_message">Вы уверены, что хотите выйти из аккаунта?</string>
+    <string name="action_logout">Выйти</string>
 </resources>

@@ -1,16 +1,16 @@
 package kg.gruzovoz.main;
 
-import java.util.List;
-
-import kg.gruzovoz.models.Order;
 import kg.gruzovoz.BaseContract;
+import kg.gruzovoz.models.Order;
+
 public interface OrdersContract {
 
     interface View extends BaseContract.BaseView{
         void logOut();
-        void showDetailScreen(long id);
+        void showDetailScreen(Order order);
         void stopRefreshingOrders();
         void showError();
+        void showConfirmLogoutDialog();
 
     }
 

@@ -1,17 +1,20 @@
 package kg.gruzovoz.details;
 
+import static java.lang.String.format;
+
 public class CallPresenter implements CallContract.CallPresenter {
 
     CallContract.CallView view;
 
-    public void CallActivityPresenter(CallContract.CallView  view){this.view = view;}
+    public CallPresenter(CallContract.CallView  view){this.view = view;}
 
     @Override
-    public String getPhoneNumber() {
-        //get phone number from api , now let in be string var
-        String phoneNumber = " ";
-        return  phoneNumber;
+    public void parsePhoneNumber(String phoneNumber) {
+        view.setPhoneNumber(String.format("%s %s %s %s %s",
+                phoneNumber.substring(0, 4),
+                phoneNumber.substring(4, 7),
+                phoneNumber.substring(7, 9),
+                phoneNumber.substring(7, 9),
+                phoneNumber.substring(9, 11)));
     }
-
-
 }

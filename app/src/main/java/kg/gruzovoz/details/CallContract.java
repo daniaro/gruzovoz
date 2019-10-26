@@ -3,11 +3,10 @@ package kg.gruzovoz.details;
 public interface CallContract {
 
     interface CallView {
-
+        void setPhoneNumber(String phoneNumber);
     }
 
     interface CallPresenter {
-        String getPhoneNumber();
-
+        void parsePhoneNumber(String phoneNumber);
     }
 }

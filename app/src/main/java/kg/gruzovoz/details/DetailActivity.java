@@ -18,11 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
-import kg.gruzovoz.models.OrderDetail;
+import kg.gruzovoz.models.Order;
 
 public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
 
@@ -41,21 +39,40 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     TextView commentTextView;
 
     private static final int REQUEST_CALL = 1;
+    private Order order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        order = (Order) getIntent().getSerializableExtra("order");
         presenter = new DetailPresenter(this);
-        presenter.populateInfo(getIntent().getLongExtra("id", 0), BaseActivity.authToken);
 
         initViews();
+        initOnClickListeners();
+        setViewInfo();
 //        if (acceptButton.isPressed()){
 //            acceptButton.setVisibility(View.GONE);
 //            finishButton.setVisibility(View.VISIBLE);
 //            callButton.setVisibility(View.VISIBLE);
 //        }
+    }
+
+    private void initViews() {
+        acceptButton = findViewById(R.id.accept);
+        finishButton = findViewById(R.id.finish);
+        callButton = findViewById(R.id.callButton2);
+        closeIcon = findViewById(R.id.close_icon);
+        carTypeTextView = findViewById(R.id.textView);
+        initialAddressTextView = findViewById(R.id.textView2);
+        finalAddressTextView = findViewById(R.id.textView3);
+        paymentTextView = findViewById(R.id.textView4);
+        cargoTypeTextView = findViewById(R.id.textView5);
+        commentTextView = findViewById(R.id.commentsTextView);
+    }
+
+    private void initOnClickListeners() {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,12 +83,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent acceptIntent = new Intent(DetailActivity.this, CallActivity.class);
-//                startActivity(acceptIntent);
-//                finish();
-//                acceptButton.setVisibility(View.GONE);
-//                finishButton.setVisibility(View.VISIBLE);
-//                callButton.setVisibility(View.VISIBLE);
                 showAcceptAlertDialog();
             }
         });
@@ -90,19 +101,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                 finish();
             }
         });
-    }
-
-    private void initViews() {
-        acceptButton = findViewById(R.id.accept);
-        finishButton = findViewById(R.id.finish);
-        callButton = findViewById(R.id.callButton2);
-        closeIcon = findViewById(R.id.close_icon);
-        carTypeTextView = findViewById(R.id.textView);
-        initialAddressTextView = findViewById(R.id.textView2);
-        finalAddressTextView = findViewById(R.id.textView3);
-        paymentTextView = findViewById(R.id.textView4);
-        cargoTypeTextView = findViewById(R.id.textView5);
-        commentTextView = findViewById(R.id.commentsTextView);
     }
 
     public void makePhoneCall(){
@@ -140,7 +138,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     }
 
     @Override
-    public void setViewInfo(OrderDetail order) {
+    public void setViewInfo() {
         carTypeTextView.setText(order.getCarType());
         initialAddressTextView.setText(order.getStartAddress());
         finalAddressTextView.setText(order.getFinishAddress());
@@ -154,15 +152,29 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         cargoTypeTextView.setText(order.getCargoType());
         Log.i(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + order.getCommission());
         commentTextView.setText(order.getComments());
-
     }
 
     @Override
     public void showAcceptAlertDialog() {
-        AlertDialog alertDialogBuilder = new MaterialAlertDialogBuilder(getApplicationContext())
-                .setTitle(getString(R.string.acceptOrder_title))
-                .setMessage(getString(R.string.acceptOrder_dialog))
-                .setPositiveButton(getString(R.string.button_accept), null)
-                .setNegativeButton(getString(R.string.cancel_order), null).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        builder.setTitle(getString(R.string.acceptOrder_title));
+        builder.setMessage(getString(R.string.acceptOrder_dialog));
+        builder.setNegativeButton(R.string.cancel_order, null);
+        builder.setPositiveButton(getString(R.string.button_accept), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.acceptOrder(order.getId(), BaseActivity.authToken);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void startCallActivity() {
+        Intent intent = new Intent(DetailActivity.this, CallActivity.class);
+        intent.putExtra("phoneNumber", order.getPhoneNumber());
+        startActivity(intent);
+        finish();
     }
 }

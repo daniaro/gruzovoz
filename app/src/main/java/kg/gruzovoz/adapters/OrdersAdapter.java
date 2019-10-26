@@ -69,10 +69,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     onItemClickListener.onItemClick(order);
                 }
             });
-            dateTextView.setText(String.valueOf(order.getTime()));
-            paymentTextView.setText(String.valueOf(order.getPrice()));
+            dateTextView.setText(order.getLeadTime());
+            String commission = order.getCommission();
+            if (commission.charAt(commission.length() - 1) == '%') {
+                paymentTextView.setText(String.format("%s сом - %s", String.valueOf((int) order.getPrice()), commission));
+            } else {
+                paymentTextView.setText(String.format("%s сом - %s%%", String.valueOf((int) order.getPrice()), commission));
+            }
             carTypeTextView.setText(order.getCarType());
-            addressTextView.setText(order.getAddress());
+            addressTextView.setText(order.getFinishAddress());
         }
     }
 }
