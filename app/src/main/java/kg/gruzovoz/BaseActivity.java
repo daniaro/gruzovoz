@@ -35,12 +35,13 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        authToken = sharedPreferences.getString("authToken", null);
+        authToken = "Token " + sharedPreferences.getString("authToken", null);
         Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
         if (sharedPreferences.getString("authToken", null) == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+            return;
         }
         setContentView(R.layout.activity_main);
 

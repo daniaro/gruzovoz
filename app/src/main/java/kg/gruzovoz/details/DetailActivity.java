@@ -163,6 +163,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         builder.setPositiveButton(getString(R.string.button_accept), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                setResult(RESULT_OK);
                 presenter.acceptOrder(order.getId(), BaseActivity.authToken);
             }
         });

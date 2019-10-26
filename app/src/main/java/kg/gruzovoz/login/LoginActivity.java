@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +48,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             @Override
             public void onClick(View view) {
                 registerUser();
-                presenterL.login(passwordEditText.getText().toString(),phoneEditText.getText().toString());
+                Log.e(getClass().getName(), passwordEditText.getText().toString());
+                Log.e(getClass().getName(), phoneEditText.getText().toString());
+                //presenterL.login(passwordEditText.getText().toString(), phoneEditText.getText().toString());
+                presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
 

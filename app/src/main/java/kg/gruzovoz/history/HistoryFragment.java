@@ -13,44 +13,51 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
 import kg.gruzovoz.history.fragments.ActiveFragment;
 import kg.gruzovoz.history.fragments.CompletedFragment;
+import kg.gruzovoz.models.Order;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment  {
+public class HistoryFragment extends Fragment implements HistoryContract.View {
 
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ActiveFragment activeFragment;
+    private CompletedFragment completedFragment;
+    private FixedTabsPagerAdapter adapter;
 
-    public TabLayout tabLayout;
-    public ViewPager viewPager;
-
-
-    FixedTabsPagerAdapter adapter;
-
+    private HistoryContract.Presenter presenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
         tabLayout = root.findViewById(R.id.tabs);
         viewPager = root.findViewById(R.id.viewPager);
+        activeFragment = new ActiveFragment();
+        completedFragment = new CompletedFragment();
 
         adapter = new FixedTabsPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ActiveFragment(),"Активные");
-        adapter.addFragment(new CompletedFragment(),"Завершенные");
+        adapter.addFragment(activeFragment,"Активные");
+        adapter.addFragment(completedFragment,"Завершенные");
         viewPager.setAdapter(adapter);
 
         tabLayout.addTab(tabLayout.newTab().setText("Активные"));
         tabLayout.addTab(tabLayout.newTab().setText("Завершенные"));
 
         tabLayout.setupWithViewPager(viewPager);
-        initTablayoutSelection();
+        initTabLayoutSelection();
+
+        presenter = new HistoryPresenter(this);
         return root;
     }
 
-    public void initTablayoutSelection(){
+    public void initTabLayoutSelection(){
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -70,6 +77,25 @@ public class HistoryFragment extends Fragment  {
     }
 
 
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void setActiveFragmentOrders(List<Order> orders) {
+
+    }
+
+    @Override
+    public void setCompletedFragmentOrders(List<Order> orders) {
+
+    }
+
+    @Override
+    public void setOrders(List<Order> orders) {
+
+    }
 }
 
 

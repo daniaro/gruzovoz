@@ -1,11 +1,13 @@
 package kg.gruzovoz.main;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,10 +62,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
-
-        presenter = new OrdersPresenter(this);
-        presenter.populateOrders();
-
         return root;
     }
 
@@ -82,13 +80,16 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
-            @Override
-            public void onItemClick(Order order) {
-                showDetailScreen(order);
-            }
-        });
+        if (adapter == null) {
+            adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
+                @Override
+                public void onItemClick(Order order) {
+                    showDetailScreen(order);
+                }
+            });
+            presenter = new OrdersPresenter(this);
+            presenter.populateOrders();
+        }
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
@@ -106,7 +107,15 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void showDetailScreen(Order order) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("order", order);
-        startActivity(intent);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            presenter.populateOrders();
+        }
     }
 
     @Override

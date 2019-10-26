@@ -23,15 +23,21 @@ public class OrdersPresenter implements OrdersContract.Presenter {
 
     @Override
     public void populateOrders() {
+        Log.e("TAG", "populateOrders() executed");
         Call<List<Order>> call = service.getAllOrders(BaseActivity.authToken);
         call.enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                for (int i = 0; i < response.body().size(); i++) {
-                    Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getStartAddress());
+                if (response.body() != null && response.body().size() > 0) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getStartAddress());
+                    }
+                    Collections.reverse(response.body());
+                    view.setOrders(response.body());
+                } else {
+                    //view.showEmptyView()
                 }
-                Collections.reverse(response.body());
-                view.setOrders(response.body());
+
                 view.stopRefreshingOrders();
             }
 

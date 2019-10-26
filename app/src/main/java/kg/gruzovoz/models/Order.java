@@ -30,9 +30,9 @@ public class Order implements Serializable {
     @SerializedName("comments")
     private String comments;
     @SerializedName("active")
-    private boolean active;
+    private boolean isActive;
     @SerializedName("done")
-    private boolean done;
+    private boolean isDone;
 
     public Order(long id, String carType, String startAddress, String finishAddress, double price, String commission, int leadTime, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
@@ -55,8 +55,8 @@ public class Order implements Serializable {
         this.cargoType = cargoType;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
-        this.active = active;
-        this.done = done;
+        this.isActive = active;
+        this.isDone = done;
     }
 
     public long getId() {
@@ -97,5 +97,13 @@ public class Order implements Serializable {
 
     public String getComments() {
         return comments;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        this.isDone = done;
     }
 }
