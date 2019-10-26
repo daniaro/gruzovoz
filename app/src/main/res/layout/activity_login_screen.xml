@@ -8,21 +8,23 @@
     android:background="@color/colorPrimary"
     tools:context=".login.LoginActivity">
 
+
     <ImageView
         android:id="@+id/logo_imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginTop="60dp"
-        android:src="@drawable/ic_asset_8"
+        app:srcCompat="@drawable/ic_asset_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="257dp"
         android:layout_height="59dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="ГРУЗОВОЗ"
         android:textColor="@color/colorAccent"
@@ -30,13 +32,14 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_imageView">
+        app:layout_constraintTop_toBottomOf="@+id/logo_imageView"
+        android:fontFamily="serif">
+
 
     </TextView>
-    
 
     <com.google.android.material.textfield.TextInputLayout
-        android:textColorHint="@color/textColorPrimary"
+        android:textColorHint="@color/colorAccent"
         app:hintTextColor="@color/colorAccent"
         android:id="@+id/phone_text_field"
         android:layout_width="328dp"
@@ -55,9 +58,12 @@
             android:id="@+id/loginEditText"
             android:textColor="@color/colorAccent"
             android:layout_width="match_parent"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"
             android:singleLine="true"
             android:layout_height="56dp"
-            android:text="@string/number"
+            android:inputType="number"
+            android:hint="@string/hint_phone"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -68,11 +74,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="328dp"
         android:layout_height="90dp"
-        android:textColorHint="@color/textColorPrimary"
+        android:textColorHint="@color/colorAccent"
         app:boxStrokeColor="@color/login_text_field"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_hide"
         app:errorEnabled="true"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/textColorPrimary"
         app:hintTextColor="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +87,8 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="@string/hint_password"
@@ -89,7 +97,6 @@
             android:textColor="@color/colorAccent" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <Button
         android:id="@+id/loginButton"
