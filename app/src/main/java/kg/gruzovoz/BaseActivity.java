@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -51,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().add(R.id.main_container, ordersFragment, "2").commit();
+            fragmentManager.beginTransaction().add(R.id.main_container, ordersFragment, "1").commit();
         }
     }
 
@@ -64,7 +63,7 @@ public class BaseActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().replace(R.id.main_container, ordersFragment).commit();
                             return true;
                         case R.id.navigation_history:
-                            fragmentManager.beginTransaction().replace(R.id.main_container, historyFragment).commit();
+                            fragmentManager.beginTransaction().replace(R.id.main_container, historyFragment, "2").commit();
                             return true;
                     }
                     return false;

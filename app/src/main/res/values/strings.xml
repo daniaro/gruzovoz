@@ -34,4 +34,8 @@
     <string name="logout_title">Выйти из аккаунта</string>
     <string name="logout_message">Вы уверены, что хотите выйти из аккаунта?</string>
     <string name="action_logout">Выйти</string>
+    <string name="shr_error_password">Неверный номер телефона или пароль, попробуйте снова</string>
+    <string name="enter_phone_number">Введите номер телефона</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="number">+996</string>
 </resources>

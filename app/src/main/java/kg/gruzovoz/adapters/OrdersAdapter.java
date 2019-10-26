@@ -1,5 +1,6 @@
 package kg.gruzovoz.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +70,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     onItemClickListener.onItemClick(order);
                 }
             });
-            dateTextView.setText(order.getLeadTime());
+            switch (order.getLeadTime()) {
+                case 1:
+                    dateTextView.setText("Сегодня");
+                    break;
+                case 2:
+                    dateTextView.setText("Завтра");
+                    break;
+                case 3:
+                    dateTextView.setText("Срочно");
+                    break;
+            }
             String commission = order.getCommission();
             if (commission.charAt(commission.length() - 1) == '%') {
                 paymentTextView.setText(String.format("%s сом - %s", String.valueOf((int) order.getPrice()), commission));

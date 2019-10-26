@@ -1,12 +1,14 @@
 package kg.gruzovoz.history.fragments;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,24 +20,21 @@ import java.util.List;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
-import kg.gruzovoz.history.HistoryContract;
-import kg.gruzovoz.history.HistoryPresenter;
+import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompletedFragment extends Fragment {
+public class CompletedFragment extends Fragment implements HistoryContract.View {
+
     private HistoryContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
-
 
     public CompletedFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +43,8 @@ public class CompletedFragment extends Fragment {
         View root =  inflater.inflate(R.layout.fragment_completed, container, false);
 
         initRecyclerViewWithAdapter(root);
+
+        presenter.populateOrders(true);
         return root;
 
     }
@@ -55,10 +56,36 @@ public class CompletedFragment extends Fragment {
         adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
             @Override
             public void onItemClick(Order order) {
-                // TODO implement this
+                openDetailScreen(order);
             }
         });
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        presenter = new HistoryPresenter(this);
+    }
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void setOrders(List<Order> orderList) {
+        adapter.setValues(orderList);
+    }
+
+    @Override
+    public void openDetailScreen(Order order) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("order", order);
+        startActivityForResult(intent, 102);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == 101) {
+            presenter.populateOrders(true);
+        }
     }
 }

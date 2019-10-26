@@ -50,6 +50,16 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         presenter = new DetailPresenter(this);
 
         initViews();
+        if (!order.isActive()) {
+            acceptButton.setVisibility(View.GONE);
+            finishButton.setVisibility(View.VISIBLE);
+            callButton.setVisibility(View.VISIBLE);
+
+        } else if (order.isDone()) {
+            acceptButton.setVisibility(View.GONE);
+            finishButton.setVisibility(View.GONE);
+            callButton.setVisibility(View.GONE);
+        }
         initOnClickListeners();
         setViewInfo();
 //        if (acceptButton.isPressed()){
@@ -76,7 +86,9 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO NUJNO ETO SDELAT'
+                presenter.finishOrder(order.getId());
+                setResult(RESULT_OK);
+                finish();
             }
         });
 
@@ -104,9 +116,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     }
 
     public void makePhoneCall(){
-        //get phone number from api , now let in be string var
-//        String phoneNumber = presenter.getPhoneNumber();
-        String phoneNumber = "2222222222";
+        String phoneNumber = order.getPhoneNumber();
         if (phoneNumber.trim().length() >0){
             if (ContextCompat.checkSelfPermission(DetailActivity.this,
                     Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
@@ -164,7 +174,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setResult(RESULT_OK);
-                presenter.acceptOrder(order.getId(), BaseActivity.authToken);
+                presenter.acceptOrder(order.getId());
+
             }
         });
         AlertDialog dialog = builder.create();

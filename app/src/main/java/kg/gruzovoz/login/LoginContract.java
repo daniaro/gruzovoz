@@ -4,6 +4,7 @@ interface LoginContract {
 
     interface  LoginView{
        void showErrorToast();
+       void showLoginError();
        void addAuthToken(String authToken);
        void registerUser();
     }

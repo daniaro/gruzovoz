@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorHint">@color/textColorPrimary</item>
         <!--<item name="windowActionBar">false</item>-->
     </style>
 
@@ -16,10 +17,10 @@
         <item name="android:layout_marginTop">@dimen/list_item_vertical_margin</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:fontFamily">@font/roboto_slab</item>
-        <item name="android:textSize">@dimen/toolbar_title_text_size</item>
+    <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

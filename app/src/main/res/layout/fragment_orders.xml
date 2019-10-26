@@ -20,7 +20,7 @@
             app:title="@string/title_orders"
             app:menu="@menu/menu_main"
             app:titleTextColor="@color/colorAccent"
-            app:titleTextAppearance="@font/roboto_slab">
+            app:titleTextAppearance="@style/ToolbarTheme">
 
         </androidx.appcompat.widget.Toolbar>
 

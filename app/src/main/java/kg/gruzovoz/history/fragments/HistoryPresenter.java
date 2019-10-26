@@ -1,14 +1,10 @@
-package kg.gruzovoz.history;
-
-import android.util.Log;
+package kg.gruzovoz.history.fragments;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.history.fragments.ActiveFragment;
-import kg.gruzovoz.history.fragments.CompletedFragment;
+import kg.gruzovoz.history.fragments.HistoryContract;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -26,12 +22,16 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     }
 
     @Override
-    public void populateOrders() {
-        Call<List<Order>> call = service.getOrdersHistory(BaseActivity.authToken);
+    public void populateOrders(boolean isDone) {
+        Call<List<Order>> call = service.getOrdersHistory(BaseActivity.authToken, isDone);
         call.enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                sortOrders(response.body());
+                if (response.body() != null && response.body().size() > 0) {
+                    view.setOrders(response.body());
+                } else {
+                    //TODO
+                }
             }
 
             @Override
@@ -39,20 +39,5 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
             }
         });
-    }
-
-    @Override
-    public void sortOrders(List<Order> orders) {
-        List<Order> ordersActive = new ArrayList<>();
-        List<Order> ordersDone = new ArrayList<>();
-        for (Order order : orders) {
-            if (order.isDone()) {
-                ordersDone.add(order);
-            } else {
-                ordersActive.add(order);
-            }
-        }
-        view.setActiveFragmentOrders(ordersActive);
-        view.setCompletedFragmentOrders(ordersDone);
     }
 }

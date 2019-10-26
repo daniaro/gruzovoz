@@ -22,7 +22,7 @@ public class Order implements Serializable {
     @SerializedName("commission")
     private String commission;
     @SerializedName("lead_time")
-    private String leadTime;
+    private int leadTime;
     @SerializedName("type_of_transportation")
     private String cargoType;
     @SerializedName("phone_number")
@@ -41,17 +41,7 @@ public class Order implements Serializable {
         this.finishAddress = finishAddress;
         this.price = price;
         this.commission = commission;
-        switch (leadTime) {
-            case 1:
-                this.leadTime = Resources.getSystem().getString(R.string.date_today);
-                break;
-            case 2:
-                this.leadTime = Resources.getSystem().getString(R.string.date_tomorrow);
-                break;
-            case 3: 
-                this.leadTime = Resources.getSystem().getString(R.string.date_now);
-                break;
-        }
+        this.leadTime = leadTime;
         this.cargoType = cargoType;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
@@ -83,7 +73,7 @@ public class Order implements Serializable {
         return commission;
     }
 
-    public String getLeadTime() {
+    public int getLeadTime() {
         return leadTime;
     }
 
@@ -105,5 +95,9 @@ public class Order implements Serializable {
 
     public void setDone(boolean done) {
         this.isDone = done;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }

@@ -4,6 +4,8 @@ package kg.gruzovoz.history;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -19,12 +21,14 @@ import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
 import kg.gruzovoz.history.fragments.ActiveFragment;
 import kg.gruzovoz.history.fragments.CompletedFragment;
+import kg.gruzovoz.history.fragments.HistoryContract;
+import kg.gruzovoz.history.fragments.HistoryPresenter;
 import kg.gruzovoz.models.Order;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoryFragment extends Fragment implements HistoryContract.View {
+public class HistoryFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -32,11 +36,12 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     private CompletedFragment completedFragment;
     private FixedTabsPagerAdapter adapter;
 
-    private HistoryContract.Presenter presenter;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
+
+        Toolbar toolbar = root.findViewById(R.id.history_app_bar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         tabLayout = root.findViewById(R.id.tabs);
         viewPager = root.findViewById(R.id.viewPager);
         activeFragment = new ActiveFragment();
@@ -53,7 +58,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         tabLayout.setupWithViewPager(viewPager);
         initTabLayoutSelection();
 
-        presenter = new HistoryPresenter(this);
         return root;
     }
 
@@ -74,27 +78,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
             }
         });
-    }
-
-
-    @Override
-    public void showError() {
-
-    }
-
-    @Override
-    public void setActiveFragmentOrders(List<Order> orders) {
-
-    }
-
-    @Override
-    public void setCompletedFragmentOrders(List<Order> orders) {
-
-    }
-
-    @Override
-    public void setOrders(List<Order> orders) {
-
     }
 }
 

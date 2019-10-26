@@ -37,12 +37,13 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 //                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
                 } else {
                     loginView.showErrorToast();
+                    loginView.showLoginError();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                   loginView.showErrorToast();
+                   loginView.showLoginError();
             }
         });
 
