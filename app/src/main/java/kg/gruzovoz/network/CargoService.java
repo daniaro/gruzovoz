@@ -25,4 +25,7 @@ public interface CargoService {
     @PUT("/order/done/{id}/")
     Call<Void> acceptOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body AcceptOrder acceptOrder);
 
+    //@PUT("order/done/{id}/")
+
+
 }

@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/title_history"
-            app:titleTextColor="@color/colorAccent">
+            app:titleTextColor="@color/colorAccent"
+            app:titleTextAppearance="@font/roboto_slab">
 
         </androidx.appcompat.widget.Toolbar>
 

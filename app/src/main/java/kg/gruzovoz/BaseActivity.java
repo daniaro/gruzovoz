@@ -16,11 +16,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import kg.gruzovoz.R;
 import kg.gruzovoz.history.HistoryFragment;
 import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.main.OrdersFragment;
-import kg.gruzovoz.models.Login;
 
 public class BaseActivity extends AppCompatActivity {
 
