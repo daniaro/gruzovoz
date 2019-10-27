@@ -34,6 +34,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
                     }
                     Collections.reverse(response.body());
                     view.setOrders(response.body());
+                    view.hideProgressBar();
                 } else {
                     //view.showEmptyView()
                 }

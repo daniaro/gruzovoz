@@ -34,4 +34,8 @@
         <item name="colorAccent">@color/rippleColor</item>
     </style>
 
+    <style name="ProgressBarTheme">
+        <item name="colorAccent">@color/rippleColor</item>
+    </style>
+
 </resources>

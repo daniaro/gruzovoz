@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +50,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    ProgressBar progressBar;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -59,7 +63,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
         Toolbar toolbar = root.findViewById(R.id.app_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
+        progressBar = root.findViewById(R.id.indeterminateBar);
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
@@ -82,6 +86,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (adapter == null) {
+            recyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
             adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
                 @Override
                 public void onItemClick(Order order) {
@@ -100,8 +106,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
-    public void logOut() {
-        // TODO to implement the log out feature
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

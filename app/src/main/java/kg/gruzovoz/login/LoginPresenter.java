@@ -36,10 +36,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
 //                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
                 } else {
-                    loginView.showErrorToast();
-                    loginView.showLoginError();
-                    loginView.addAuthToken(String.format("Token %s", response.body().getToken()));
-                } else {
                     if (loginView.isConnected()) {
                         loginView.showLoginError();
                     } else {
