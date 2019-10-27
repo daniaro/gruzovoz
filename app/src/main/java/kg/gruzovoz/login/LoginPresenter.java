@@ -1,7 +1,5 @@
 package kg.gruzovoz.login;
 
-import android.util.Log;
-
 import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
@@ -34,7 +32,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
-//                    Toast.makeText(LoginPresenter., response.body().getToken(), Toast.LENGTH_SHORT).show();
                 } else {
                     if (loginView.isConnected()) {
                         loginView.showLoginError();

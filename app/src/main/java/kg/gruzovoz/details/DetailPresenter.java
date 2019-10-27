@@ -16,20 +16,13 @@ import static kg.gruzovoz.BaseActivity.authToken;
 
 public class DetailPresenter implements DetailContract.DetailPresenter {
 
-    private long id;
     private DetailContract.DetailView view;
     private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-    private Order order;
     private final AcceptOrder acceptOrder = new AcceptOrder();
     private final FinishOrder finishOrder = new FinishOrder();
 
     public DetailPresenter(DetailContract.DetailView view) {
         this.view = view;
-    }
-
-    @Override
-    public String getPhoneNumber() {
-        return order.getPhoneNumber();
     }
 
     @Override

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,7 +23,7 @@ import kg.gruzovoz.main.OrdersFragment;
 public class BaseActivity extends AppCompatActivity {
 
     Fragment ordersFragment = new OrdersFragment();
-    final Fragment historyFragment = new HistoryFragment();
+    Fragment historyFragment;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     SharedPreferences sharedPreferences;
@@ -42,6 +43,17 @@ public class BaseActivity extends AppCompatActivity {
             finish();
             return;
         }
+        historyFragment = new HistoryFragment(new BaseContract.OnBaseOrderFinishedListener() {
+            @Override
+            public void onBaseOrderFinished() {
+                Fragment fragment = null;
+                fragment = fragmentManager.findFragmentByTag("2");
+                final FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.detach(fragment);
+                ft.attach(fragment);
+                ft.commit();
+            }
+        });
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.app_bar);
@@ -69,4 +81,6 @@ public class BaseActivity extends AppCompatActivity {
                     return false;
                 }
             };
+
+
 }

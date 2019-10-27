@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
+import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
 import kg.gruzovoz.history.fragments.ActiveFragment;
@@ -35,6 +36,11 @@ public class HistoryFragment extends Fragment {
     private ActiveFragment activeFragment;
     private CompletedFragment completedFragment;
     private FixedTabsPagerAdapter adapter;
+    private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
+
+    public HistoryFragment(BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener) {
+        this.onBaseOrderFinishedListener = onBaseOrderFinishedListener;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +51,12 @@ public class HistoryFragment extends Fragment {
         tabLayout = root.findViewById(R.id.tabs);
         viewPager = root.findViewById(R.id.viewPager);
         activeFragment = new ActiveFragment();
+        activeFragment.setOnOrderFinishedListener(new BaseContract.OnOrderFinishedListener() {
+            @Override
+            public void onOrderFinished() {
+                onBaseOrderFinishedListener.onBaseOrderFinished();
+            }
+        });
         completedFragment = new CompletedFragment();
 
         adapter = new FixedTabsPagerAdapter(getChildFragmentManager());
@@ -60,6 +72,7 @@ public class HistoryFragment extends Fragment {
 
         return root;
     }
+
 
     public void initTabLayoutSelection(){
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

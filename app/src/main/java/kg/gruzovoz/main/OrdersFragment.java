@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout emptyView;
     ProgressBar progressBar;
 
     public OrdersFragment() {
@@ -64,6 +66,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         Toolbar toolbar = root.findViewById(R.id.app_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         progressBar = root.findViewById(R.id.indeterminateBar);
+        emptyView = root.findViewById(R.id.empty_view);
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
@@ -109,6 +112,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override
@@ -134,6 +138,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     @Override
     public void showError() {
         Toast.makeText(getContext(), getString(R.string.orders_unavailable), Toast.LENGTH_LONG).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -157,6 +162,12 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void showEmptyView() {
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override

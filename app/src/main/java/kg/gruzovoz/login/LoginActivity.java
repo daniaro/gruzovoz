@@ -8,9 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
-import android.text.TextUtils;
-import android.util.Log;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -95,12 +94,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUser();
                 Log.e(getClass().getName(), passwordEditText.getText().toString());
                 Log.e(getClass().getName(), phoneEditText.getText().toString());
-                //presenterL.login(passwordEditText.getText().toString(), phoneEditText.getText().toString());
                 presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
-                presenterL.login(passwordEditText.getText().toString(), phoneEditText.getText().toString());
             }
         });
 
@@ -125,17 +121,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     }
 
     @Override
-    public void registerUser() {
-        if (TextUtils.isEmpty(phoneEditText.getText().toString().trim())) {
-            phoneInputLayout.setError(getString(R.string.enter_phone_number));
-            return;
-        }
-    }
-
-    @Override
     public boolean isConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

@@ -1,5 +1,7 @@
 package kg.gruzovoz.history.fragments;
 
+import android.view.View;
+
 import java.util.List;
 
 import kg.gruzovoz.BaseContract;
@@ -17,5 +19,4 @@ public interface HistoryContract {
     interface Presenter {
         void populateOrders(boolean isDone);
     }
-
 }
