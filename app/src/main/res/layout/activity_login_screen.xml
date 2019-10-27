@@ -73,28 +73,31 @@
         android:id="@+id/password_text_field"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="328dp"
-        android:layout_height="90dp"
+        android:layout_height="100dp"
         android:textColorHint="@color/colorAccent"
         app:boxStrokeColor="@color/login_text_field"
         app:errorEnabled="true"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/textColorPrimary"
         app:hintTextColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_text_field"
+        app:layout_constraintVertical_bias="0.0"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/textColorPrimary"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:cursorVisible="true"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent"
+            android:textCursorDrawable="@null" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
