@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,7 +48,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         presenter = new DetailPresenter(this);
 
         initViews();
-        if (!order.isActive()) {
+        if (!order.isActive() && !order.isDone()) {
             acceptButton.setVisibility(View.GONE);
             finishButton.setVisibility(View.VISIBLE);
             callButton.setVisibility(View.VISIBLE);
@@ -80,9 +79,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.finishOrder(order.getId());
-                setResult(RESULT_OK);
-                finish();
+                showConfirmFinishAlertDialog();
             }
         });
 
@@ -154,7 +151,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             paymentTextView.setText(String.format("%s сом - %s%%", String.valueOf((int) order.getPrice()), commission));
         }
         cargoTypeTextView.setText(order.getCargoType());
-        Log.i(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + order.getCommission());
         commentTextView.setText(order.getComments());
     }
 
@@ -177,10 +173,37 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     }
 
     @Override
+    public void showConfirmFinishAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        builder.setTitle(getString(R.string.finish_order_title));
+        builder.setMessage(getString(R.string.confirm_finish_order));
+        builder.setNegativeButton(R.string.cancel_order, null);
+        builder.setPositiveButton(getString(R.string.finish), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setResult(RESULT_OK);
+                presenter.finishOrder(order.getId());
+
+                finish();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
     public void startCallActivity() {
         Intent intent = new Intent(DetailActivity.this, CallActivity.class);
         intent.putExtra("phoneNumber", order.getPhoneNumber());
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void showError() {
+        Toast.makeText(getApplicationContext(), "Невозможно принять заказ", Toast.LENGTH_LONG).show();
+    }
+
+
 }

@@ -40,4 +40,11 @@
     <string name="number">+996</string>
     <string name="no_internet">Отсутствует интернет-соединение</string>
     <string name="update_orders">Попробуйте обновить страницу</string>
+    <string name="no_active_orders">Нет активных заказов</string>
+    <string name="no_completed_orders">Нет завершенных заказов</string>
+    <string name="active_orders_unavailable">Невозможно получить список активных заказов</string>
+    <string name="completed_orders_unavailable">Невозможно получить список завершенных заказов</string>
+    <string name="finish_order_title">Завершить заказ</string>
+    <string name="confirm_finish_order">Вы уверены, что хотите завершить этот заказ?</string>
+    <string name="finish">Завершить</string>
 </resources>

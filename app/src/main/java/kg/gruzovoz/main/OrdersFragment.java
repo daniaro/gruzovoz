@@ -6,11 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -90,6 +85,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (adapter == null) {
             recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
             adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
                 @Override
@@ -102,10 +98,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         }
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -139,6 +131,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void showError() {
         Toast.makeText(getContext(), getString(R.string.orders_unavailable), Toast.LENGTH_LONG).show();
         swipeRefreshLayout.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -154,7 +149,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                 SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("authToken").apply();
-                String token = sharedPreferences.getString("authToken", "haha");
                 Intent intent = new Intent(getContext(), BaseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -168,6 +162,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void showEmptyView() {
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override

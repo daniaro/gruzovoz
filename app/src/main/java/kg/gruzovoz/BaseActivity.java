@@ -28,7 +28,6 @@ public class BaseActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     public static String authToken;
-//    "Token 7b86ca9dc2c619467f92d9e084c6a91fa2daa5d7"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +35,24 @@ public class BaseActivity extends AppCompatActivity {
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         authToken = "Token " + sharedPreferences.getString("authToken", null);
-        Log.e(getClass().getSimpleName(), "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa" + authToken);
         if (sharedPreferences.getString("authToken", null) == null) {
             Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
             return;
         }
+        // detach and reattach HistoryFragment when the user accepts an order
         historyFragment = new HistoryFragment(new BaseContract.OnBaseOrderFinishedListener() {
             @Override
             public void onBaseOrderFinished() {
-                Fragment fragment = null;
-                fragment = fragmentManager.findFragmentByTag("2");
+                Fragment fragment = fragmentManager.findFragmentByTag("2");
                 final FragmentTransaction ft = fragmentManager.beginTransaction();
                 ft.detach(fragment);
                 ft.attach(fragment);
                 ft.commit();
             }
         });
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.app_bar);

@@ -1,11 +1,8 @@
 package kg.gruzovoz.details;
 
-import android.util.Log;
-
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
-import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -31,13 +28,12 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.i(DetailPresenter.class.getName(), "Заказ успешно принят");
                 view.startCallActivity();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e(DetailPresenter.class.getName(), "Невозможно принять заказ");
+                view.showError();
             }
         });
     }
@@ -49,7 +45,6 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 206) {
-                    Log.e("TAG", "Order finished");
                 }
             }
 

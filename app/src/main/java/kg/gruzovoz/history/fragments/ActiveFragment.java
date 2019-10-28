@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -33,6 +36,8 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private HistoryContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayout emptyView;
+    private ProgressBar progressBar;
 
     private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
 
@@ -47,6 +52,8 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_active, container, false);
 
+        progressBar = root.findViewById(R.id.progressBar_historyActive);
+        emptyView = root.findViewById(R.id.emptyView_historyActive);
         initRecyclerViewWithAdapter(root);
 
         return root;
@@ -68,6 +75,8 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
             }
         });
 
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         presenter = new HistoryPresenter(this);
         presenter.populateOrders(false);
         recyclerView.setAdapter(adapter);
@@ -76,6 +85,9 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
 
     @Override
     public void showError() {
+        Toast.makeText(getContext(), getString(R.string.active_orders_unavailable), Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
 
     }
 
@@ -89,6 +101,20 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("order", order);
         startActivityForResult(intent, 101);
+    }
+
+    @Override
+    public void showEmptyView() {
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override

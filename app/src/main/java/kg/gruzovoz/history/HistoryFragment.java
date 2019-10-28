@@ -38,6 +38,9 @@ public class HistoryFragment extends Fragment {
     private FixedTabsPagerAdapter adapter;
     private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
 
+    public HistoryFragment() {
+        // required empty public constructor
+    }
     public HistoryFragment(BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener) {
         this.onBaseOrderFinishedListener = onBaseOrderFinishedListener;
     }
