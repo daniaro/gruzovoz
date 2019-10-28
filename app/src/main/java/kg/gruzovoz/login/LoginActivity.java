@@ -39,17 +39,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
-        loginButton = findViewById(R.id.loginButton);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        phoneEditText = findViewById(R.id.loginEditText);
-        phoneInputLayout = findViewById(R.id.phone_text_field);
-        passwordInputLayout = findViewById(R.id.password_text_field);
+        initViews();
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         phoneEditText.setText("+996");
         Selection.setSelection(phoneEditText.getText(), phoneEditText.getText().length());
+
         phoneEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -100,6 +97,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             }
         });
 
+    }
+
+    private void initViews(){
+        loginButton = findViewById(R.id.loginButton);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        phoneEditText = findViewById(R.id.loginEditText);
+        phoneInputLayout = findViewById(R.id.phone_text_field);
+        passwordInputLayout = findViewById(R.id.password_text_field);
     }
 
     @Override

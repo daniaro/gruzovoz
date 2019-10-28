@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         View root =  inflater.inflate(R.layout.fragment_completed, container, false);
 
         initRecyclerViewWithAdapter(root);
+
 
         presenter.populateOrders(true);
         return root;

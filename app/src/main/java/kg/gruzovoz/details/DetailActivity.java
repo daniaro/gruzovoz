@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.Order;
 
@@ -62,11 +62,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         }
         initOnClickListeners();
         setViewInfo();
-//        if (acceptButton.isPressed()){
-//            acceptButton.setVisibility(View.GONE);
-//            finishButton.setVisibility(View.VISIBLE);
-//            callButton.setVisibility(View.VISIBLE);
-//        }
     }
 
     private void initViews() {
@@ -189,4 +184,5 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         startActivity(intent);
         finish();
     }
+
 }

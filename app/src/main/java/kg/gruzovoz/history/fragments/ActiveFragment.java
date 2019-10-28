@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -29,6 +28,7 @@ import kg.gruzovoz.models.Order;
 public class ActiveFragment extends Fragment implements HistoryContract.View {
 
     private HistoryContract.Presenter presenter;
+
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
 
@@ -41,7 +41,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =  inflater.inflate(R.layout.fragment_active, container, false);
+        View root = inflater.inflate(R.layout.fragment_active, container, false);
 
         initRecyclerViewWithAdapter(root);
 
@@ -89,6 +89,9 @@ public class ActiveFragment extends Fragment implements HistoryContract.View {
 
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             presenter.populateOrders(false);
+
         }
     }
+
+
 }

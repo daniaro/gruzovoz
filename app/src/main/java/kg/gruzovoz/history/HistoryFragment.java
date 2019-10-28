@@ -2,6 +2,9 @@ package kg.gruzovoz.history;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,21 +12,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
 import kg.gruzovoz.history.fragments.ActiveFragment;
 import kg.gruzovoz.history.fragments.CompletedFragment;
-import kg.gruzovoz.history.fragments.HistoryContract;
-import kg.gruzovoz.history.fragments.HistoryPresenter;
-import kg.gruzovoz.models.Order;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +37,9 @@ public class HistoryFragment extends Fragment {
         Toolbar toolbar = root.findViewById(R.id.history_app_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         tabLayout = root.findViewById(R.id.tabs);
+
         viewPager = root.findViewById(R.id.viewPager);
+
         activeFragment = new ActiveFragment();
         completedFragment = new CompletedFragment();
 
