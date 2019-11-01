@@ -55,7 +55,6 @@ public class CallActivity extends AppCompatActivity implements CallContract.Call
         });
     }
 
-
     public void makePhoneCall(){
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
         if (phoneNumber.trim().length() > 0) {

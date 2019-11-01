@@ -10,23 +10,19 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FixedTabsPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList  = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-
     public FixedTabsPagerAdapter( FragmentManager fm){
         super(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
     }
-
 
     public void addFragment(Fragment fragment, String title){
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
-
 
     @NonNull
     @Override

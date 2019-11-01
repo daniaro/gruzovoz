@@ -29,15 +29,17 @@ public class OrdersPresenter implements OrdersContract.Presenter {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.body() != null && response.body().size() > 0) {
+                    Log.e("TAG", String.valueOf(response.body().size()));
                     for (int i = 0; i < response.body().size(); i++) {
                         Log.i(getClass().getSimpleName(), "id: " + response.body().get(i).getId() + "address: " + response.body().get(i).getStartAddress());
                     }
                     Collections.reverse(response.body());
                     view.setOrders(response.body());
+                    view.hideProgressBar();
                 } else {
-                    //view.showEmptyView()
+                    view.setOrders(response.body());
+                    view.showEmptyView();
                 }
-
                 view.stopRefreshingOrders();
             }
 

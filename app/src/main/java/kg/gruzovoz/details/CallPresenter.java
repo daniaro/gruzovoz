@@ -1,7 +1,5 @@
 package kg.gruzovoz.details;
 
-import static java.lang.String.format;
-
 public class CallPresenter implements CallContract.CallPresenter {
 
     CallContract.CallView view;

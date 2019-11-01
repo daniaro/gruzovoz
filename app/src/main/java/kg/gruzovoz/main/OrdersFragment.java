@@ -7,14 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +23,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +46,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout emptyView;
+    ProgressBar progressBar;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -59,7 +60,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
         Toolbar toolbar = root.findViewById(R.id.app_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
+        progressBar = root.findViewById(R.id.indeterminateBar);
+        emptyView = root.findViewById(R.id.empty_view);
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
@@ -82,6 +84,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (adapter == null) {
+            recyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
             adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
                 @Override
                 public void onItemClick(Order order) {
@@ -100,8 +104,10 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
-    public void logOut() {
-        // TODO to implement the log out feature
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override
@@ -127,6 +133,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     @Override
     public void showError() {
         Toast.makeText(getContext(), getString(R.string.orders_unavailable), Toast.LENGTH_LONG).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -150,6 +157,12 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void showEmptyView() {
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override

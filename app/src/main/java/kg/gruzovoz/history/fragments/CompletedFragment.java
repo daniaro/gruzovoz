@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
@@ -48,6 +50,7 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         return root;
 
     }
+
     private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerViewCompleted);
         recyclerView.setHasFixedSize(true);

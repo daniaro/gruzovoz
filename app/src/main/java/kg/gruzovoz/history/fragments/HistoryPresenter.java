@@ -1,10 +1,8 @@
 package kg.gruzovoz.history.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.history.fragments.HistoryContract;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -30,7 +28,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                 if (response.body() != null && response.body().size() > 0) {
                     view.setOrders(response.body());
                 } else {
-                    //TODO
+                    view.setOrders(response.body());
                 }
             }
 

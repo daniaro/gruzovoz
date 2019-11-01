@@ -10,7 +10,6 @@ public interface DetailContract {
     }
 
     interface DetailPresenter {
-        String getPhoneNumber();
         void acceptOrder(long id);
         void finishOrder(long id);
     }

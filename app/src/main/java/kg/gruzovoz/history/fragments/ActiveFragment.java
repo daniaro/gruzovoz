@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
@@ -25,12 +27,14 @@ import kg.gruzovoz.models.Order;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ActiveFragment extends Fragment implements HistoryContract.View {
+public class ActiveFragment extends Fragment implements HistoryContract.View{
 
     private HistoryContract.Presenter presenter;
 
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
+
+    private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -46,6 +50,10 @@ public class ActiveFragment extends Fragment implements HistoryContract.View {
         initRecyclerViewWithAdapter(root);
 
         return root;
+    }
+
+    public void setOnOrderFinishedListener(BaseContract.OnOrderFinishedListener onOrderFinishedListener) {
+        this.onOrderFinishedListener = onOrderFinishedListener;
     }
 
     private void initRecyclerViewWithAdapter(View root) {
@@ -90,6 +98,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View {
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
             presenter.populateOrders(false);
 
+            onOrderFinishedListener.onOrderFinished();
         }
     }
 

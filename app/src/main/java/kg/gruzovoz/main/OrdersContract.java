@@ -6,11 +6,12 @@ import kg.gruzovoz.models.Order;
 public interface OrdersContract {
 
     interface View extends BaseContract.BaseView{
-        void logOut();
+        void hideProgressBar();
         void showDetailScreen(Order order);
         void stopRefreshingOrders();
         void showError();
         void showConfirmLogoutDialog();
+        void showEmptyView();
 
     }
 

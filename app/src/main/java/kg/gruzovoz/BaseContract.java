@@ -15,7 +15,16 @@ public interface BaseContract {
         //void openDetailScreen(Order order);
 
     }
+
     interface OnItemClickListener {
         void onItemClick(Order order);
+    }
+
+    interface OnOrderFinishedListener {
+        void onOrderFinished();
+    }
+
+    interface OnBaseOrderFinishedListener {
+        void onBaseOrderFinished();
     }
 }
