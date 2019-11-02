@@ -131,6 +131,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void showError() {
         Toast.makeText(getContext(), getString(R.string.orders_unavailable), Toast.LENGTH_LONG).show();
         swipeRefreshLayout.setRefreshing(false);
+        adapter.setValues(null);
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);

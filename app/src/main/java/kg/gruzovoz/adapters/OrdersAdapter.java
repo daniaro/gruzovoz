@@ -27,8 +27,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     public void setValues(List<Order> values) {
         ordersList.clear();
-        ordersList.addAll(values);
+        if (values != null) {
+            ordersList.addAll(values);
+        }
         this.notifyDataSetChanged();
+    }
+
+    public List<Order> getOrdersList() {
+        return ordersList;
     }
 
     @NonNull
