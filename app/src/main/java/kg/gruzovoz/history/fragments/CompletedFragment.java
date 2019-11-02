@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
@@ -32,6 +33,8 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
     private HistoryContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayout emptyView;
+    private ProgressBar progressBar;
 
     public CompletedFragment() {
         // Required empty public constructor
@@ -43,6 +46,8 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_completed, container, false);
 
+        progressBar = root.findViewById(R.id.progressBar_historyCompleted);
+        emptyView = root.findViewById(R.id.emptyView_historyCompleted);
         initRecyclerViewWithAdapter(root);
 
 
@@ -62,6 +67,9 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
                 openDetailScreen(order);
             }
         });
+
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         presenter = new HistoryPresenter(this);
@@ -69,7 +77,9 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
 
     @Override
     public void showError() {
-
+        Toast.makeText(getContext(), getString(R.string.completed_orders_unavailable), Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -82,6 +92,20 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("order", order);
         startActivityForResult(intent, 102);
+    }
+
+    @Override
+    public void showEmptyView() {
+        progressBar.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override

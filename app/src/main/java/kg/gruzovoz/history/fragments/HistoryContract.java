@@ -1,7 +1,5 @@
 package kg.gruzovoz.history.fragments;
 
-import android.view.View;
-
 import java.util.List;
 
 import kg.gruzovoz.BaseContract;
@@ -13,6 +11,8 @@ public interface HistoryContract {
         void showError();
         void setOrders(List<Order> orderList);
         void openDetailScreen(Order order);
+        void showEmptyView();
+        void hideProgressBar();
 
     }
 

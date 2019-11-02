@@ -12,8 +12,6 @@ public interface BaseContract {
 
     interface BasePresenter {
         void populateOrders();
-        //void openDetailScreen(Order order);
-
     }
 
     interface OnItemClickListener {

@@ -7,6 +7,8 @@ public interface DetailContract {
         void showAcceptAlertDialog();
         void startCallActivity();
 
+        void showError();
+        void showConfirmFinishAlertDialog();
     }
 
     interface DetailPresenter {

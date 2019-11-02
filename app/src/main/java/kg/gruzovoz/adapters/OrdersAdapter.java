@@ -1,6 +1,5 @@
 package kg.gruzovoz.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +54,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView paymentTextView;
         TextView carTypeTextView;
         TextView addressTextView;
+        TextView dateOfCreated;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +62,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             paymentTextView = itemView.findViewById(R.id.paymentTextView);
             carTypeTextView = itemView.findViewById(R.id.carTypeTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
+            dateOfCreated = itemView.findViewById(R.id.date_of_created);
         }
 
         public void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
@@ -72,23 +74,37 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             });
             switch (order.getLeadTime()) {
                 case 1:
-                    dateTextView.setText("Сегодня");
+                    dateTextView.setText("СЕГОДНЯ");
                     break;
                 case 2:
-                    dateTextView.setText("Завтра");
+                    dateTextView.setText("ЗАВТРА");
                     break;
                 case 3:
-                    dateTextView.setText("Срочно");
+                    dateTextView.setText("СРОЧНО");
                     break;
             }
+
             String commission = order.getCommission();
-            if (commission.charAt(commission.length() - 1) == '%') {
-                paymentTextView.setText(String.format("%s сом - %s", String.valueOf((int) order.getPrice()), commission));
+            double res = order.getPrice()*Integer.parseInt(commission)/100;
+            String strRes;
+
+            if(res == (long) res) {
+                strRes =  String.format("%d", (long) res);
             } else {
-                paymentTextView.setText(String.format("%s сом - %s%%", String.valueOf((int) order.getPrice()), commission));
+                strRes = String.format("%s", res);
+            }
+
+            if (commission.charAt(commission.length() - 1) == '%') {
+                paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
+            } else {
+                paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
             }
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getFinishAddress());
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+            String date = formatter.format(order.getDateOfCreated());
+            dateOfCreated.setText(date);
         }
     }
 }

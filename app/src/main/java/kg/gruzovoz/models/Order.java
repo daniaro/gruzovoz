@@ -1,12 +1,8 @@
 package kg.gruzovoz.models;
 
-import android.content.res.Resources;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-
-import kg.gruzovoz.R;
 
 public class Order implements Serializable {
 
@@ -23,6 +19,8 @@ public class Order implements Serializable {
     private String commission;
     @SerializedName("lead_time")
     private int leadTime;
+    @SerializedName("date_of_created")
+    private String dateOfCreated;
     @SerializedName("type_of_transportation")
     private String cargoType;
     @SerializedName("phone_number")
@@ -34,7 +32,7 @@ public class Order implements Serializable {
     @SerializedName("done")
     private boolean isDone;
 
-    public Order(long id, String carType, String startAddress, String finishAddress, double price, String commission, int leadTime, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
+    public Order(long id, String carType, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
         this.carType = carType;
         this.startAddress = startAddress;
@@ -42,6 +40,7 @@ public class Order implements Serializable {
         this.price = price;
         this.commission = commission;
         this.leadTime = leadTime;
+        this.dateOfCreated = dateOfCreated;
         this.cargoType = cargoType;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
@@ -79,6 +78,10 @@ public class Order implements Serializable {
 
     public String getCargoType() {
         return cargoType;
+    }
+
+    public String getDateOfCreated() {
+        return dateOfCreated;
     }
 
     public String getPhoneNumber() {

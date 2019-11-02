@@ -1,6 +1,5 @@
 package kg.gruzovoz.login;
 
-import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.network.CargoService;
@@ -11,15 +10,12 @@ import retrofit2.Response;
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
-    OrdersPresenter ordersPresenter;
     LoginContract.LoginView loginView;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-
 
     public LoginPresenter(LoginContract.LoginView loginView){
         this.loginView = loginView;
     }
-
 
     @Override
     public void login(String phoneNumber, String password) {

@@ -1,5 +1,6 @@
 package kg.gruzovoz.history.fragments;
 
+import java.util.Collections;
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
@@ -26,15 +27,18 @@ public class HistoryPresenter implements HistoryContract.Presenter {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.body() != null && response.body().size() > 0) {
+                    Collections.reverse(response.body());
                     view.setOrders(response.body());
+                    view.hideProgressBar();
                 } else {
+                    view.showEmptyView();
                     view.setOrders(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Order>> call, Throwable t) {
-
+                view.showError();
             }
         });
     }

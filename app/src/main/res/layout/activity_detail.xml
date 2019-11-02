@@ -174,15 +174,17 @@
 
         <TextView
             android:id="@+id/commentsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="301dp"
+            android:layout_height="143dp"
             android:layout_marginStart="32dp"
-            tools:text="Хочу чтобы все четко доставили"
             android:textColor="@color/blackTextColor"
             android:textSize="@dimen/main_address_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
             app:layout_constraintTop_toTopOf="@+id/imageView6"
-            tools:ignore="MissingConstraints">
+            tools:ignore="MissingConstraints"
+            tools:text="Хочу чтобы все четко доставили">
 
         </TextView>
 

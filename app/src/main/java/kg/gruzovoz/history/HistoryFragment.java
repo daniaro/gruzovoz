@@ -14,9 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-
-import java.util.List;
-
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
@@ -35,6 +32,9 @@ public class HistoryFragment extends Fragment {
     private FixedTabsPagerAdapter adapter;
     private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
 
+    public HistoryFragment() {
+        // required empty public constructor
+    }
     public HistoryFragment(BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener) {
         this.onBaseOrderFinishedListener = onBaseOrderFinishedListener;
     }
