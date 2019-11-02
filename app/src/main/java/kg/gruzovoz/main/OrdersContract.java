@@ -1,6 +1,7 @@
 package kg.gruzovoz.main;
 
 import kg.gruzovoz.BaseContract;
+import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.models.Order;
 
 public interface OrdersContract {
@@ -15,6 +16,6 @@ public interface OrdersContract {
 
     }
 
-    interface Presenter extends BaseContract.BasePresenter{
+    interface Presenter extends BaseContract.BasePresenter {
     }
 }

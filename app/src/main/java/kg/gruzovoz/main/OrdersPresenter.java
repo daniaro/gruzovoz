@@ -3,6 +3,7 @@ package kg.gruzovoz.main;
 import java.util.Collections;
 import java.util.List;
 import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
