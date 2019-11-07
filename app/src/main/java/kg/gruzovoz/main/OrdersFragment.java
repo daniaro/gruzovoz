@@ -1,6 +1,5 @@
 package kg.gruzovoz.main;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,9 +36,6 @@ import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class OrdersFragment extends Fragment implements OrdersContract.View {
 
     private OrdersContract.Presenter presenter;
@@ -153,11 +149,15 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                 Intent intent = new Intent(getContext(), BaseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+
+
             }
+
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
     @Override
     public void showEmptyView() {
@@ -182,6 +182,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 showConfirmLogoutDialog();
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
                 return true;
         }
         return false;

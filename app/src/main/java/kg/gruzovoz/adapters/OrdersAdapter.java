@@ -1,5 +1,7 @@
 package kg.gruzovoz.adapters;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
@@ -71,6 +76,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             dateOfCreated = itemView.findViewById(R.id.date_of_created);
         }
 
+        @SuppressLint("LongLogTag")
         public void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +96,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     break;
             }
 
+
             String commission = order.getCommission();
             double res = order.getPrice()*Integer.parseInt(commission)/100;
             String strRes;
@@ -108,9 +115,50 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getFinishAddress());
 
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-            String date = formatter.format(order.getDateOfCreated());
-            dateOfCreated.setText(date);
+            Date date = new Date();
+            Log.i("todays time: ", String.valueOf(date));
+
+
+            Date date2 = new Date();
+            TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
+            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            sdf.setTimeZone(timeZone);
+            String dateStr = order.getDateOfCreated();
+            try {
+                date2 = sdf.parse(dateStr);
+                Log.i("formated time from api: ", String.valueOf(date2));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Log.i("time from api: ", dateStr);
+
+            long diff = date.getTime() - date2.getTime();
+            long seconds = diff / 1000;
+            long minutes = seconds / 60;
+            long hours = minutes / 60;
+            long days = hours / 24;
+
+            if (days > 0){
+                dateOfCreated.setText("Добавленно "+days + " дн. назад");
+            }
+            else if (days>5){
+                dateOfCreated.setText("Добавленно "+date2);
+            }else if (hours>0){
+                dateOfCreated.setText("Добавленно "+hours+ " ч. назад");
+            }else if (minutes>0){
+                dateOfCreated.setText("Добавленно "+ minutes + " мин. назад");
+            }else if (seconds>0){
+                dateOfCreated.setText("Добавленно "+seconds + " сек. назад");
+            }
+
         }
+
+
+
+//            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
+//            String date = formatter.format(order.getDateOfCreated());
+//            dateOfCreated.setText(date);
+
     }
 }

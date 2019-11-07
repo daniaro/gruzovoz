@@ -14,8 +14,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="18dp"
         android:fontFamily="@font/roboto"
+        android:textStyle="bold"
         android:textColor="@color/blackTextColor"
-        android:textSize="@dimen/main_payment_text_size"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="СЕГОДНЯ" />
@@ -61,10 +62,10 @@
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/roboto"
-        android:textSize="@dimen/main_address_text_size"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addressTextView"
         tools:ignore="MissingConstraints"
-        tools:text="Заказ был добавлен 20.10 22:10" />
+        tools:text="Добавлено 5 минут назад" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
