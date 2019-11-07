@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
 
@@ -52,9 +54,26 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
 
         progressBar = root.findViewById(R.id.progressBar_historyActive);
         emptyView = root.findViewById(R.id.emptyView_historyActive);
+        initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
 
         return root;
+    }
+
+    private void initSwipeRefreshLayout(View root) {
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout_historyActive);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.populateOrders(false);
+            }
+        });
+    }
+
+    @Override
+    public void stopRefreshingOrders() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void setOnOrderFinishedListener(BaseContract.OnOrderFinishedListener onOrderFinishedListener) {
@@ -85,6 +104,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     public void showError() {
         Toast.makeText(getContext(), getString(R.string.active_orders_unavailable), Toast.LENGTH_LONG).show();
         progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
         emptyView.setVisibility(View.VISIBLE);
 
     }

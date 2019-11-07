@@ -33,6 +33,6 @@ public interface CargoService {
     @PUT("order/done/{id}/")
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
 
-//    @GET("http://cargo-gruz.herokuapp.com/order/type_of_transport/")
-//    Call<List<Order>> getOrdersForType(@Header("Authorization") String authToken);
+    @GET("/order/type_of_transport/")
+    Call<List<Order>> getOrdersForType(@Header("Authorization") String authToken);
 }

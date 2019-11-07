@@ -9,6 +9,8 @@ public class Order implements Serializable {
     private long id;
     @SerializedName("type_of_car")
     private String carType;
+    @SerializedName("type_of_transport")
+    private int typeOfTransport;
     @SerializedName("start_address")
     private String startAddress;
     @SerializedName("finish_address")
@@ -32,9 +34,10 @@ public class Order implements Serializable {
     @SerializedName("done")
     private boolean isDone;
 
-    public Order(long id, String carType, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
+    public Order(long id, String carType, int typeOfTransport, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
         this.carType = carType;
+        this.typeOfTransport = typeOfTransport;
         this.startAddress = startAddress;
         this.finishAddress = finishAddress;
         this.price = price;
@@ -48,12 +51,20 @@ public class Order implements Serializable {
         this.isDone = done;
     }
 
+    public Order() {
+
+    }
+
     public long getId() {
         return id;
     }
 
     public String getCarType() {
         return carType;
+    }
+
+    public int getTypeOfTransport() {
+        return typeOfTransport;
     }
 
     public String getStartAddress() {

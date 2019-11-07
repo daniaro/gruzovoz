@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -146,9 +147,21 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                 SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.remove("authToken").apply();
-                Intent intent = new Intent(getContext(), BaseActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                new Handler().post(new Runnable() {
+
+                    @Override
+                    public void run()
+                    {
+                        Intent intent = getActivity().getIntent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        getActivity().overridePendingTransition(0, 0);
+                        getActivity().finish();
+
+                        getActivity().overridePendingTransition(0, 0);
+                        startActivity(intent);
+                    }
+                });
 
 
             }

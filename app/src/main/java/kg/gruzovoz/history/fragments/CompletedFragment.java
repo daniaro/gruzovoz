@@ -101,11 +101,17 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         recyclerView.setVisibility(View.GONE);
     }
 
+
     @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void stopRefreshingOrders() {
+
     }
 
     @Override

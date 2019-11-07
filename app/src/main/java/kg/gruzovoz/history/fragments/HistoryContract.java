@@ -13,6 +13,7 @@ public interface HistoryContract {
         void openDetailScreen(Order order);
         void showEmptyView();
         void hideProgressBar();
+        void stopRefreshingOrders();
 
     }
 

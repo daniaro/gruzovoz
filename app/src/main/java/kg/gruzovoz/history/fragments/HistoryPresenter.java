@@ -34,6 +34,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                     view.showEmptyView();
                     view.setOrders(response.body());
                 }
+                view.stopRefreshingOrders();
             }
 
             @Override

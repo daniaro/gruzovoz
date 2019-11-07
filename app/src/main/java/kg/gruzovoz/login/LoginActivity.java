@@ -91,8 +91,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             @Override
             public void onClick(View view) {
                 presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
+                loginButton.setEnabled(false);
+
             }
         });
+
 
     }
 
