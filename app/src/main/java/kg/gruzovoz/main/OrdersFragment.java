@@ -195,7 +195,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 showConfirmLogoutDialog();
-                //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
                 return true;
         }
         return false;

@@ -98,10 +98,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
 
             String commission = order.getCommission();
-            double res = order.getPrice()*Integer.parseInt(commission)/100;
+            double res = order.getPrice() * Integer.parseInt(commission) / 100;
             String strRes;
 
-            if(res == (long) res) {
+            if (res == (long) res) {
                 strRes =  String.format("%d", (long) res);
             } else {
                 strRes = String.format("%s", res);
@@ -113,12 +113,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
             }
             carTypeTextView.setText(order.getCarType());
-            addressTextView.setText(order.getFinishAddress());
+            addressTextView.setText(order.getStartAddress());
 
             Date date = new Date();
-            Log.i("todays time: ", String.valueOf(date));
-
-
             Date date2 = new Date();
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
             SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -126,12 +123,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             String dateStr = order.getDateOfCreated();
             try {
                 date2 = sdf.parse(dateStr);
-                Log.i("formated time from api: ", String.valueOf(date2));
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.i("time from api: ", dateStr);
 
             long diff = date.getTime() - date2.getTime();
             long seconds = diff / 1000;
@@ -140,25 +134,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             long days = hours / 24;
 
             if (days > 0){
-                dateOfCreated.setText("Добавленно "+days + " дн. назад");
+                dateOfCreated.setText("Добавлено " + days + " дн. назад");
+            } else if (days > 5) {
+                dateOfCreated.setText("Добавлено " + date2);
+            } else if (hours > 0) {
+                dateOfCreated.setText("Добавлено " + hours + " ч. назад");
+            } else if (minutes > 0) {
+                dateOfCreated.setText("Добавлено " + minutes + " мин. назад");
+            } else if (seconds > 0) {
+                dateOfCreated.setText("Добавлено " + seconds + " сек. назад");
             }
-            else if (days>5){
-                dateOfCreated.setText("Добавленно "+date2);
-            }else if (hours>0){
-                dateOfCreated.setText("Добавленно "+hours+ " ч. назад");
-            }else if (minutes>0){
-                dateOfCreated.setText("Добавленно "+ minutes + " мин. назад");
-            }else if (seconds>0){
-                dateOfCreated.setText("Добавленно "+seconds + " сек. назад");
-            }
-
         }
-
-
-
-//            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
-//            String date = formatter.format(order.getDateOfCreated());
-//            dateOfCreated.setText(date);
-
     }
 }

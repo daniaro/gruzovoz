@@ -57,6 +57,7 @@
         tools:text="ул. Байтик Баатыра 70, 2 этаж, квартира 154" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/date_of_created"
         android:layout_width="wrap_content"
         android:layout_height="20dp"

@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (passwordEditText.getText().length() > 0) {
                     passwordInputLayout.setError(null);
+                    loginButton.setEnabled(true);
                 }
             }
 
@@ -92,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             public void onClick(View view) {
                 presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
                 loginButton.setEnabled(false);
-
             }
         });
 
