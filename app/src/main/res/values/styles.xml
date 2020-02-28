@@ -19,6 +19,11 @@
 
     <style name="ToolbarTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
+    </style>
+    <style name="TabLayoutTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_slab</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

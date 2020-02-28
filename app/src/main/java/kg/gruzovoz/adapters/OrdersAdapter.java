@@ -65,7 +65,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView paymentTextView;
         TextView carTypeTextView;
         TextView addressTextView;
-        TextView dateOfCreated;
+        //TextView dateOfCreated;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,7 +73,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             paymentTextView = itemView.findViewById(R.id.paymentTextView);
             carTypeTextView = itemView.findViewById(R.id.carTypeTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
-            dateOfCreated = itemView.findViewById(R.id.date_of_created);
+            //dateOfCreated = itemView.findViewById(R.id.date_of_created);
         }
 
         @SuppressLint("LongLogTag")
@@ -84,17 +84,19 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                     onItemClickListener.onItemClick(order);
                 }
             });
-            switch (order.getLeadTime()) {
-                case 1:
-                    dateTextView.setText("СЕГОДНЯ");
-                    break;
-                case 2:
-                    dateTextView.setText("ЗАВТРА");
-                    break;
-                case 3:
-                    dateTextView.setText("СРОЧНО");
-                    break;
-            }
+
+            //TODO: get data from server
+//            switch (order.getLeadTime()) {
+//                case 1:
+//                    dateTextView.setText("СЕГОДНЯ");
+//                    break;
+//                case 2:
+//                    dateTextView.setText("ЗАВТРА");
+//                    break;
+//                case 3:
+//                    dateTextView.setText("СРОЧНО");
+//                    break;
+//            }
 
 
             String commission = order.getCommission();
@@ -133,17 +135,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             long hours = minutes / 60;
             long days = hours / 24;
 
-            if (days > 0){
-                dateOfCreated.setText("Добавлено " + days + " дн. назад");
-            } else if (days > 5) {
-                dateOfCreated.setText("Добавлено " + date2);
-            } else if (hours > 0) {
-                dateOfCreated.setText("Добавлено " + hours + " ч. назад");
-            } else if (minutes > 0) {
-                dateOfCreated.setText("Добавлено " + minutes + " мин. назад");
-            } else if (seconds > 0) {
-                dateOfCreated.setText("Добавлено " + seconds + " сек. назад");
-            }
+//            if (days > 0){
+//                dateOfCreated.setText("Добавлено " + days + " дн. назад");
+//            } else if (days > 5) {
+//                dateOfCreated.setText("Добавлено " + date2);
+//            } else if (hours > 0) {
+//                dateOfCreated.setText("Добавлено " + hours + " ч. назад");
+//            } else if (minutes > 0) {
+//                dateOfCreated.setText("Добавлено " + minutes + " мин. назад");
+//            } else if (seconds > 0) {
+//                dateOfCreated.setText("Добавлено " + seconds + " сек. назад");
+//            }
         }
     }
 }

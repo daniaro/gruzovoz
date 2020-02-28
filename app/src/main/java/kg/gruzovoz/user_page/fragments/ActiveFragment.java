@@ -1,4 +1,4 @@
-package kg.gruzovoz.history.fragments;
+package kg.gruzovoz.user_page.fragments;
 
 
 import android.app.Activity;
@@ -26,12 +26,10 @@ import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ActiveFragment extends Fragment implements HistoryContract.View{
 
-    private HistoryContract.Presenter presenter;
+public class ActiveFragment extends Fragment implements UserPageContract.View{
+
+    private UserPageContract.Presenter presenter;
 
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
@@ -63,12 +61,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout_historyActive);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.populateOrders(false);
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders(false));
     }
 
     @Override
@@ -85,16 +78,12 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
-            @Override
-            public void onItemClick(Order order) {
-                openDetailScreen(order);
-            }
-        });
+
+        adapter = new OrdersAdapter(order -> openDetailScreen(order));
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        presenter = new HistoryPresenter(this);
+        presenter = new UserPagePresenter(this);
         presenter.populateOrders(false);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));

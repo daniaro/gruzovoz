@@ -1,4 +1,4 @@
-package kg.gruzovoz.history.fragments;
+package kg.gruzovoz.user_page.fragments;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,12 +11,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HistoryPresenter implements HistoryContract.Presenter {
+public class UserPagePresenter implements UserPageContract.Presenter {
 
-    HistoryContract.View view;
+    UserPageContract.View view;
     CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
-    public HistoryPresenter(HistoryContract.View view) {
+    public UserPagePresenter(UserPageContract.View view) {
         this.view = view;
     }
 

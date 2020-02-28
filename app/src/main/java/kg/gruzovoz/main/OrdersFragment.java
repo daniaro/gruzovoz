@@ -68,12 +68,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.populateOrders();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders());
     }
 
     private void initRecyclerViewWithAdapter(View root) {
@@ -170,7 +165,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
     @Override
     public void showEmptyView() {

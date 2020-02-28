@@ -1,4 +1,4 @@
-package kg.gruzovoz.history.fragments;
+package kg.gruzovoz.user_page.fragments;
 
 
 import android.app.Activity;
@@ -25,12 +25,9 @@ import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CompletedFragment extends Fragment implements HistoryContract.View {
+public class CompletedFragment extends Fragment implements UserPageContract.View {
 
-    private HistoryContract.Presenter presenter;
+    private UserPageContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
@@ -72,7 +69,7 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        presenter = new HistoryPresenter(this);
+        presenter = new UserPagePresenter(this);
     }
 
     @Override
