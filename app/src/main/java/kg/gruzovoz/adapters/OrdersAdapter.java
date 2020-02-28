@@ -109,11 +109,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 strRes = String.format("%s", res);
             }
 
-            if (commission.charAt(commission.length() - 1) == '%') {
-                paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-            } else {
-                paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-            }
+//            if (commission.charAt(commission.length() - 1) == '%') {
+//                paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
+//            } else {
+//                paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
+//            }
+
+            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), commission));
+
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getStartAddress());
 

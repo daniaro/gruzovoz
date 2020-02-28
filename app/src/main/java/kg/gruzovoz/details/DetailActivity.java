@@ -77,33 +77,15 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     }
 
     private void initOnClickListeners() {
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showConfirmFinishAlertDialog();
-            }
-        });
+        finishButton.setOnClickListener(view -> showConfirmFinishAlertDialog());
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAcceptAlertDialog();
-            }
-        });
+        acceptButton.setOnClickListener(view -> showAcceptAlertDialog());
 
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makePhoneCall();
-            }
-        });
+        callButton.setOnClickListener(view -> makePhoneCall());
 
-        closeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-                finish();
-            }
+        closeIcon.setOnClickListener(view -> {
+            onBackPressed();
+            finish();
         });
     }
 
@@ -155,11 +137,14 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             strRes = String.format("%s", res);
         }
 
-        if (commission.charAt(commission.length() - 1) == '%') {
-            paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-        } else {
-            paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-        }
+//        if (commission.charAt(commission.length() - 1) == '%') {
+//            paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
+//        } else {
+//            paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
+//        }
+
+            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), commission));
+
 
 
         cargoTypeTextView.setText(order.getCargoType());

@@ -42,7 +42,8 @@
                 app:title="@string/title_detail"
                 app:titleTextAppearance="@style/ToolbarTheme"
                 app:titleTextColor="@color/colorAccent"
-                tools:layout_editor_absoluteY="0dp">
+                tools:layout_editor_absoluteY="0dp"
+                tools:ignore="MissingConstraints">
 
             </androidx.appcompat.widget.Toolbar>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            tools:text="5000 сом + 10%"
+            tools:text="5000 сом + 200"
             android:textColor="@color/blackTextColor"
             android:textSize="@dimen/main_address_text_size"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
