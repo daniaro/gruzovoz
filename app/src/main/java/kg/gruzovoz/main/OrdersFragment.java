@@ -79,11 +79,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
-                @Override
-                public void onItemClick(Order order) {
-                    showDetailScreen(order);
-                }
+            adapter = new OrdersAdapter(order -> {
+                showDetailScreen(order);
+                //TODO:timer to onclick
             });
             presenter = new OrdersPresenter(this);
             presenter.populateOrders();

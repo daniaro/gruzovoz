@@ -16,15 +16,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
+import kg.gruzovoz.main.OrdersFragment;
 import kg.gruzovoz.models.Order;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
     private List<Order> ordersList;
     private BaseContract.OnItemClickListener clickListener;
+    OrdersFragment ordersFragment = new OrdersFragment();
+    BaseActivity baseActivity = new BaseActivity();
 
     public OrdersAdapter(BaseContract.OnItemClickListener clickListener) {
         ordersList = new ArrayList<>();
@@ -82,6 +88,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 @Override
                 public void onClick(View view) {
                     onItemClickListener.onItemClick(order);
+                    itemView.setEnabled(false);
+
+                    Timer buttonTimer = new Timer();
+                    buttonTimer.schedule(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                         baseActivity.runOnUiThread(() -> itemView.setEnabled(true));
+                        }
+                    }, 3000);
                 }
             });
 
@@ -115,7 +131,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 //                paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
 //            }
 
-            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), commission));
+            paymentTextView.setText(String.format("%s  ||  %s", String.valueOf((int) order.getPrice()), strRes));
 
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getStartAddress());

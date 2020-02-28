@@ -143,7 +143,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 //            paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
 //        }
 
-            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), commission));
+            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), strRes));
 
 
 
