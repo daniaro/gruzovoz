@@ -15,30 +15,37 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             >
+
             <ImageView
                 android:id="@+id/close_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_margin="20dp"
+                android:layout_marginStart="21dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.516"
                 app:srcCompat="@drawable/ic_close">
 
             </ImageView>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:fontFamily="serif"
+                android:layout_width="144dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toEndOf="@+id/close_icon"
                 app:title="@string/title_detail"
-                app:titleTextColor="@color/colorAccent">
+                app:titleTextAppearance="@style/ToolbarTheme"
+                app:titleTextColor="@color/colorAccent"
+                tools:layout_editor_absoluteY="0dp">
 
             </androidx.appcompat.widget.Toolbar>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
