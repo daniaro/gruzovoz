@@ -68,10 +68,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     class OrderViewHolder extends RecyclerView.ViewHolder {
 
         TextView dateTextView;
+        TextView dateTextView_month;
         TextView paymentTextView;
         TextView carTypeTextView;
         TextView addressTextView;
-        //TextView dateOfCreated;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,29 +79,26 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             paymentTextView = itemView.findViewById(R.id.paymentTextView);
             carTypeTextView = itemView.findViewById(R.id.carTypeTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
-            //dateOfCreated = itemView.findViewById(R.id.date_of_created);
+            dateTextView_month = itemView.findViewById(R.id.dateTextView_month);
         }
 
         @SuppressLint("LongLogTag")
         public void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClickListener.onItemClick(order);
-                    itemView.setEnabled(false);
+            itemView.setOnClickListener(view -> {
+                onItemClickListener.onItemClick(order);
+                itemView.setEnabled(false);
 
-                    Timer buttonTimer = new Timer();
-                    buttonTimer.schedule(new TimerTask() {
+                Timer buttonTimer = new Timer();
+                buttonTimer.schedule(new TimerTask() {
 
-                        @Override
-                        public void run() {
-                         baseActivity.runOnUiThread(() -> itemView.setEnabled(true));
-                        }
-                    }, 3000);
-                }
+                    @Override
+                    public void run() {
+                     baseActivity.runOnUiThread(() -> itemView.setEnabled(true));
+                    }
+                }, 3000);
             });
 
-            //TODO: get data from server
+            //TODO: get date from server
 //            switch (order.getLeadTime()) {
 //                case 1:
 //                    dateTextView.setText("СЕГОДНЯ");

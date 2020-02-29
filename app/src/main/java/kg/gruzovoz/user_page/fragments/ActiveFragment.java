@@ -86,7 +86,6 @@ public class ActiveFragment extends Fragment implements UserPageContract.View{
         presenter = new UserPagePresenter(this);
         presenter.populateOrders(false);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
     @Override

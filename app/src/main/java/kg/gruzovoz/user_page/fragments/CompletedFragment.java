@@ -58,17 +58,11 @@ public class CompletedFragment extends Fragment implements UserPageContract.View
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new OrdersAdapter(new BaseContract.OnItemClickListener() {
-            @Override
-            public void onItemClick(Order order) {
-                openDetailScreen(order);
-            }
-        });
+        adapter = new OrdersAdapter(order -> openDetailScreen(order));
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         presenter = new UserPagePresenter(this);
     }
 

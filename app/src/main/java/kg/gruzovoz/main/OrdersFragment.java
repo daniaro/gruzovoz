@@ -79,15 +79,12 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            adapter = new OrdersAdapter(order -> {
-                showDetailScreen(order);
-                //TODO:timer to onclick
-            });
+            adapter = new OrdersAdapter(order -> showDetailScreen(order));
             presenter = new OrdersPresenter(this);
             presenter.populateOrders();
         }
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
     @Override
@@ -133,31 +130,22 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         builder.setTitle(getString(R.string.logout_title));
         builder.setMessage(getString(R.string.logout_message));
         builder.setNegativeButton(R.string.cancel_order, null);
-        builder.setPositiveButton(getString(R.string.action_logout), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                BaseActivity.authToken = null;
-                SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.remove("authToken").apply();
-                new Handler().post(new Runnable() {
+        builder.setPositiveButton(getString(R.string.action_logout), (dialog, which) -> {
+            BaseActivity.authToken = null;
+            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("authToken").apply();
+            new Handler().post(() -> {
+                Intent intent = getActivity().getIntent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                getActivity().overridePendingTransition(0, 0);
+                getActivity().finish();
 
-                    @Override
-                    public void run()
-                    {
-                        Intent intent = getActivity().getIntent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        getActivity().overridePendingTransition(0, 0);
-                        getActivity().finish();
+                getActivity().overridePendingTransition(0, 0);
+                startActivity(intent);
+            });
 
-                        getActivity().overridePendingTransition(0, 0);
-                        startActivity(intent);
-                    }
-                });
-
-
-            }
 
         });
         AlertDialog dialog = builder.create();

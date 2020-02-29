@@ -87,12 +87,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
-                loginButton.setEnabled(false);
-            }
+        loginButton.setOnClickListener(view -> {
+            presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
+            loginButton.setEnabled(false);
         });
 
 
