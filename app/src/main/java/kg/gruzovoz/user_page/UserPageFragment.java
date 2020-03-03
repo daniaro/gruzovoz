@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -51,8 +52,8 @@ public class UserPageFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
-        Toolbar toolbar = root.findViewById(R.id.user_page_app_bar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        Toolbar toolbar = root.findViewById(R.id.user_page_app_bar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         tabLayout = root.findViewById(R.id.tabs);
         viewPager = root.findViewById(R.id.viewPager);
@@ -71,6 +72,12 @@ public class UserPageFragment extends Fragment {
 
         tabLayout.setupWithViewPager(viewPager);
         initTabLayoutSelection();
+
+        LinearLayout logutLL = root.findViewById(R.id.logout);
+        logutLL.setOnClickListener(e ->{
+            showConfirmLogoutDialog();
+
+        });
 
         return root;
     }
@@ -123,21 +130,22 @@ public class UserPageFragment extends Fragment {
         dialog.show();
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        inflater.inflate(R.menu.menu_main, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_logout:
+//                showConfirmLogoutDialog();
+//                return true;
+//        }
+//        return false;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                showConfirmLogoutDialog();
-                return true;
-        }
-        return false;
-    }
 }
 
 

@@ -34,7 +34,7 @@
             </ImageView>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/app_bar"
+                android:id="@+id/detail_app_bar"
                 android:layout_width="144dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="20dp"

@@ -17,17 +17,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/user_page_app_bar"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="?attr/actionBarSize"
             android:addStatesFromChildren="false"
             app:title="@string/title_user_page"
-            app:menu="@menu/menu_main"
             app:titleTextColor="@color/colorAccent"
             app:titleTextAppearance="@style/ToolbarTheme">
 
         </androidx.appcompat.widget.Toolbar>
+            <LinearLayout
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                >
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:srcCompat="@drawable/ic_log_out"
+
+                    android:layout_marginTop="20dp">
+                </ImageView>
+
+            </LinearLayout>
+        </LinearLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -119,7 +141,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:background="@color/backgroundColorPrimary"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </androidx.viewpager.widget.ViewPager>
 

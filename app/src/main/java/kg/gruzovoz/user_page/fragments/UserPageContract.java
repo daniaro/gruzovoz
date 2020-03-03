@@ -15,6 +15,7 @@ public interface UserPageContract {
         void hideProgressBar();
         void stopRefreshingOrders();
 
+
     }
 
     interface Presenter {

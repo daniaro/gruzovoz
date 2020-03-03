@@ -18,7 +18,6 @@
             android:layout_height="?attr/actionBarSize"
             android:addStatesFromChildren="false"
             app:title="@string/title_chat"
-            app:menu="@menu/menu_main"
             app:titleTextColor="@color/colorAccent"
             app:titleTextAppearance="@style/ToolbarTheme">
 
