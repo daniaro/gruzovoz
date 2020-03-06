@@ -136,20 +136,83 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             Date date = new Date();
             Date date2 = new Date();
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+//            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+
             sdf.setTimeZone(timeZone);
             String dateStr = order.getDateOfCreated();
+            Log.e("date from server ",dateStr);
             try {
-                date2 = sdf.parse(dateStr);
+                date = sdf.parse(dateStr);
+                assert date != null;
+                String formatedDate =  sdf.format(date);
+                Log.e("parsed date ", String.valueOf(date));
+                Log.e("formated date ", formatedDate);
+
+
+                String completedMonth = formatedDate.substring(5,7);
+                String completedDate = formatedDate.substring(8);
+                Log.e("completedMonth ", completedMonth);
+
+                dateTextView.setText(completedDate);
+
+
+                switch (completedMonth){
+                    case "01":
+                        dateTextView_month.setText("Янв");
+                        break;
+                    case "02":
+                        dateTextView_month.setText("Фев.");
+                        break;
+                    case "03":
+                        dateTextView_month.setText("Мар.");
+                        break;
+                    case "04":
+                        dateTextView_month.setText("Апр.");
+                        break;
+                    case "05":
+                        dateTextView_month.setText("Май");
+                        break;
+                    case "06":
+                        dateTextView_month.setText("Июн.");
+                        break;
+                    case "07":
+                        dateTextView_month.setText("Июл.");
+                        break;
+                    case "08":
+                        dateTextView_month.setText("Авг.");
+                        break;
+                    case "09":
+                        dateTextView_month.setText("Сен.");
+                        break;
+                    case "10":
+                        dateTextView_month.setText("Окт.");
+                        break;
+                    case "11":
+                        dateTextView_month.setText("Ноя.");
+                        break;
+                    case "12":
+                        dateTextView_month.setText("Дек.");
+                        break;
+
+                }
+
             } catch (ParseException e) {
                 e.printStackTrace();
+                Log.e("ParseException catched", "ParseException");
+
             }
 
-            long diff = date.getTime() - date2.getTime();
-            long seconds = diff / 1000;
-            long minutes = seconds / 60;
-            long hours = minutes / 60;
-            long days = hours / 24;
+
+
+//            long diff = date.getTime() - date2.getTime();
+//            long seconds = diff / 1000;
+//            long minutes = seconds / 60;
+//            long hours = minutes / 60;
+//            long days = hours / 24;
+
+//            dateTextView_month.setText((CharSequence) sdf1);
+
 
 //            if (days > 0){
 //                dateOfCreated.setText("Добавлено " + days + " дн. назад");
@@ -163,5 +226,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 //                dateOfCreated.setText("Добавлено " + seconds + " сек. назад");
 //            }
         }
+
     }
 }
