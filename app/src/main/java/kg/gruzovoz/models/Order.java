@@ -11,6 +11,8 @@ public class Order implements Serializable {
     private String carType;
     @SerializedName("type_of_transport")
     private int typeOfTransport;
+    @SerializedName("type_of_cargo")
+    private String typeOfCargo;
     @SerializedName("start_address")
     private String startAddress;
     @SerializedName("finish_address")
@@ -23,8 +25,8 @@ public class Order implements Serializable {
     private int leadTime;
     @SerializedName("date_of_created")
     private String dateOfCreated;
-    @SerializedName("type_of_transportation")
-    private String cargoType;
+//    @SerializedName("type_of_transportation")
+//    private String cargoType;
     @SerializedName("phone_number")
     private String phoneNumber;
     @SerializedName("comments")
@@ -34,17 +36,18 @@ public class Order implements Serializable {
     @SerializedName("done")
     private boolean isDone;
 
-    public Order(long id, String carType, int typeOfTransport, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String cargoType, String phoneNumber, String comments, boolean active, boolean done) {
+    public Order(long id, String carType, int typeOfTransport,String typeOfCargo, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String phoneNumber, String comments, boolean active, boolean done) {
         this.id = id;
         this.carType = carType;
         this.typeOfTransport = typeOfTransport;
+        this.typeOfCargo = typeOfCargo;
         this.startAddress = startAddress;
         this.finishAddress = finishAddress;
         this.price = price;
         this.commission = commission;
         this.leadTime = leadTime;
         this.dateOfCreated = dateOfCreated;
-        this.cargoType = cargoType;
+//        this.cargoType = cargoType;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
         this.isActive = active;
@@ -87,9 +90,9 @@ public class Order implements Serializable {
         return leadTime;
     }
 
-    public String getCargoType() {
-        return cargoType;
-    }
+//    public String getCargoType() {
+//        return cargoType;
+//    }
 
     public String getDateOfCreated() {
         return dateOfCreated;
@@ -113,5 +116,9 @@ public class Order implements Serializable {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public String getTypeOfCargo() {
+        return typeOfCargo;
     }
 }

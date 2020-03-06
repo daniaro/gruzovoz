@@ -125,7 +125,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     public void setViewInfo() {
         carTypeTextView.setText(order.getCarType());
         initialAddressTextView.setText(order.getStartAddress());
-        finalAddressTextView.setText(order.getFinishAddress());
+        if (order.getFinishAddress() == null || order.getFinishAddress().isEmpty() || order.getFinishAddress().equals("")) {
+            finalAddressTextView.setText("Не указано");
+        }
+        else {
+            finalAddressTextView.setText(order.getFinishAddress());
+
+        }
         String commission = order.getCommission();
         // Here we check if the admin entered the commission's value with or without the percent sign
         double res = order.getPrice()*Integer.parseInt(commission)/100;
@@ -147,7 +153,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
 
 
-        cargoTypeTextView.setText(order.getCargoType());
+        cargoTypeTextView.setText(order.getTypeOfCargo());
         commentTextView.setText(order.getComments());
     }
 
@@ -200,7 +206,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     @Override
     public void showError() {
-        Toast.makeText(getApplicationContext(), "Невозможно принять заказ", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Вы не можете принять заказ", Toast.LENGTH_LONG).show();
     }
 
 

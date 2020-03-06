@@ -18,8 +18,7 @@ import retrofit2.http.Query;
 
 public interface CargoService {
 
-    @GET("order/all/")
-    Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
+
 
     @POST("/auth/login/")
     Call<User> login(@Body Login login);
@@ -33,6 +32,6 @@ public interface CargoService {
     @PUT("order/done/{id}/")
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
 
-    @GET("/order/type_of_transport/")
-    Call<List<Order>> getOrdersForType(@Header("Authorization") String authToken);
+    @GET("/order/all/")
+    Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
 }

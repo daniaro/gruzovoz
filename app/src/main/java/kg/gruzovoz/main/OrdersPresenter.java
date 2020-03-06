@@ -1,7 +1,5 @@
 package kg.gruzovoz.main;
 
-import android.util.Log;
-
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
@@ -30,7 +28,7 @@ public class OrdersPresenter implements OrdersContract.Presenter {
     }
 
     public void populateOrdersForCarType(){
-        Call<List<Order>> call = service.getOrdersForType(BaseActivity.authToken);
+        Call<List<Order>> call = service.getAllOrders(BaseActivity.authToken);
         call.enqueue(new Callback<List<Order>>() {
             @Override
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {

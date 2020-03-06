@@ -72,6 +72,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView paymentTextView;
         TextView carTypeTextView;
         TextView addressTextView;
+        TextView typeInTextView;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +81,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             carTypeTextView = itemView.findViewById(R.id.carTypeTextView);
             addressTextView = itemView.findViewById(R.id.addressTextView);
             dateTextView_month = itemView.findViewById(R.id.dateTextView_month);
+            typeInTextView = itemView.findViewById(R.id.typeIn);
         }
 
         @SuppressLint("LongLogTag")
@@ -98,7 +100,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 }, 3000);
             });
 
-            //TODO: get date from server
 //            switch (order.getLeadTime()) {
 //                case 1:
 //                    dateTextView.setText("СЕГОДНЯ");
@@ -132,27 +133,23 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getStartAddress());
+            typeInTextView.setText(order.getTypeOfCargo());
+                Log.e("order.getTypeOfCargo",order.getTypeOfCargo());
 
             Date date = new Date();
-            Date date2 = new Date();
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
 //            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 
             sdf.setTimeZone(timeZone);
             String dateStr = order.getDateOfCreated();
-            Log.e("date from server ",dateStr);
             try {
                 date = sdf.parse(dateStr);
                 assert date != null;
                 String formatedDate =  sdf.format(date);
-                Log.e("parsed date ", String.valueOf(date));
-                Log.e("formated date ", formatedDate);
-
 
                 String completedMonth = formatedDate.substring(5,7);
                 String completedDate = formatedDate.substring(8);
-                Log.e("completedMonth ", completedMonth);
 
                 dateTextView.setText(completedDate);
 

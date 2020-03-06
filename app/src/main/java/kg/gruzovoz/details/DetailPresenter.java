@@ -1,5 +1,7 @@
 package kg.gruzovoz.details;
 
+import org.jetbrains.annotations.NotNull;
+
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
@@ -18,7 +20,7 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
     private final AcceptOrder acceptOrder = new AcceptOrder();
     private final FinishOrder finishOrder = new FinishOrder();
 
-    public DetailPresenter(DetailContract.DetailView view) {
+    DetailPresenter(DetailContract.DetailView view) {
         this.view = view;
     }
 
@@ -27,12 +29,12 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         Call<Void> call = service.acceptOrder(id, BaseActivity.authToken, acceptOrder);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                 view.startCallActivity();
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
                 view.showError();
             }
         });
@@ -43,13 +45,13 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         Call<Void> call = service.finishOrder(id, authToken, finishOrder);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
                 if (response.code() == 206) {
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
 
             }
         });
