@@ -38,41 +38,42 @@
 
     </TextView>
 
+
     <com.google.android.material.textfield.TextInputLayout
-        android:textColorHint="@color/colorAccent"
-        app:hintTextColor="@color/colorAccent"
         android:id="@+id/phone_text_field"
-        android:layout_width="328dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="53dp"
-        app:errorEnabled="true"
-        app:boxStrokeColor="@color/login_text_field"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="325dp"
+        android:layout_height="76dp"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/login_text_field"
         app:endIconMode="custom"
+        app:errorEnabled="true"
+        app:hintTextColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.29"
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginEditText"
-            android:textColor="@color/colorAccent"
             android:layout_width="match_parent"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@null"
-            android:singleLine="true"
             android:layout_height="56dp"
-            android:inputType="number"
+            android:cursorVisible="true"
             android:hint="@string/hint_phone"
-            />
+            android:inputType="number"
+            android:singleLine="true"
+            android:textColor="@color/colorAccent"
+            android:textCursorDrawable="@null" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_text_field"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="328dp"
+        android:layout_width="325dp"
         android:layout_height="100dp"
         android:textColorHint="@color/colorAccent"
         app:boxStrokeColor="@color/login_text_field"

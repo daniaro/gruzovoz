@@ -79,12 +79,11 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            adapter = new OrdersAdapter(order -> showDetailScreen(order));
+            adapter = new OrdersAdapter(this::showDetailScreen);
             presenter = new OrdersPresenter(this);
             presenter.populateOrders();
         }
         recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
     @Override

@@ -12,18 +12,33 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 
+import static android.content.ContentValues.TAG;
+
 
 public class ChatFragment extends Fragment {
+
+    private FirebaseAuth mAuth;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,53 +47,37 @@ public class ChatFragment extends Fragment {
         Toolbar toolbar = root.findViewById(R.id.chat_app_bar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
 
         return root;
     }
 
+    private void updateUI(FirebaseUser currentUser) {
+        Log.e(TAG, "updateUI: "+ currentUser.toString() );
+    }
 
-//    //    @Override
-//    public void showConfirmLogoutDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-//        builder.setTitle(getString(R.string.logout_title));
-//        builder.setMessage(getString(R.string.logout_message));
-//        builder.setNegativeButton(R.string.cancel_order, null);
-//        builder.setPositiveButton(getString(R.string.action_logout), (dialog, which) -> {
-//            BaseActivity.authToken = null;
-//            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.remove("authToken").apply();
-//            new Handler().post(() -> {
-//                Intent intent = getActivity().getIntent();
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
-//                        | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                getActivity().overridePendingTransition(0, 0);
-//                getActivity().finish();
-//
-//                getActivity().overridePendingTransition(0, 0);
-//                startActivity(intent);
-//            });
-//
-//
-//        });
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
-//
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_main, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_logout:
-//                showConfirmLogoutDialog();
-//                return true;
-//        }
-//        return false;
-//    }
+    public void createUserWithEmailAndPassword(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(Objects.requireNonNull(getActivity()), task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        assert user != null;
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(getActivity(), "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                    }
+
+                    // ...
+                });
+    }
+
 
 }

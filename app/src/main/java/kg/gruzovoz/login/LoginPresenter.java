@@ -1,5 +1,7 @@
 package kg.gruzovoz.login;
 
+import org.jetbrains.annotations.NotNull;
+
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.network.CargoService;
@@ -25,8 +27,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         call.enqueue(new Callback<User>() {
 
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
                 } else {
                     if (loginView.isConnected()) {
@@ -38,7 +41,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
                 if (loginView.isConnected()) {
                     loginView.showLoginError();
                 } else {

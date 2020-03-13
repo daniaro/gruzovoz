@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,24 +38,17 @@ public class CallActivity extends AppCompatActivity implements CallContract.Call
     private void initViews() {
         phoneNumberTextView = findViewById(R.id.phone_numberTextView);
         callButton = findViewById(R.id.callButton);
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makePhoneCall();
-            }
-        });
+        callButton.setOnClickListener(view -> makePhoneCall());
         allOrdersButton = findViewById(R.id.allOrdersButton);
-        allOrdersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-                finish();
-            }
+        allOrdersButton.setOnClickListener(view -> {
+            onBackPressed();
+            finish();
         });
     }
 
     public void makePhoneCall(){
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
+        assert phoneNumber != null;
         if (phoneNumber.trim().length() > 0) {
             if (ContextCompat.checkSelfPermission(CallActivity.this,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {

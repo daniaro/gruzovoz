@@ -1,4 +1,4 @@
-package kg.gruzovoz.user_page.fragments;
+package kg.gruzovoz.user_page.history;
 
 
 import android.app.Activity;
@@ -13,21 +13,19 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
-public class CompletedFragment extends Fragment implements UserPageContract.View {
+public class CompletedFragment extends Fragment implements HistoryContract.View {
 
-    private UserPageContract.Presenter presenter;
+    private HistoryContract.Presenter presenter;
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
@@ -63,7 +61,7 @@ public class CompletedFragment extends Fragment implements UserPageContract.View
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setAdapter(adapter);
-        presenter = new UserPagePresenter(this);
+        presenter = new HistoryPresenter(this);
     }
 
     @Override

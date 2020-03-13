@@ -7,6 +7,7 @@ import kg.gruzovoz.models.FinishOrder;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.User;
+import kg.gruzovoz.models.UserPage;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -34,4 +35,7 @@ public interface CargoService {
 
     @GET("/order/all/")
     Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
+
+    @GET("/auth/driver/")
+    Call<List<UserPage>> getPersonalData(@Header("Authorization") String authToken);
 }

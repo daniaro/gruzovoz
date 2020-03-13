@@ -1,4 +1,4 @@
-package kg.gruzovoz.user_page.fragments;
+package kg.gruzovoz.user_page.history;
 
 
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,9 +26,9 @@ import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 
 
-public class ActiveFragment extends Fragment implements UserPageContract.View{
+public class ActiveFragment extends Fragment implements HistoryContract.View{
 
-    private UserPageContract.Presenter presenter;
+    private HistoryContract.Presenter presenter;
 
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
@@ -83,7 +82,7 @@ public class ActiveFragment extends Fragment implements UserPageContract.View{
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        presenter = new UserPagePresenter(this);
+        presenter = new HistoryPresenter(this);
         presenter.populateOrders(false);
         recyclerView.setAdapter(adapter);
     }

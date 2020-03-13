@@ -1,11 +1,11 @@
-package kg.gruzovoz.user_page.fragments;
+package kg.gruzovoz.user_page.history;
 
 import java.util.List;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.models.Order;
 
-public interface UserPageContract {
+public interface HistoryContract {
 
     interface View extends BaseContract.BaseView {
         void showError();
@@ -14,8 +14,6 @@ public interface UserPageContract {
         void showEmptyView();
         void hideProgressBar();
         void stopRefreshingOrders();
-
-
     }
 
     interface Presenter {

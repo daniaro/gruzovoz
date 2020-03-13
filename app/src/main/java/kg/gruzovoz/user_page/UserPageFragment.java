@@ -1,44 +1,52 @@
 package kg.gruzovoz.user_page;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+import java.util.Objects;
+
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
-import kg.gruzovoz.user_page.fragments.ActiveFragment;
-import kg.gruzovoz.user_page.fragments.CompletedFragment;
+import kg.gruzovoz.models.UserPage;
+import kg.gruzovoz.user_page.history.ActiveFragment;
+import kg.gruzovoz.user_page.history.CompletedFragment;
 
 
-public class UserPageFragment extends Fragment {
+public class UserPageFragment extends Fragment implements UserPageContract.View {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ActiveFragment activeFragment;
-    private CompletedFragment completedFragment;
-    private FixedTabsPagerAdapter adapter;
     private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
+//    private UserPage user_page = new UserPage();
+
+    private TextView nameTextView;
+    private TextView phoneNumberTextView;
+    private TextView balanceTextView;
+    private TextView carNameTextView;
+    private TextView carNumberTextView;
+    private TextView carColorTextView;
+
 
     public UserPageFragment() {
         // required empty public constructor
@@ -50,20 +58,41 @@ public class UserPageFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
-//        Toolbar toolbar = root.findViewById(R.id.user_page_app_bar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        UserPagePresenter presenter = new UserPagePresenter(this);
+
+
+        initTabLayout(root);
+        initTabLayoutSelection();
+
+        LinearLayout logutLL = root.findViewById(R.id.logout);
+        logutLL.setOnClickListener(e -> showConfirmLogoutDialog());
+
+        nameTextView = root.findViewById(R.id.name_user_page);
+        phoneNumberTextView = root.findViewById(R.id.phone_number_user_page);
+        balanceTextView = root.findViewById(R.id.balance_user_page);
+        carNameTextView = root.findViewById(R.id.car_name_user_page);
+        carNumberTextView = root.findViewById(R.id.cane_number_user_page);
+//        carColorTextView = root.findViewById(R.id.car_color_user_page);
+
+        presenter.getPersonalData();
+
+        return root;
+    }
+
+
+
+    private void initTabLayout(View root){
         tabLayout = root.findViewById(R.id.tabs);
         viewPager = root.findViewById(R.id.viewPager);
 
-        activeFragment = new ActiveFragment();
+        ActiveFragment activeFragment = new ActiveFragment();
         activeFragment.setOnOrderFinishedListener(() -> onBaseOrderFinishedListener.onBaseOrderFinished());
-        completedFragment = new CompletedFragment();
+        CompletedFragment completedFragment = new CompletedFragment();
 
-        adapter = new FixedTabsPagerAdapter(getChildFragmentManager());
-            adapter.addFragment(activeFragment,"АКТИВНЫЕ");
+        FixedTabsPagerAdapter adapter = new FixedTabsPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(activeFragment,"АКТИВНЫЕ");
         adapter.addFragment(completedFragment,"ЗАВЕРШЕННЫЕ");
         viewPager.setAdapter(adapter);
 
@@ -71,19 +100,9 @@ public class UserPageFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("ЗАВЕРШЕННЫЕ"));
 
         tabLayout.setupWithViewPager(viewPager);
-        initTabLayoutSelection();
-
-        LinearLayout logutLL = root.findViewById(R.id.logout);
-        logutLL.setOnClickListener(e ->{
-            showConfirmLogoutDialog();
-
-        });
-
-        return root;
     }
 
-
-    public void initTabLayoutSelection(){
+    private void initTabLayoutSelection(){
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -102,9 +121,9 @@ public class UserPageFragment extends Fragment {
         });
     }
 
-//    @Override
+    @Override
     public void showConfirmLogoutDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.AlertDialogTheme);
         builder.setTitle(getString(R.string.logout_title));
         builder.setMessage(getString(R.string.logout_message));
         builder.setNegativeButton(R.string.cancel_order, null);
@@ -130,21 +149,20 @@ public class UserPageFragment extends Fragment {
         dialog.show();
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_main, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_logout:
-//                showConfirmLogoutDialog();
-//                return true;
-//        }
-//        return false;
-//    }
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void setAllData(UserPage user_page) {
+        nameTextView.setText(user_page.getUser().getUsername());
+        Log.e("nameTextView ", user_page.getUser().getUsername());
+
+//        phoneNumberTextView.setText(user_page.get);
+        balanceTextView.setText(user_page.getBalance());
+        carNameTextView.setText(user_page.getType_of_car() + "("+user_page.getCar_color()+")");
+        carNumberTextView.setText(user_page.getCar_number());
+//        carColorTextView.setText("("+user_page.getCar_color()+")");
+
+    }
+
 
 }
 

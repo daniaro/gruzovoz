@@ -22,15 +22,13 @@ import java.util.TimerTask;
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
-import kg.gruzovoz.main.OrdersFragment;
 import kg.gruzovoz.models.Order;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
     private List<Order> ordersList;
     private BaseContract.OnItemClickListener clickListener;
-    OrdersFragment ordersFragment = new OrdersFragment();
-    BaseActivity baseActivity = new BaseActivity();
+    private BaseActivity baseActivity = new BaseActivity();
 
     public OrdersAdapter(BaseContract.OnItemClickListener clickListener) {
         ordersList = new ArrayList<>();
@@ -45,9 +43,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         this.notifyDataSetChanged();
     }
 
-    public List<Order> getOrdersList() {
-        return ordersList;
-    }
 
     @NonNull
     @Override
@@ -74,7 +69,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView addressTextView;
         TextView typeInTextView;
 
-        public OrderViewHolder(@NonNull View itemView) {
+        OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             paymentTextView = itemView.findViewById(R.id.paymentTextView);
@@ -85,7 +80,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         }
 
         @SuppressLint("LongLogTag")
-        public void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
+        void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(view -> {
                 onItemClickListener.onItemClick(order);
                 itemView.setEnabled(false);
@@ -134,7 +129,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getStartAddress());
             typeInTextView.setText(order.getTypeOfCargo());
-                Log.e("order.getTypeOfCargo",order.getTypeOfCargo());
 
             Date date = new Date();
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
