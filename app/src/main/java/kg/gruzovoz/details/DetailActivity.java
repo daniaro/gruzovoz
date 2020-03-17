@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,20 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-
-import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
-import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.Order;
-import kg.gruzovoz.network.CargoService;
-import kg.gruzovoz.network.RetrofitClientInstance;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.HttpException;
-import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
 
@@ -52,9 +39,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     private static final int REQUEST_CALL = 1;
     private Order order;
-    private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-    private final AcceptOrder acceptOrder = new AcceptOrder();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +168,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             setResult(RESULT_OK);
             presenter.acceptOrder(order.getId());
 
-//            acceptOrder(order.getId());
         });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -219,6 +202,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void showError() {
         Toast.makeText(getApplicationContext(), "Ваше авто не подходит для этого заказа", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showBalanceError(){
+        Toast.makeText(getApplicationContext(), "У Вас недостаточно средств, пополните баланс", Toast.LENGTH_LONG).show();
     }
 
 

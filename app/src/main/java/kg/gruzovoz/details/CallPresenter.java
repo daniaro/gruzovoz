@@ -2,9 +2,9 @@ package kg.gruzovoz.details;
 
 public class CallPresenter implements CallContract.CallPresenter {
 
-    CallContract.CallView view;
+    private CallContract.CallView view;
 
-    public CallPresenter(CallContract.CallView  view){this.view = view;}
+    CallPresenter(CallContract.CallView view){this.view = view;}
 
     @Override
     public void parsePhoneNumber(String phoneNumber) {

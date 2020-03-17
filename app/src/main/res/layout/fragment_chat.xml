@@ -19,8 +19,22 @@
             android:addStatesFromChildren="false"
             app:title="@string/title_chat"
             app:titleTextColor="@color/colorAccent"
-            app:titleTextAppearance="@style/ToolbarTheme">
+            app:titleTextAppearance="@style/ToolbarTheme"
+            app:popupTheme="@style/MenuStyle">
 
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:id="@+id/profile_image"-->
+<!--                />-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/user_name"-->
+<!--                android:layout_marginLeft="25dp"-->
+<!--                android:text="username"-->
+<!--                android:textColor="#fff"-->
+<!--                android:textStyle="bold"/>-->
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

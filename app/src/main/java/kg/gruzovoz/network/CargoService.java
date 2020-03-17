@@ -37,5 +37,5 @@ public interface CargoService {
     Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
 
     @GET("/auth/driver/")
-    Call<List<UserPage>> getPersonalData(@Header("Authorization") String authToken);
+    Call<UserPage> getPersonalData(@Header("Authorization") String authToken);
 }

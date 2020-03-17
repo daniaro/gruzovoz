@@ -78,7 +78,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        adapter = new OrdersAdapter(order -> openDetailScreen(order));
+        adapter = new OrdersAdapter(this::openDetailScreen);
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);

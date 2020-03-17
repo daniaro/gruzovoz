@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
 import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
@@ -33,19 +32,18 @@ import kg.gruzovoz.user_page.history.ActiveFragment;
 import kg.gruzovoz.user_page.history.CompletedFragment;
 
 
+
 public class UserPageFragment extends Fragment implements UserPageContract.View {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
-//    private UserPage user_page = new UserPage();
 
     private TextView nameTextView;
     private TextView phoneNumberTextView;
     private TextView balanceTextView;
     private TextView carNameTextView;
     private TextView carNumberTextView;
-    private TextView carColorTextView;
 
 
     public UserPageFragment() {
@@ -74,13 +72,11 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         balanceTextView = root.findViewById(R.id.balance_user_page);
         carNameTextView = root.findViewById(R.id.car_name_user_page);
         carNumberTextView = root.findViewById(R.id.cane_number_user_page);
-//        carColorTextView = root.findViewById(R.id.car_color_user_page);
 
         presenter.getPersonalData();
 
         return root;
     }
-
 
 
     private void initTabLayout(View root){
@@ -153,16 +149,12 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
     @Override
     public void setAllData(UserPage user_page) {
         nameTextView.setText(user_page.getUser().getUsername());
-        Log.e("nameTextView ", user_page.getUser().getUsername());
-
-//        phoneNumberTextView.setText(user_page.get);
+        phoneNumberTextView.setText(user_page.getUser().getPhone_number());
         balanceTextView.setText(user_page.getBalance());
         carNameTextView.setText(user_page.getType_of_car() + "("+user_page.getCar_color()+")");
         carNumberTextView.setText(user_page.getCar_number());
-//        carColorTextView.setText("("+user_page.getCar_color()+")");
 
     }
-
 
 }
 

@@ -56,7 +56,7 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        adapter = new OrdersAdapter(order -> openDetailScreen(order));
+        adapter = new OrdersAdapter(this::openDetailScreen);
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);

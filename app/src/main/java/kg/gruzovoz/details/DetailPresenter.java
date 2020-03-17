@@ -1,10 +1,8 @@
 package kg.gruzovoz.details;
 
-import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.models.AcceptOrder;
@@ -37,7 +35,11 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
 
                 if (response.code() == 400) {
                         view.showError();
-                }else {
+                }
+                else if (response.code() == 403) {
+                    view.showBalanceError();
+                }
+                else {
                     view.startCallActivity();
                 }
 
@@ -59,8 +61,7 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-                if (response.code() == 206) {
-                }
+
             }
 
             @Override

@@ -11,7 +11,6 @@ public interface OrdersContract {
         void showDetailScreen(Order order);
         void stopRefreshingOrders();
         void showError();
-//        void showConfirmLogoutDialog();
         void showEmptyView();
 
     }

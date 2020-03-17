@@ -25,8 +25,6 @@ public class Order implements Serializable {
     private int leadTime;
     @SerializedName("date_of_created")
     private String dateOfCreated;
-//    @SerializedName("type_of_transportation")
-//    private String cargoType;
     @SerializedName("phone_number")
     private String phoneNumber;
     @SerializedName("comments")
@@ -47,7 +45,6 @@ public class Order implements Serializable {
         this.commission = commission;
         this.leadTime = leadTime;
         this.dateOfCreated = dateOfCreated;
-//        this.cargoType = cargoType;
         this.phoneNumber = phoneNumber;
         this.comments = comments;
         this.isActive = active;
@@ -64,10 +61,6 @@ public class Order implements Serializable {
 
     public String getCarType() {
         return carType;
-    }
-
-    public int getTypeOfTransport() {
-        return typeOfTransport;
     }
 
     public String getStartAddress() {
@@ -90,10 +83,6 @@ public class Order implements Serializable {
         return leadTime;
     }
 
-//    public String getCargoType() {
-//        return cargoType;
-//    }
-
     public String getDateOfCreated() {
         return dateOfCreated;
     }
@@ -108,10 +97,6 @@ public class Order implements Serializable {
 
     public boolean isDone() {
         return isDone;
-    }
-
-    public void setDone(boolean done) {
-        this.isDone = done;
     }
 
     public boolean isActive() {

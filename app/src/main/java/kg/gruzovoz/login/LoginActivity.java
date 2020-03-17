@@ -1,5 +1,6 @@
 package kg.gruzovoz.login;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     
+    @SuppressLint({"CommitPrefEdits", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         editor = sharedPreferences.edit();
 
         phoneEditText.setText("+996");
-        Selection.setSelection(phoneEditText.getText(), phoneEditText.getText().length());
+        Selection.setSelection(phoneEditText.getText(), Objects.requireNonNull(phoneEditText.getText()).length());
 
         phoneEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (passwordEditText.getText().length() > 0) {
+                if (Objects.requireNonNull(passwordEditText.getText()).length() > 0) {
                     passwordInputLayout.setError(null);
                     loginButton.setEnabled(true);
                 }
@@ -88,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         });
 
         loginButton.setOnClickListener(view -> {
-            presenterL.login(phoneEditText.getText().toString(), passwordEditText.getText().toString());
+            presenterL.login(phoneEditText.getText().toString(), Objects.requireNonNull(passwordEditText.getText()).toString());
             loginButton.setEnabled(false);
         });
 
@@ -125,8 +128,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     public boolean isConnected() {
         ConnectivityManager cm =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+
 
 }

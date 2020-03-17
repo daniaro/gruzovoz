@@ -79,7 +79,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             typeInTextView = itemView.findViewById(R.id.typeIn);
         }
 
-        @SuppressLint("LongLogTag")
+        @SuppressLint({"LongLogTag", "DefaultLocale"})
         void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(view -> {
                 onItemClickListener.onItemClick(order);
@@ -130,7 +130,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             addressTextView.setText(order.getStartAddress());
             typeInTextView.setText(order.getTypeOfCargo());
 
-            Date date = new Date();
+            Date date;
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
 //            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");

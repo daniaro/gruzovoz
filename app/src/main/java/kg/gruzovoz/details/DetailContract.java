@@ -8,6 +8,7 @@ public interface DetailContract {
         void startCallActivity();
 
         void showError();
+        void showBalanceError();
         void showConfirmFinishAlertDialog();
     }
 
