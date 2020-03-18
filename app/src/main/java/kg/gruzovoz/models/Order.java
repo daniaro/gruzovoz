@@ -33,8 +33,10 @@ public class Order implements Serializable {
     private boolean isActive;
     @SerializedName("done")
     private boolean isDone;
+    @SerializedName("calculated")
+    private boolean calculate;
 
-    public Order(long id, String carType, int typeOfTransport,String typeOfCargo, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String phoneNumber, String comments, boolean active, boolean done) {
+    public Order(long id, String carType, int typeOfTransport,String typeOfCargo, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String phoneNumber, String comments, boolean active, boolean done, boolean calculate) {
         this.id = id;
         this.carType = carType;
         this.typeOfTransport = typeOfTransport;
@@ -49,6 +51,7 @@ public class Order implements Serializable {
         this.comments = comments;
         this.isActive = active;
         this.isDone = done;
+        this.calculate = calculate;
     }
 
     public Order() {
@@ -105,5 +108,9 @@ public class Order implements Serializable {
 
     public String getTypeOfCargo() {
         return typeOfCargo;
+    }
+
+    public boolean isCalculated() {
+        return calculate;
     }
 }

@@ -19,6 +19,7 @@
     <string name="title_activity_call">CallActivity</string>
     <string name="no_orders_available">Нет доступных заказов</string>
     <string name="orders_unavailable">Невозможно получить список заказов</string>
+    <string name="data_unavailable">Невозможно получить данные</string>
     <string name="hint_phone">Телефон</string>
     <string name="hint_password">Пароль</string>
     <string name="login_text">ВОЙТИ</string>

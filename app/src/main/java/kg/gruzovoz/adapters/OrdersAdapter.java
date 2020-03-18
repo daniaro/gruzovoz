@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,6 +69,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView carTypeTextView;
         TextView addressTextView;
         TextView typeInTextView;
+        ImageView culculate1p;
+        ImageView culculate2p;
 
         OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +80,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             addressTextView = itemView.findViewById(R.id.addressTextView);
             dateTextView_month = itemView.findViewById(R.id.dateTextView_month);
             typeInTextView = itemView.findViewById(R.id.typeIn);
+            culculate1p = itemView.findViewById(R.id.culculate1p);
+            culculate2p = itemView.findViewById(R.id.culculate2p);
         }
 
         @SuppressLint({"LongLogTag", "DefaultLocale"})
@@ -95,17 +100,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 }, 3000);
             });
 
-//            switch (order.getLeadTime()) {
-//                case 1:
-//                    dateTextView.setText("СЕГОДНЯ");
-//                    break;
-//                case 2:
-//                    dateTextView.setText("ЗАВТРА");
-//                    break;
-//                case 3:
-//                    dateTextView.setText("СРОЧНО");
-//                    break;
-//            }
 
 
             String commission = order.getCommission();
@@ -118,22 +112,24 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 strRes = String.format("%s", res);
             }
 
-//            if (commission.charAt(commission.length() - 1) == '%') {
-//                paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-//            } else {
-//                paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-//            }
-
             paymentTextView.setText(String.format("%s  ||  %s", String.valueOf((int) order.getPrice()), strRes));
 
             carTypeTextView.setText(order.getCarType());
             addressTextView.setText(order.getStartAddress());
             typeInTextView.setText(order.getTypeOfCargo());
 
+            if (order.isCalculated()){
+                culculate1p.setVisibility(View.VISIBLE);
+                culculate2p.setVisibility(View.VISIBLE);
+            }else {
+                culculate1p.setVisibility(View.GONE);
+                culculate2p.setVisibility(View.GONE);
+            }
+
             Date date;
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
-//            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 
             sdf.setTimeZone(timeZone);
             String dateStr = order.getDateOfCreated();
@@ -194,28 +190,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
             }
 
-
-
-//            long diff = date.getTime() - date2.getTime();
-//            long seconds = diff / 1000;
-//            long minutes = seconds / 60;
-//            long hours = minutes / 60;
-//            long days = hours / 24;
-
-//            dateTextView_month.setText((CharSequence) sdf1);
-
-
-//            if (days > 0){
-//                dateOfCreated.setText("Добавлено " + days + " дн. назад");
-//            } else if (days > 5) {
-//                dateOfCreated.setText("Добавлено " + date2);
-//            } else if (hours > 0) {
-//                dateOfCreated.setText("Добавлено " + hours + " ч. назад");
-//            } else if (minutes > 0) {
-//                dateOfCreated.setText("Добавлено " + minutes + " мин. назад");
-//            } else if (seconds > 0) {
-//                dateOfCreated.setText("Добавлено " + seconds + " сек. назад");
-//            }
         }
 
     }

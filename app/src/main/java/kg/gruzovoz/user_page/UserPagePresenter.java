@@ -31,15 +31,17 @@ public class UserPagePresenter implements UserPageContract.Presenter {
         call.enqueue(new Callback<UserPage>() {
             @Override
             public void onResponse(@NotNull Call<UserPage> call, @NotNull Response<UserPage> response) {
-                view.setAllData(response.body());
-                Log.e("onResponse", response.message());
+                if (response.body() != null) {
+                    view.setAllData(response.body());
+                } else {
+
+                }
 
             }
 
             @Override
             public void onFailure(@NotNull Call<UserPage> call, @NotNull Throwable t) {
-                Log.e("onFailure", Objects.requireNonNull(t.getMessage()));
-
+                view.showError();
             }
         });
 

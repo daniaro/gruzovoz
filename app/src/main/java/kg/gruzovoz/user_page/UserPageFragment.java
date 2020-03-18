@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -27,6 +30,7 @@ import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
+import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.user_page.history.ActiveFragment;
 import kg.gruzovoz.user_page.history.CompletedFragment;
@@ -35,6 +39,7 @@ import kg.gruzovoz.user_page.history.CompletedFragment;
 
 public class UserPageFragment extends Fragment implements UserPageContract.View {
 
+    private UserPageContract.Presenter presenter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private BaseContract.OnBaseOrderFinishedListener onBaseOrderFinishedListener;
@@ -44,6 +49,7 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
     private TextView balanceTextView;
     private TextView carNameTextView;
     private TextView carNumberTextView;
+
 
 
     public UserPageFragment() {
@@ -60,9 +66,10 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
 
         UserPagePresenter presenter = new UserPagePresenter(this);
 
-
         initTabLayout(root);
         initTabLayoutSelection();
+
+        // setHasOptionsMenu(true);
 
         LinearLayout logutLL = root.findViewById(R.id.logout);
         logutLL.setOnClickListener(e -> showConfirmLogoutDialog());
@@ -154,6 +161,15 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         carNameTextView.setText(user_page.getType_of_car() + "("+user_page.getCar_color()+")");
         carNumberTextView.setText(user_page.getCar_number());
 
+    }
+
+
+
+
+
+    @Override
+    public void showError(){
+        Toast.makeText(getContext(), getString(R.string.data_unavailable), Toast.LENGTH_LONG).show();
     }
 
 }

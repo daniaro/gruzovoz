@@ -112,33 +112,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView.setVisibility(View.GONE);
     }
 
-//    @Override
-//    public void showConfirmLogoutDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
-//        builder.setTitle(getString(R.string.logout_title));
-//        builder.setMessage(getString(R.string.logout_message));
-//        builder.setNegativeButton(R.string.cancel_order, null);
-//        builder.setPositiveButton(getString(R.string.action_logout), (dialog, which) -> {
-//            BaseActivity.authToken = null;
-//            SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.remove("authToken").apply();
-//            new Handler().post(() -> {
-//                Intent intent = getActivity().getIntent();
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK
-//                        | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//                getActivity().overridePendingTransition(0, 0);
-//                getActivity().finish();
-//
-//                getActivity().overridePendingTransition(0, 0);
-//                startActivity(intent);
-//            });
-//
-//
-//        });
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
 
     @Override
     public void showEmptyView() {
@@ -152,20 +125,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         adapter.setValues(orders);
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_main, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_logout:
-//                showConfirmLogoutDialog();
-//                return true;
-//        }
-//        return false;
-//    }
+
 }
 
