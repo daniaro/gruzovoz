@@ -17,6 +17,7 @@
         android:fontFamily="@font/roboto_slab"
         tools:text="Фев."
         android:textSize="12sp"
+        android:textColor="@color/colorGrayDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +29,7 @@
         android:layout_marginTop="7dp"
         android:fontFamily="@font/roboto_slab"
         tools:text="12"
-        android:textColor="@color/blackTextColor"
+        android:textColor="@color/colorBlueDark"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTextView_month" />
@@ -117,7 +118,6 @@
                 android:layout_marginTop="38dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/paymentTextView"
                 app:srcCompat="@drawable/ic_vect" />
 

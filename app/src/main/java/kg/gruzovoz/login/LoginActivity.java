@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -17,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
+import kg.gruzovoz.models.FirebaseUserToken;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.LoginView {
 
@@ -93,7 +96,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginButton.setOnClickListener(view -> {
             presenterL.login(phoneEditText.getText().toString(), Objects.requireNonNull(passwordEditText.getText()).toString());
             loginButton.setEnabled(false);
+//            presenterL.getFirebaseToken();
         });
+
 
 
     }
@@ -122,6 +127,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         editor.putString("authToken", authToken).commit();
         startActivity(new Intent(LoginActivity.this, BaseActivity.class));
         finish();
+    }
+
+    @Override
+    public void setDataForFirebaseToken(FirebaseUserToken firebaseUserToken) {
+        FirebaseAuth.getInstance().signInWithCustomToken(firebaseUserToken.getFirebaseToken());
+
+
     }
 
     @Override

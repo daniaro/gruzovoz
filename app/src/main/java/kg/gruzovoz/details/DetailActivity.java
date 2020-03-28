@@ -59,6 +59,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             finishButton.setVisibility(View.GONE);
             callButton.setVisibility(View.GONE);
         }
+
         initOnClickListeners();
         setViewInfo();
     }

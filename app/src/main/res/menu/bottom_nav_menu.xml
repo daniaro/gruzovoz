@@ -10,7 +10,7 @@
         android:id="@+id/navigation_chat"
         android:icon="@drawable/ic_chat"
         android:title="@string/title_chat"
-        android:enabled="false"/>
+        android:enabled="true"/>
 
     <item
         android:id="@+id/navigation_user_page"

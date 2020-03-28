@@ -4,6 +4,7 @@ import java.util.List;
 
 import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
+import kg.gruzovoz.models.FirebaseUserToken;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.User;
@@ -18,8 +19,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CargoService {
-
-
 
     @POST("/auth/login/")
     Call<User> login(@Body Login login);
@@ -38,4 +37,9 @@ public interface CargoService {
 
     @GET("/auth/driver/")
     Call<UserPage> getPersonalData(@Header("Authorization") String authToken);
+
+
+    //for firebase
+    @GET("/auth/firebase_token/")
+    Call<FirebaseUserToken> getFirebaseAuthToken(@Header("Authorization") String authToken);
 }

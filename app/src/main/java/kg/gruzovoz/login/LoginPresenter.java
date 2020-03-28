@@ -1,14 +1,14 @@
 package kg.gruzovoz.login;
 
-import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
+import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
 
+
+import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.models.FirebaseUserToken;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.network.CargoService;
@@ -17,13 +17,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
     private LoginContract.LoginView loginView;
     private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-    DatabaseReference reference;
+
 
     LoginPresenter(LoginContract.LoginView loginView) {
         this.loginView = loginView;
@@ -42,6 +43,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     assert response.body() != null;
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
 //                    registerFireBaseUser(String.format("%s", response.body().getToken()));
+                    getFirebaseToken(String.format("%s", response.body().getToken()));
 
                 } else {
                     if (loginView.isConnected()) {
@@ -64,27 +66,30 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     }
 
+    public void getFirebaseToken(String token){
+        Call<FirebaseUserToken> call = service.getFirebaseAuthToken("Token " + token);
+        call.enqueue(new Callback<FirebaseUserToken>() {
+            @Override
+            public void onResponse(@NotNull Call<FirebaseUserToken> call, @NotNull Response<FirebaseUserToken> response) {
+                if (response.body() != null) {
+                    loginView.setDataForFirebaseToken(response.body());
 
-//    private void registerFireBaseUser(String authToken){
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//        auth.signInWithCustomToken(authToken)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        Log.i(TAG, "signInWithCustomToken:success",task.getException());
-//
-//                        FirebaseUser user = auth.getCurrentUser();
-//                        Log.i(TAG, "registerFireBaseUser: " + user.getPhoneNumber());
-//                        Log.i(TAG, "registerFireBaseUser: " + user);
-////                        updateUI(user);
-//                    } else {
-//                        Log.w(TAG, "signInWithCustomToken:failure", task.getException());
-//                        Log.w(TAG, "signInWithCustomToken:failure:"+ authToken);
-//                        //Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
-//                                //Toast.LENGTH_SHORT).show();
-//                        //updateUI(null);
-//                    }
-//                });
-//    }
+                }else {
+                    Log.e(TAG, "onResponse firebasetoken: is null");
+                    Log.e(TAG, "onResponse token: Token "+token);
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<FirebaseUserToken> call, @NotNull Throwable t) {
+                Log.e(TAG, "onFailure: "+ t.getMessage());
+            }
+        });
+
+    }
 
 
 

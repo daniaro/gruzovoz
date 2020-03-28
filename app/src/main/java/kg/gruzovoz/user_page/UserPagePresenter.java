@@ -14,6 +14,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class UserPagePresenter implements UserPageContract.Presenter {
 
     private UserPageContract.View view;
@@ -27,12 +29,12 @@ public class UserPagePresenter implements UserPageContract.Presenter {
     @Override
     public void getPersonalData() {
         Call<UserPage> call = service.getPersonalData(BaseActivity.authToken);
-
         call.enqueue(new Callback<UserPage>() {
             @Override
             public void onResponse(@NotNull Call<UserPage> call, @NotNull Response<UserPage> response) {
                 if (response.body() != null) {
                     view.setAllData(response.body());
+
                 } else {
 
                 }

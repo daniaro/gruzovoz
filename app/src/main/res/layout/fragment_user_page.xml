@@ -145,20 +145,6 @@
             app:layout_constraintTop_toBottomOf="@+id/phone_number_user_page"
             tools:text="1000" />
 
-        <!--        <TextView-->
-<!--            android:id="@+id/car_color_user_page"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="20dp"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:fontFamily="@font/roboto_slab"-->
-<!--            android:textColor="@color/colorAccent"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/car_name_user_page"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="(Голубой)" />-->
-
         <TextView
             android:id="@+id/car_name_user_page"
             android:layout_width="wrap_content"

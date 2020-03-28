@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".chat.ChatFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -22,21 +24,87 @@
             app:titleTextAppearance="@style/ToolbarTheme"
             app:popupTheme="@style/MenuStyle">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/profile_image"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/user_name"
-                android:layout_marginLeft="25dp"
-                android:text="username"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-</FrameLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/chat_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e6e6e6"
+            android:paddingStart="16dp"
+            android:paddingBottom="8dp"
+
+            >
+
+            <ImageView
+                android:id="@+id/contact_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="38dp"
+                app:srcCompat="@drawable/ic_ellipse_2" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="51dp"
+                android:layout_marginEnd="25dp"
+                android:foregroundGravity="center"
+                app:srcCompat="@drawable/ic_cat_person" />
+
+            <TextView
+                android:id="@+id/chat_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="38dp"
+                android:layout_toEndOf="@+id/contact_iv"
+                android:text="Водители"
+                android:textColor="@color/blackTextColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/last_message_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="19dp"
+                android:layout_marginTop="68dp"
+                android:layout_toEndOf="@+id/contact_iv"
+                android:text="Вы: Ул.Белорусская 17"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/last_message_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="43dp"
+                android:layout_marginEnd="14dp"
+                android:text="12:05"
+                android:textSize="10sp" />
+
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

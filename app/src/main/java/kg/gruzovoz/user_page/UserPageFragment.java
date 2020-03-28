@@ -164,9 +164,6 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
     }
 
 
-
-
-
     @Override
     public void showError(){
         Toast.makeText(getContext(), getString(R.string.data_unavailable), Toast.LENGTH_LONG).show();
