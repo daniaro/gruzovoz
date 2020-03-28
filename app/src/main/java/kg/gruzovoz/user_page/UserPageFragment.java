@@ -30,6 +30,8 @@ import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
+import kg.gruzovoz.chat.messages.MessagesActivity;
+import kg.gruzovoz.chat.messages.MessagesContract;
 import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.user_page.history.ActiveFragment;
@@ -50,6 +52,10 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
     private TextView carNameTextView;
     private TextView carNumberTextView;
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+
 
 
     public UserPageFragment() {
@@ -60,16 +66,20 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         this.onBaseOrderFinishedListener = onBaseOrderFinishedListener;
     }
 
+    @SuppressLint("CommitPrefEdits")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
 
         UserPagePresenter presenter = new UserPagePresenter(this);
 
+        sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("myNamePreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         initTabLayout(root);
         initTabLayoutSelection();
 
-        // setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
 
         LinearLayout logutLL = root.findViewById(R.id.logout);
         logutLL.setOnClickListener(e -> showConfirmLogoutDialog());
@@ -152,6 +162,7 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         dialog.show();
     }
 
+
     @SuppressLint("SetTextI18n")
     @Override
     public void setAllData(UserPage user_page) {
@@ -160,6 +171,9 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         balanceTextView.setText(user_page.getBalance());
         carNameTextView.setText(user_page.getType_of_car() + "("+user_page.getCar_color()+")");
         carNumberTextView.setText(user_page.getCar_number());
+
+        editor.putString("myName", user_page.getUser().getUsername()).commit();
+
 
     }
 

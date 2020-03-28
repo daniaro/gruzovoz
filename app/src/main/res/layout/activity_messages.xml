@@ -70,7 +70,7 @@
             android:id="@+id/edit_text"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:paddingStart="29dp"
             android:background="@drawable/bg"
             android:layout_marginStart="2dp"
@@ -78,6 +78,9 @@
             android:layout_marginEnd="6dp"
             android:cursorVisible="true"
             android:textCursorDrawable="@null"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="29dp"
             android:inputType="textCapSentences"
             />
 

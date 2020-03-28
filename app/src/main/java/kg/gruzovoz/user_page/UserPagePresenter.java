@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.chat.messages.MessagesContract;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
@@ -26,6 +27,7 @@ public class UserPagePresenter implements UserPageContract.Presenter {
         this.view = view;
     }
 
+
     @Override
     public void getPersonalData() {
         Call<UserPage> call = service.getPersonalData(BaseActivity.authToken);
@@ -34,7 +36,6 @@ public class UserPagePresenter implements UserPageContract.Presenter {
             public void onResponse(@NotNull Call<UserPage> call, @NotNull Response<UserPage> response) {
                 if (response.body() != null) {
                     view.setAllData(response.body());
-
                 } else {
 
                 }
