@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -70,7 +71,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     }
 
     public void initList(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         adapter = new MessagesAdapter(messageList,driversName, e ->{
         });
         recyclerView.setAdapter(adapter);
@@ -93,7 +95,9 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                     for (DocumentChange change : snapshots.getDocumentChanges()){
                         switch (change.getType()){
                             case ADDED:
-                                messageList.add(change.getDocument().toObject(Messages.class));
+                                Messages messages = change.getDocument().toObject(Messages.class);
+                                messageList.add(messages);
+                                Log.i("Message",messages.getText());
                                 break;
                             case REMOVED:
                                 break;
@@ -109,6 +113,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     private void sendMessage(String text) {
         UserPage userPage = new UserPage();
         Map<String, Object> map = new HashMap<>();
+//        map.put("sentAt", Timestamp.now());
+//        map.put("sentAt", "noTime");
         map.put("sentAt", setFormatedDate());
         map.put("text",text);
         map.put("userFullName", driversName);

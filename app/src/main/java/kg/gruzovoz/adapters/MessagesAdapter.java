@@ -86,6 +86,9 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
                 text.setText(messages.getText());
 
+//            time.setText(messages.getSentAt());
+
+
             Date date;
 
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
@@ -105,8 +108,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                 time.setText(finalDate);
 
 
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                time.setText("неверная дата");
+
             }
 
         }
