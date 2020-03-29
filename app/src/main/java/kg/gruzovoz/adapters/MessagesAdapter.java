@@ -1,6 +1,7 @@
 package kg.gruzovoz.adapters;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,21 +19,23 @@ import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesContract;
 import kg.gruzovoz.models.Messages;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
     private List<Messages> messageList;
     private MessagesContract.OnItemClickListener onItemClickListener;
-    private final String user;
+    private final String userTokenId;
 
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
 
 
-    public MessagesAdapter(List<Messages> messageList, String user, MessagesContract.OnItemClickListener onItemClickListener) {
+    public MessagesAdapter(List<Messages> messageList, String userTokeId, MessagesContract.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
         this.messageList = messageList;
-        this.user = user;
+        this.userTokenId = userTokeId;
     }
 
     @NonNull
@@ -75,18 +77,26 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         void bind(Messages messages, MessagesContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(e-> onItemClickListener.onItemClick(messages));
 
+            //TODO: getid and admin status
 
 
-            if (messages.getUserFullName().equals(user)) {
-                senderName.setText("Вы");
+            Log.e(TAG, "userfullname:" + messages.getUid() );
+            Log.e(TAG, "userTOkenId:" + userTokenId );
 
-            } else {
+
+            if (messages.getUid()==null){
+                senderName.setText("Invalid name");
+            }
+            else if (messages.getUid().equals(userTokenId)){
+                 senderName.setText("Вы");
+            }
+            else {
                 senderName.setText(messages.getUserFullName());
+
             }
 
-                text.setText(messages.getText());
 
-//            time.setText(messages.getSentAt());
+            text.setText(messages.getText());
 
 
             Date date;
@@ -110,6 +120,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
             } catch (Exception e) {
                 e.printStackTrace();
+
                 time.setText("неверная дата");
 
             }

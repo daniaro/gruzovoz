@@ -6,9 +6,7 @@ import android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 
-
-import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.models.FirebaseUserToken;
+import kg.gruzovoz.models.FirebaseUserData;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.network.CargoService;
@@ -42,7 +40,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
-//                    registerFireBaseUser(String.format("%s", response.body().getToken()));
                     getFirebaseToken(String.format("%s", response.body().getToken()));
 
                 } else {
@@ -67,12 +64,14 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     }
 
     public void getFirebaseToken(String token){
-        Call<FirebaseUserToken> call = service.getFirebaseAuthToken("Token " + token);
-        call.enqueue(new Callback<FirebaseUserToken>() {
+        Call<FirebaseUserData> call = service.getFirebaseUserData("Token " + token);
+        call.enqueue(new Callback<FirebaseUserData>() {
             @Override
-            public void onResponse(@NotNull Call<FirebaseUserToken> call, @NotNull Response<FirebaseUserToken> response) {
+            public void onResponse(@NotNull Call<FirebaseUserData> call, @NotNull Response<FirebaseUserData> response) {
                 if (response.body() != null) {
-                    loginView.setDataForFirebaseToken(response.body());
+                    loginView.registerFirebaseUser(response.body());
+                    //loginView.addFirebaseToken(String.format("%s", response.body()));
+
 
                 }else {
                     Log.e(TAG, "onResponse firebasetoken: is null");
@@ -84,7 +83,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             }
 
             @Override
-            public void onFailure(@NotNull Call<FirebaseUserToken> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<FirebaseUserData> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: "+ t.getMessage());
             }
         });

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentChange;
@@ -41,7 +42,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     private UserPage userPage = new UserPage();
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    public static String driversName;
+    public static String fbUserName;
+    public static String fbToken;
 
 
 
@@ -59,11 +61,12 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
             finish();
         });
 
-        sharedPreferences = getApplicationContext()
-                .getSharedPreferences("myNamePreferences", Context.MODE_PRIVATE);
 
-        driversName =sharedPreferences.getString("myName", null);
-        Log.e("Messagesactivity", driversName);
+        sharedPreferences = getApplicationContext()
+                .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+
+        fbToken = sharedPreferences.getString("fbToken", null);
+        fbUserName = sharedPreferences.getString("fbUserName", null);
 
         initList();
         getMessages();
@@ -73,7 +76,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     public void initList(){
         //
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        adapter = new MessagesAdapter(messageList,driversName, e ->{
+        adapter = new MessagesAdapter(messageList,fbToken, e ->{
         });
         recyclerView.setAdapter(adapter);
 
@@ -90,14 +93,17 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
 
     private void getMessages() {
+
         FirebaseFirestore.getInstance().collection("messages")
                 .addSnapshotListener((snapshots, e) -> {
+
                     for (DocumentChange change : snapshots.getDocumentChanges()){
                         switch (change.getType()){
                             case ADDED:
                                 Messages messages = change.getDocument().toObject(Messages.class);
                                 messageList.add(messages);
-                                Log.i("Message",messages.getText());
+//                                Log.i("Message",messages.getText());
+
                                 break;
                             case REMOVED:
                                 break;
@@ -111,14 +117,12 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     }
 
     private void sendMessage(String text) {
-        UserPage userPage = new UserPage();
         Map<String, Object> map = new HashMap<>();
-//        map.put("sentAt", Timestamp.now());
-//        map.put("sentAt", "noTime");
         map.put("sentAt", setFormatedDate());
         map.put("text",text);
-        map.put("userFullName", driversName);
-//        map.put("userFullName", userPage.getUser().getUsername());
+        map.put("userFullName", fbUserName);
+        map.put("isFromSuperAdmin", false);
+        map.put("uid", fbToken);
         FirebaseFirestore.getInstance().collection("messages").add(map);
     }
 

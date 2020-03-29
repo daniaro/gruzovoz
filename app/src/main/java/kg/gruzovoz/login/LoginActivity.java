@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
-import kg.gruzovoz.models.FirebaseUserToken;
+import kg.gruzovoz.models.FirebaseUserData;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.LoginView {
 
@@ -130,8 +129,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     }
 
     @Override
-    public void setDataForFirebaseToken(FirebaseUserToken firebaseUserToken) {
-        FirebaseAuth.getInstance().signInWithCustomToken(firebaseUserToken.getFirebaseToken());
+    public void registerFirebaseUser(FirebaseUserData firebaseUserData) {
+        String fbUserName = firebaseUserData.getUsername();
+        String fbToken = firebaseUserData.getFirebaseToken();
+
+        FirebaseAuth.getInstance().signInWithCustomToken(fbToken);
+        editor.putString("fbUserName", fbUserName).commit();
+        editor.putString("fbToken", fbToken).commit();
+
 
 
     }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
-import kg.gruzovoz.models.FirebaseUserToken;
+import kg.gruzovoz.models.FirebaseUserData;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.User;
@@ -41,5 +41,5 @@ public interface CargoService {
 
     //for firebase
     @GET("/auth/firebase_token/")
-    Call<FirebaseUserToken> getFirebaseAuthToken(@Header("Authorization") String authToken);
+    Call<FirebaseUserData> getFirebaseUserData(@Header("Authorization") String authToken);
 }

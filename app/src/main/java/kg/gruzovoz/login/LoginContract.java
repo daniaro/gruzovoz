@@ -1,6 +1,6 @@
 package kg.gruzovoz.login;
 
-import kg.gruzovoz.models.FirebaseUserToken;
+import kg.gruzovoz.models.FirebaseUserData;
 
 interface LoginContract {
 
@@ -8,7 +8,7 @@ interface LoginContract {
        void showErrorToast();
        void showLoginError();
        void addAuthToken(String authToken);
-       void setDataForFirebaseToken(FirebaseUserToken firebaseUserToken);
+       void registerFirebaseUser(FirebaseUserData firebaseUserToken);
        boolean isConnected();
     }
 

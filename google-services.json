@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "670995721036",
+    "firebase_url": "https://gruzovozchat.firebaseio.com",
+    "project_id": "gruzovozchat",
+    "storage_bucket": "gruzovozchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670995721036:android:f92606d78a0582bca87de9",
+        "android_client_info": {
+          "package_name": "kg.gruzovoz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670995721036-i1rng6mn5ndeinebbmeqmivm07qlj7bg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5NLMaj906iFMyyz-Rv6hTUuQ9d8QSYuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "670995721036-i1rng6mn5ndeinebbmeqmivm07qlj7bg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
