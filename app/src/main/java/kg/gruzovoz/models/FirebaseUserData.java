@@ -2,6 +2,7 @@ package kg.gruzovoz.models;
 
 public class FirebaseUserData {
 
+    private long id;
     private String firebase_token;
     private String username;
     private String phone;
@@ -10,12 +11,21 @@ public class FirebaseUserData {
 
     }
 
-    public FirebaseUserData(String firebase_token, String username, String phone) {
+
+    public FirebaseUserData(long id, String firebase_token, String username, String phone) {
+        this.id = id;
         this.firebase_token = firebase_token;
         this.username = username;
         this.phone = phone;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

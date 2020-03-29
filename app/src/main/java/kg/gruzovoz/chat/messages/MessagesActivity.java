@@ -6,16 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,21 +28,16 @@ import java.util.TimeZone;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
 import kg.gruzovoz.models.Messages;
-import kg.gruzovoz.models.UserPage;
 
 public class MessagesActivity extends AppCompatActivity implements MessagesContract.View{
 
-    private ImageView closeIcon;
     private EditText editText;
     private RecyclerView recyclerView;
     private MessagesAdapter adapter;
     private List<Messages> messageList = new ArrayList<>();
-    private UserPage userPage = new UserPage();
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     public static String fbUserName;
-    public static String fbToken;
-
+    public static Long fbUserId;
+    private LinearLayout emptyView;
 
 
     @SuppressLint("CommitPrefEdits")
@@ -53,63 +46,68 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        editText = findViewById(R.id.edit_text);
-        recyclerView = findViewById(R.id.recyler_view_messages);
-        closeIcon = findViewById(R.id.close_icon);
-        closeIcon.setOnClickListener(e ->{
-            onBackPressed();
-            finish();
-        });
-
-
-        sharedPreferences = getApplicationContext()
-                .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-
-        fbToken = sharedPreferences.getString("fbToken", null);
-        fbUserName = sharedPreferences.getString("fbUserName", null);
-
+        initViews();
+        getSharedPref();
         initList();
         getMessages();
 
     }
 
-    public void initList(){
-        //
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        adapter = new MessagesAdapter(messageList,fbToken, e ->{
+    private void initViews() {
+        emptyView = findViewById(R.id.empty_view);
+        editText = findViewById(R.id.edit_text);
+        recyclerView = findViewById(R.id.recyler_view_messages);
+        ImageView closeIcon = findViewById(R.id.close_icon);
+        closeIcon.setOnClickListener(e ->{
+            onBackPressed();
+            finish();
         });
-        recyclerView.setAdapter(adapter);
+    }
 
+    private void getSharedPref() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+
+        fbUserId = sharedPreferences.getLong("fbUserId",0);
+        fbUserName = sharedPreferences.getString("fbUserName", null);
 
     }
+
+    public void initList(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        adapter = new MessagesAdapter(messageList, String.valueOf(fbUserId), e ->{
+
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
 
     public void onClickSendMesssage(View view) {
         String text = editText.getText().toString().trim();
         editText.setText("");
-
         sendMessage(text);
     }
 
 
-
     private void getMessages() {
-
         FirebaseFirestore.getInstance().collection("messages")
                 .addSnapshotListener((snapshots, e) -> {
-
-                    for (DocumentChange change : snapshots.getDocumentChanges()){
-                        switch (change.getType()){
-                            case ADDED:
-                                Messages messages = change.getDocument().toObject(Messages.class);
-                                messageList.add(messages);
-//                                Log.i("Message",messages.getText());
-
-                                break;
-                            case REMOVED:
-                                break;
-                            case MODIFIED:
-                                break;
+                    if (snapshots != null) {
+                        for (DocumentChange change : snapshots.getDocumentChanges()) {
+                            switch (change.getType()) {
+                                case ADDED:
+                                    Messages messages = change.getDocument().toObject(Messages.class);
+                                    messageList.add(messages);
+                                    break;
+                                case REMOVED:
+                                    break;
+                                case MODIFIED:
+                                    break;
+                            }
                         }
+                    }
+                    else {
+                        emptyView.setVisibility(View.VISIBLE);
+
                     }
                     adapter.notifyDataSetChanged();
                 });
@@ -122,7 +120,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         map.put("text",text);
         map.put("userFullName", fbUserName);
         map.put("isFromSuperAdmin", false);
-        map.put("uid", fbToken);
+        map.put("uid", String.valueOf(fbUserId));
         FirebaseFirestore.getInstance().collection("messages").add(map);
     }
 

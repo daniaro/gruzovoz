@@ -18,6 +18,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_call">CallActivity</string>
     <string name="no_orders_available">Нет доступных заказов</string>
+    <string name="no_messages_available">Нет сообщений</string>
     <string name="orders_unavailable">Невозможно получить список заказов</string>
     <string name="data_unavailable">Невозможно получить данные</string>
     <string name="hint_phone">Телефон</string>

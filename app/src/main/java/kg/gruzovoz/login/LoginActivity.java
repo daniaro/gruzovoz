@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -132,10 +133,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     public void registerFirebaseUser(FirebaseUserData firebaseUserData) {
         String fbUserName = firebaseUserData.getUsername();
         String fbToken = firebaseUserData.getFirebaseToken();
+        Long fbUserId = firebaseUserData.getId();
 
         FirebaseAuth.getInstance().signInWithCustomToken(fbToken);
         editor.putString("fbUserName", fbUserName).commit();
-        editor.putString("fbToken", fbToken).commit();
+        editor.putLong("fbUserId", fbUserId).commit();
 
 
 

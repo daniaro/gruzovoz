@@ -25,7 +25,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     private List<Messages> messageList;
     private MessagesContract.OnItemClickListener onItemClickListener;
-    private final String userTokenId;
+    private final String userId;
 
 
     public static final int MSG_TYPE_LEFT = 0;
@@ -35,7 +35,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     public MessagesAdapter(List<Messages> messageList, String userTokeId, MessagesContract.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
         this.messageList = messageList;
-        this.userTokenId = userTokeId;
+        this.userId = userTokeId;
     }
 
     @NonNull
@@ -77,27 +77,22 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         void bind(Messages messages, MessagesContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(e-> onItemClickListener.onItemClick(messages));
 
-            //TODO: getid and admin status
-
-
-            Log.e(TAG, "userfullname:" + messages.getUid() );
-            Log.e(TAG, "userTOkenId:" + userTokenId );
-
-
-            if (messages.getUid()==null){
+            if (messages.getUid() == null || userId.equals("0")){
                 senderName.setText("Invalid name");
             }
-            else if (messages.getUid().equals(userTokenId)){
+            else if (messages.getUid().equals(userId)){
                  senderName.setText("Вы");
+            }
+            else if (messages.isFromSuperAdmin()){
+                //TODO: always false why?
+                senderName.setText("Админ");
             }
             else {
                 senderName.setText(messages.getUserFullName());
 
             }
 
-
             text.setText(messages.getText());
-
 
             Date date;
 

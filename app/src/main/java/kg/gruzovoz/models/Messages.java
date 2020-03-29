@@ -36,6 +36,7 @@ public class Messages {
         this.uid = uid;
     }
 
+
     public String getSentAt() {
         return sentAt;
     }
