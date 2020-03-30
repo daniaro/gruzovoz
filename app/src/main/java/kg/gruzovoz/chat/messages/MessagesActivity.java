@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +26,7 @@ import java.util.TimeZone;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
+import kg.gruzovoz.adapters.MessagesAdapterNOtUse;
 import kg.gruzovoz.models.Messages;
 
 public class MessagesActivity extends AppCompatActivity implements MessagesContract.View{
@@ -91,7 +91,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     private void getMessages() {
         FirebaseFirestore.getInstance().collection("messages")
                 .addSnapshotListener((snapshots, e) -> {
-                    if (snapshots != null) {
+                    try {
                         for (DocumentChange change : snapshots.getDocumentChanges()) {
                             switch (change.getType()) {
                                 case ADDED:
@@ -105,7 +105,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                             }
                         }
                     }
-                    else {
+                    catch (NullPointerException ex){
+                        recyclerView.setVisibility(View.GONE);
                         emptyView.setVisibility(View.VISIBLE);
 
                     }
