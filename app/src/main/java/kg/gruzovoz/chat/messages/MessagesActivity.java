@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,7 +27,6 @@ import java.util.TimeZone;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
-import kg.gruzovoz.adapters.MessagesAdapterNOtUse;
 import kg.gruzovoz.models.Messages;
 
 public class MessagesActivity extends AppCompatActivity implements MessagesContract.View{
@@ -38,6 +38,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     public static String fbUserName;
     public static Long fbUserId;
     private LinearLayout emptyView;
+    private Messages messages = new Messages();
 
 
     @SuppressLint("CommitPrefEdits")
@@ -51,7 +52,10 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         initList();
         getMessages();
 
+
+
     }
+
 
     private void initViews() {
         emptyView = findViewById(R.id.empty_view);
@@ -74,9 +78,15 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     public void initList(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recyclerView.scrollToPosition(messageList.lastIndexOf(new Messages()));
+        //Collections.sort(messageList, (o1, o2) -> o1.parseDataToTheSeconds().compareTo(o2.parseDataToTheSeconds()));
+        //Log.e("dateInTime", String.valueOf(messages.parseDataToTheSeconds()));
+//        citiesRef.orderBy("sentAt", OrderBy.Direction.DESCENDING);
+
         adapter = new MessagesAdapter(messageList, String.valueOf(fbUserId), e ->{
 
         });
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
 
@@ -89,6 +99,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
 
     private void getMessages() {
+//                FirebaseFirestore.getInstance().collection("messages").orderBy("sentAt", "desc").limit(50)
         FirebaseFirestore.getInstance().collection("messages")
                 .addSnapshotListener((snapshots, e) -> {
                     try {
@@ -97,6 +108,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                                 case ADDED:
                                     Messages messages = change.getDocument().toObject(Messages.class);
                                     messageList.add(messages);
+                                    recyclerView.scrollToPosition(messageList.lastIndexOf(messages));
                                     break;
                                 case REMOVED:
                                     break;
@@ -117,7 +129,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     private void sendMessage(String text) {
         Map<String, Object> map = new HashMap<>();
-        map.put("sentAt", setFormatedDate());
+        map.put("sentAt", Timestamp.now());
         map.put("text",text);
         map.put("userFullName", fbUserName);
         map.put("isFromSuperAdmin", false);
@@ -125,17 +137,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         FirebaseFirestore.getInstance().collection("messages").add(map);
     }
 
-    @SuppressLint("LongLogTag")
-    private String setFormatedDate() {
-        Date date = new Date();
-        TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        sdf.setTimeZone(timeZone);
-
-        return sdf.format(date);
-
-    }
 
 
 }

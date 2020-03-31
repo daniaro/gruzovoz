@@ -1,6 +1,7 @@
 package kg.gruzovoz.adapters;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        switch (holder.getItemViewType()) {
+            switch (holder.getItemViewType()) {
             case 0:
                 ViewHolder0 viewHolder0 = (ViewHolder0) holder;
                 viewHolder0.bind(messageList.get(position), onItemClickListener);
@@ -103,31 +104,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 senderName.setText(messages.getUserFullName());
             }
 
-            String dateStr = messages.getSentAt();
+
             text.setText(messages.getText());
-            time.setText(parseDate(dateStr));
+            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 
         }
 
-        private String parseDate(String dateStr) {
-            Date date;
-
-            TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            sdf.setTimeZone(timeZone);
-
-            try {
-                date = sdf.parse(dateStr);
-                assert date != null;
-                String format =  sdf.format(date);
-                return format.substring(11);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "неверная дата";
-            }
-        }
 
     }
 
@@ -157,32 +139,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 senderName.setText("Вы");
             }
 
-            String dateStr = messages.getSentAt();
-
             text.setText(messages.getText());
-            time.setText(parseDate(dateStr));
+            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+
 
         }
 
-        private String parseDate(String dateStr) {
-            Date date;
-
-            TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            sdf.setTimeZone(timeZone);
-
-            try {
-                date = sdf.parse(dateStr);
-                assert date != null;
-                String format =  sdf.format(date);
-                return format.substring(11);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "неверная дата";
-            }
-
-        }
     }
 }
