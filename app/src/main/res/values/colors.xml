@@ -8,7 +8,8 @@
     <color name="colorBlueDark">#0E1852 </color>
     <color name="colorGrayDark">#979797 </color>
 <!--    <color name="colorRightMessage">#7C7B7B</color>-->
-    <color name="colorLeftMessage">#B5B5CB</color>
+    <color name="colorLeftMessage">#dedee8</color>
+<!--    <color name="colorLeftMessage">#B5B5CB</color>-->
     <color name="colorRightMessage">#F5F5F6</color>
 
     <color name="colorAccent">#FFFFFF</color>

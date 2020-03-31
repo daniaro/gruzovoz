@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +80,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     public void initList(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
         recyclerView.scrollToPosition(messageList.lastIndexOf(new Messages()));
-        //Collections.sort(messageList, (o1, o2) -> o1.parseDataToTheSeconds().compareTo(o2.parseDataToTheSeconds()));
-        //Log.e("dateInTime", String.valueOf(messages.parseDataToTheSeconds()));
-//        citiesRef.orderBy("sentAt", OrderBy.Direction.DESCENDING);
-
         adapter = new MessagesAdapter(messageList, String.valueOf(fbUserId), e ->{
 
         });
@@ -99,16 +96,16 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
 
     private void getMessages() {
-//                FirebaseFirestore.getInstance().collection("messages").orderBy("sentAt", "desc").limit(50)
-        FirebaseFirestore.getInstance().collection("messages")
+        FirebaseFirestore.getInstance().collection("messages").orderBy("sentAt").limit(50)
                 .addSnapshotListener((snapshots, e) -> {
                     try {
                         for (DocumentChange change : snapshots.getDocumentChanges()) {
                             switch (change.getType()) {
                                 case ADDED:
                                     Messages messages = change.getDocument().toObject(Messages.class);
-                                    messageList.add(messages);
+                                    messageList.add(0,messages);
                                     recyclerView.scrollToPosition(messageList.lastIndexOf(messages));
+
                                     break;
                                 case REMOVED:
                                     break;
@@ -122,6 +119,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                         emptyView.setVisibility(View.VISIBLE);
 
                     }
+
                     adapter.notifyDataSetChanged();
                 });
 
@@ -135,6 +133,10 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         map.put("isFromSuperAdmin", false);
         map.put("uid", String.valueOf(fbUserId));
         FirebaseFirestore.getInstance().collection("messages").add(map);
+//        recyclerView.scrollToPosition(messageList.lastIndexOf(messages));
+//        adapter.notifyDataSetChanged();
+
+
     }
 
 

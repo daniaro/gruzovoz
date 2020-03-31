@@ -1,7 +1,6 @@
 package kg.gruzovoz.adapters;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
-import java.util.TimeZone;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesContract;
@@ -30,10 +27,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.onItemClickListener = onItemClickListener;
         this.messageList = messageList;
         this.userId = userTokeId;
+
     }
 
     @Override
     public int getItemViewType(int position) {
+
         if (!messageList.get(position).getUid().equals(userId)){
             return 0;
         }
@@ -63,7 +62,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            switch (holder.getItemViewType()) {
+
+        switch (holder.getItemViewType()) {
             case 0:
                 ViewHolder0 viewHolder0 = (ViewHolder0) holder;
                 viewHolder0.bind(messageList.get(position), onItemClickListener);
