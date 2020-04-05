@@ -1,7 +1,10 @@
 package kg.gruzovoz.chat;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,19 +13,38 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
+import kg.gruzovoz.models.Messages;
 
 public class ChatFragment extends Fragment implements ChatContract.View {
 
+    private TextView lastMessage;
+    private TextView lastMessageTime;
+    private TextView lastsender;
+    private ProgressBar progressBar;
     private CardView chatCardView;
+    private static Long fbUserId;
+    private List<Messages> messageList = new ArrayList<>();
+
+
+
 
 
     @Override
@@ -33,15 +55,102 @@ public class ChatFragment extends Fragment implements ChatContract.View {
         Toolbar toolbar = root.findViewById(R.id.chat_app_bar);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
 
-        chatCardView = root.findViewById(R.id.chat_cv);
-        chatCardView.setOnClickListener(e -> startActivity( new Intent(getContext(), MessagesActivity.class)));
+        initViews(root);
+        setViews();
+
+        progressBar = root.findViewById(R.id.indeterminateBar);
+        shwProgressBar();
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        fbUserId = sharedPreferences.getLong("fbUserId",0);
 
         return root;
     }
 
+    @SuppressLint("SetTextI18n")
+    private void setViews() {
+        FirebaseFirestore.getInstance().collection("messages")
+                .orderBy("sentAt")
+                .limitToLast(1)
+                .addSnapshotListener((snapshots, e) -> {
+            try {
+                for (DocumentChange change : snapshots.getDocumentChanges()) {
+                    switch (change.getType()) {
+                        case ADDED:
+                            Messages messages = change.getDocument().toObject(Messages.class);
+
+                            messageList.add(messages);
+                            if (!(messages.getUid().equals(String.valueOf(fbUserId)))) {
+                                lastsender.setText(messages.getUserFullName() + ": ");
+                            }
+                            else {
+                                lastsender.setText("Вы: ");
+                            }
+                            lastMessage.setText(messages.getText());
+                            lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+                            hideProgressBar();
 
 
+                            break;
+                        case REMOVED:
+                            break;
+                        case MODIFIED:
+                            break;
+                    }
+                }
+            }
+            catch (NullPointerException ex){
+                shwProgressBar();
 
+            }
+//                .get()
+//                .addOnSuccessListener(snapshots -> {
+//                    for (DocumentSnapshot snapshot : snapshots){
+//                        Messages messages = snapshot.toObject(Messages.class);
+//
+//                        messageList.add(messages);
+//                        assert messages != null;
+//                        if (!(messages.getUid().equals(String.valueOf(fbUserId)))) {
+//                            lastsender.setText(messages.getUserFullName() + ": ");
+//                        }
+//                        else {
+//                            lastsender.setText("Вы: ");
+//                        }
+//                        lastMessage.setText(messages.getText());
+//                        lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+//                        hideProgressBar();
+//                        Log.e("fbUserId ", String.valueOf(fbUserId));
+//                        Log.e("messages.getUid() ", messages.getUid());
+//
+//
+//                    }
+
+                });
+    }
+
+    private void initViews(View root) {
+        TextView chatName = root.findViewById(R.id.chat_name_tv);
+        chatCardView = root.findViewById(R.id.chat_cv);
+        lastMessage = root.findViewById(R.id.last_message_tv);
+        lastMessageTime = root.findViewById(R.id.last_message_time_tv);
+        lastsender = root.findViewById(R.id.last_sender_tv);
+
+        chatCardView.setOnClickListener(e -> startActivity( new Intent(getContext(), MessagesActivity.class)));
+
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+        chatCardView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void shwProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        chatCardView.setVisibility(View.GONE);
+    }
 
 
 }

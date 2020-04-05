@@ -1,6 +1,7 @@
 package kg.gruzovoz.chat.messages;
 
 import kg.gruzovoz.models.Messages;
+import kg.gruzovoz.models.Notify;
 
 public interface MessagesContract {
 
@@ -14,6 +15,6 @@ public interface MessagesContract {
     }
 
     interface Presenter{
-
+        void sendNotify(String fbUserId,String fbUserName, String text);
     }
 }

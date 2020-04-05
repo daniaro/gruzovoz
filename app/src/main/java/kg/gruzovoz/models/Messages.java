@@ -1,9 +1,11 @@
 package kg.gruzovoz.models;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
 
 public class Messages  {
 
+    @ServerTimestamp
     private Timestamp sentAt;
     private String text;
     private String userFullName;
@@ -61,5 +63,16 @@ public class Messages  {
 
     public void setUserFullName(String userFullName) {
         this.userFullName = userFullName;
+    }
+
+    @Override
+    public String toString() {
+        return "Messages{" +
+                "sentAt=" + sentAt.toDate()+
+                ", text='" + text + '\'' +
+                ", userFullName='" + userFullName + '\'' +
+                ", isFromSuperAdmin=" + isFromSuperAdmin +
+                ", uid='" + uid + '\'' +
+                '}';
     }
 }

@@ -8,9 +8,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.List;
 
 import kg.gruzovoz.R;
@@ -104,12 +105,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 senderName.setText(messages.getUserFullName());
             }
 
-
             text.setText(messages.getText());
             time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 
         }
-
 
     }
 
@@ -129,6 +128,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
 
+        @SuppressLint("SetTextI18n")
         void bind(Messages messages, MessagesContract.OnItemClickListener onItemClickListener) {
             itemView.setOnClickListener(e-> onItemClickListener.onItemClick(messages));
 
@@ -138,7 +138,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             else if (messages.getUid().equals(userId)){
                 senderName.setText("Вы");
             }
+            else {
+                senderName.setText("Invalid name");
+            }
 
+//            messages.setSentAt(Timestamp.now());
             text.setText(messages.getText());
             time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 

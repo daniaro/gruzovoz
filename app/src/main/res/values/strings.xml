@@ -50,4 +50,7 @@
     <string name="finish_order_title">Завершить заказ</string>
     <string name="confirm_finish_order">Вы уверены, что хотите завершить этот заказ?</string>
     <string name="finish">Завершить</string>
+    <string name="default_notification_channel_id">Hi</string>
+    <string name="msg_subscribed">Вы успешно подписались</string>
+    <string name="msg_subscribe_failed">Вы не подписались</string>
 </resources>

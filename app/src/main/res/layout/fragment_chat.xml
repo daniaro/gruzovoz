@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,11 +29,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/indeterminateBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/rippleColor"
+        tools:targetApi="lollipop" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/chat_cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_below="@+id/appBarLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp"
+        android:visibility="visible">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,15 +91,26 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/last_message_tv"
+                android:id="@+id/last_sender_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="19dp"
                 android:layout_marginTop="68dp"
                 android:layout_toEndOf="@+id/contact_iv"
-                android:text="Вы: Ул.Белорусская 17"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="Вы:" />
+
+            <TextView
+                android:id="@+id/last_message_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="68dp"
+                android:layout_toEndOf="@+id/last_sender_tv"
+                android:textSize="12sp"
+                tools:text="Ул.Белорусская 17" />
 
             <TextView
                 android:id="@+id/last_message_time_tv"
@@ -96,9 +120,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="43dp"
                 android:layout_marginEnd="14dp"
-                android:text="12:05"
-                android:textSize="10sp" />
-
+                android:textSize="10sp"
+                tools:text="12:05" />
 
 
         </RelativeLayout>
@@ -107,4 +130,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

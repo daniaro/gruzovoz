@@ -6,6 +6,8 @@ import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
 import kg.gruzovoz.models.FirebaseUserData;
 import kg.gruzovoz.models.Login;
+import kg.gruzovoz.models.Notify;
+import kg.gruzovoz.models.NotifyStatus;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.models.UserPage;
@@ -42,4 +44,7 @@ public interface CargoService {
     //for firebase
     @GET("/auth/firebase_token/")
     Call<FirebaseUserData> getFirebaseUserData(@Header("Authorization") String authToken);
+
+    @POST("api/chat/notify")
+    Call<NotifyStatus> sendNotify(@Header("Authorization") String authToken, @Body Notify notify);
 }
