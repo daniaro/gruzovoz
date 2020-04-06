@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,10 +21,24 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 
+import java.util.Objects;
+
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    public static int message_counter;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sharedPreferences = getApplicationContext()
+                .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+    }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -32,6 +47,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null ){
             if (!MessagesActivity.active) {
                 sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                message_counter++;
+                editor.putInt("message_counter",message_counter).commit();
+                Log.e("message_counterMFMS", String.valueOf(message_counter));
+
+            }
+            else {
+                message_counter = 0;
+                editor.putInt("message_counter",message_counter).commit();
+
             }
 
 
@@ -43,6 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
 
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

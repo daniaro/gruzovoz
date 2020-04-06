@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,15 +23,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
+import kg.gruzovoz.fcm.MyFirebaseMessagingService;
 import kg.gruzovoz.models.Messages;
 
 public class ChatFragment extends Fragment implements ChatContract.View {
@@ -38,14 +40,14 @@ public class ChatFragment extends Fragment implements ChatContract.View {
     private TextView lastMessage;
     private TextView lastMessageTime;
     private TextView lastsender;
+    private CardView imageViewMessageCounter;
+    private TextView textViewMessageCounter;
     private ProgressBar progressBar;
     private CardView chatCardView;
     private static Long fbUserId;
     private List<Messages> messageList = new ArrayList<>();
-
-
-
-
+    private SharedPreferences.Editor editor;
+    private  static int message_counter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,14 +59,17 @@ public class ChatFragment extends Fragment implements ChatContract.View {
 
         initViews(root);
         setViews();
-
-        progressBar = root.findViewById(R.id.indeterminateBar);
+        sharedPreferences();
         shwProgressBar();
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        fbUserId = sharedPreferences.getLong("fbUserId",0);
-
         return root;
+    }
+
+    private void sharedPreferences() {
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        fbUserId = sharedPreferences.getLong("fbUserId",0);
+        message_counter = sharedPreferences.getInt("message_counter", 0);
+        editor =  sharedPreferences.edit();
     }
 
     @SuppressLint("SetTextI18n")
@@ -74,6 +79,7 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                 .limitToLast(1)
                 .addSnapshotListener((snapshots, e) -> {
             try {
+                assert snapshots != null;
                 for (DocumentChange change : snapshots.getDocumentChanges()) {
                     switch (change.getType()) {
                         case ADDED:
@@ -88,6 +94,22 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                             }
                             lastMessage.setText(messages.getText());
                             lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+
+                            Log.e("message_counter", String.valueOf(message_counter));
+
+                            if(message_counter == 0){
+                                imageViewMessageCounter.setVisibility(View.GONE);
+                                lastMessageTime.setTextColor(Color.parseColor("#928C8C"));
+
+                            }
+                            else {
+                                lastMessageTime.setTextColor(Color.parseColor("#5A00FF"));
+                                imageViewMessageCounter.setVisibility(View.VISIBLE);
+                                textViewMessageCounter.setVisibility(View.VISIBLE);
+                                textViewMessageCounter.setText(String.valueOf(message_counter));
+
+                            }
+
                             hideProgressBar();
 
 
@@ -103,39 +125,28 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                 shwProgressBar();
 
             }
-//                .get()
-//                .addOnSuccessListener(snapshots -> {
-//                    for (DocumentSnapshot snapshot : snapshots){
-//                        Messages messages = snapshot.toObject(Messages.class);
-//
-//                        messageList.add(messages);
-//                        assert messages != null;
-//                        if (!(messages.getUid().equals(String.valueOf(fbUserId)))) {
-//                            lastsender.setText(messages.getUserFullName() + ": ");
-//                        }
-//                        else {
-//                            lastsender.setText("Вы: ");
-//                        }
-//                        lastMessage.setText(messages.getText());
-//                        lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
-//                        hideProgressBar();
-//                        Log.e("fbUserId ", String.valueOf(fbUserId));
-//                        Log.e("messages.getUid() ", messages.getUid());
-//
-//
-//                    }
 
                 });
     }
 
     private void initViews(View root) {
         TextView chatName = root.findViewById(R.id.chat_name_tv);
+        progressBar = root.findViewById(R.id.indeterminateBar);
         chatCardView = root.findViewById(R.id.chat_cv);
         lastMessage = root.findViewById(R.id.last_message_tv);
         lastMessageTime = root.findViewById(R.id.last_message_time_tv);
         lastsender = root.findViewById(R.id.last_sender_tv);
+        imageViewMessageCounter = root.findViewById(R.id.image_view_message_counter);
+        textViewMessageCounter = root.findViewById(R.id.text_view_message_counter);
+        if (message_counter == 0){
+            imageViewMessageCounter.setVisibility(View.GONE);
+        }
 
-        chatCardView.setOnClickListener(e -> startActivity( new Intent(getContext(), MessagesActivity.class)));
+        chatCardView.setOnClickListener(e ->{
+            message_counter = 0;
+            editor.putInt("message_counter",message_counter).commit();
+            startActivity( new Intent(getContext(), MessagesActivity.class));
+        });
 
 
     }

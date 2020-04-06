@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
+import kg.gruzovoz.chat.ChatFragment;
+import kg.gruzovoz.fcm.MyFirebaseMessagingService;
 import kg.gruzovoz.models.Messages;
 
 public class MessagesActivity extends AppCompatActivity implements MessagesContract.View{
@@ -41,6 +45,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     public static String fbUserName;
     public static Long fbUserId;
     public static boolean active = false;
+
+    SharedPreferences.Editor editor;
 
     @Override
     public void onStart() {
@@ -67,6 +73,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         initList();
         getMessages();
         subscribeTopic();
+
     }
 
 
@@ -78,6 +85,9 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         closeIcon.setOnClickListener(e ->{
             onBackPressed();
             finish();
+            editor.putInt("message_counter",0).commit();
+
+
         });
     }
 
@@ -85,6 +95,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         fbUserId = sharedPreferences.getLong("fbUserId",0);
         fbUserName = sharedPreferences.getString("fbUserName", null);
+        editor = sharedPreferences.edit();
 
     }
 

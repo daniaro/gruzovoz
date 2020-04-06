@@ -54,8 +54,7 @@
             android:background="#e6e6e6"
             android:paddingStart="16dp"
             android:paddingBottom="8dp"
-
-            >
+            tools:ignore="RtlSymmetry">
 
             <ImageView
                 android:id="@+id/contact_iv"
@@ -86,7 +85,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="38dp"
                 android:layout_toEndOf="@+id/contact_iv"
-                android:text="Водители"
+                android:text="@string/drivers_chat_title"
                 android:textColor="@color/blackTextColor"
                 android:textSize="16sp" />
 
@@ -120,8 +119,62 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="43dp"
                 android:layout_marginEnd="14dp"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="10sp"
-                tools:text="12:05" />
+                tools:text="12:05"
+                tools:ignore="SmallSp" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/image_view_message_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:layout_below="@+id/last_message_time_tv"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="65dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardBackgroundColor="@color/colorNotification"
+                    app:cardCornerRadius="10dp"
+                >
+
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    >
+
+                    <TextView
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:gravity="center"
+                        android:paddingBottom="2dp"
+                        android:id="@+id/text_view_message_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="1dp"
+                        tools:text="2"
+                        android:textColor="@color/colorAccent"
+                        android:textAlignment="center"
+                        android:textSize="9sp"
+                        tools:ignore="RtlHardcoded">
+
+                    </TextView>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
 
 
         </RelativeLayout>

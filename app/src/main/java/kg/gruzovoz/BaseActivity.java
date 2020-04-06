@@ -55,6 +55,7 @@ public class BaseActivity extends AppCompatActivity {
             ft.commit();
         });
 
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         if (savedInstanceState == null) {

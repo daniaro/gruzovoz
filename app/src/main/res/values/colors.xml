@@ -3,6 +3,7 @@
     <color name="colorPrimary">#000051</color>
     <color name="colorUserToolbar">#534BAE</color>
     <color name="colorPrimaryBackgroundLight">#1A237E</color>
+    <color name="colorNotification">#5A00FF</color>
     <color name="colorPrimaryDark">#000040 </color>
 
     <color name="colorBlueDark">#0E1852 </color>
