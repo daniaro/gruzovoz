@@ -19,7 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import kg.gruzovoz.R;
-import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
 
 public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
 
@@ -38,23 +38,23 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     TextView commentTextView;
 
     private static final int REQUEST_CALL = 1;
-    private Order order;
+    private Results results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        order = (Order) getIntent().getSerializableExtra("order");
+        results = (Results) getIntent().getSerializableExtra("order");
         presenter = new DetailPresenter(this);
 
         initViews();
-        if (!order.isActive() && !order.isDone()) {
+        if (!results.isActive() && !results.isDone()) {
             acceptButton.setVisibility(View.GONE);
             finishButton.setVisibility(View.VISIBLE);
             callButton.setVisibility(View.VISIBLE);
 
-        } else if (order.isDone()) {
+        } else if (results.isDone()) {
             acceptButton.setVisibility(View.GONE);
             finishButton.setVisibility(View.GONE);
             callButton.setVisibility(View.GONE);
@@ -91,7 +91,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     }
 
     public void makePhoneCall(){
-        String phoneNumber = order.getPhoneNumber();
+        String phoneNumber = results.getPhoneNumber();
         if (phoneNumber.trim().length() >0){
             if (ContextCompat.checkSelfPermission(DetailActivity.this,
                     Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED){
@@ -125,18 +125,18 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @SuppressLint("DefaultLocale")
     @Override
     public void setViewInfo() {
-        carTypeTextView.setText(order.getCarType());
-        initialAddressTextView.setText(order.getStartAddress());
-        if (order.getFinishAddress() == null || order.getFinishAddress().isEmpty() || order.getFinishAddress().equals("")) {
+        carTypeTextView.setText(results.getCarType());
+        initialAddressTextView.setText(results.getStartAddress());
+        if (results.getFinishAddress() == null || results.getFinishAddress().isEmpty() || results.getFinishAddress().equals("")) {
             finalAddressTextView.setText("Не указано");
         }
         else {
-            finalAddressTextView.setText(order.getFinishAddress());
+            finalAddressTextView.setText(results.getFinishAddress());
 
         }
-        String commission = order.getCommission();
+        String commission = results.getCommission();
         // Here we check if the admin entered the commission's value with or without the percent sign
-        double res = order.getPrice()*Integer.parseInt(commission)/100;
+        double res = results.getPrice()*Integer.parseInt(commission)/100;
         String strRes;
 
         if(res == (long) res) {
@@ -151,12 +151,12 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 //            paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
 //        }
 
-            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) order.getPrice()), strRes));
+            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) results.getPrice()), strRes));
 
 
 
-        cargoTypeTextView.setText(order.getTypeOfCargo());
-        commentTextView.setText(order.getComments());
+        cargoTypeTextView.setText(results.getTypeOfCargo());
+        commentTextView.setText(results.getComments());
     }
 
     @Override
@@ -167,7 +167,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         builder.setNegativeButton(R.string.cancel_order, null);
         builder.setPositiveButton(getString(R.string.button_accept), (dialog, which) -> {
             setResult(RESULT_OK);
-            presenter.acceptOrder(order.getId());
+            presenter.acceptOrder(results.getId());
 
         });
         AlertDialog dialog = builder.create();
@@ -182,7 +182,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         builder.setNegativeButton(R.string.cancel_order, null);
         builder.setPositiveButton(getString(R.string.finish), (dialog, which) -> {
             setResult(RESULT_OK);
-            presenter.finishOrder(order.getId());
+            presenter.finishOrder(results.getId());
 
             finish();
 
@@ -194,7 +194,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void startCallActivity() {
         Intent intent = new Intent(DetailActivity.this, CallActivity.class);
-        intent.putExtra("phoneNumber", order.getPhoneNumber());
+        intent.putExtra("phoneNumber", results.getPhoneNumber());
         startActivity(intent);
         finish();
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColorPrimary"
+    android:background="@color/colorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".chat.ChatFragment">
@@ -48,12 +48,14 @@
         android:layout_marginTop="0dp"
         android:visibility="visible">
 
+<!--                    android:background="#e6e6e6"
+-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#e6e6e6"
             android:paddingStart="16dp"
             android:paddingBottom="8dp"
+            android:background="@color/colorWhite"
             tools:ignore="RtlSymmetry">
 
             <ImageView

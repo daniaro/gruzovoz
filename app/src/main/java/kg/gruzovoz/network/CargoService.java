@@ -9,6 +9,7 @@ import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.Notify;
 import kg.gruzovoz.models.NotifyStatus;
 import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
 import kg.gruzovoz.models.User;
 import kg.gruzovoz.models.UserPage;
 import retrofit2.Call;
@@ -29,13 +30,14 @@ public interface CargoService {
     Call<Void> acceptOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body AcceptOrder acceptOrder);
 
     @GET("/order/user-orders/")
-    Call<List<Order>> getOrdersHistory(@Header("Authorization") String authToken, @Query("search") boolean isDone);
+    Call<Order> getOrdersHistory(@Header("Authorization") String authToken, @Query("search") boolean isDone);
 
     @PUT("order/done/{id}/")
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
 
     @GET("/order/all/")
-    Call<List<Order>> getAllOrders(@Header("Authorization") String authToken);
+    Call<Order> getAllOrders(@Header("Authorization") String authToken);
+
 
     @GET("/auth/driver/")
     Call<UserPage> getPersonalData(@Header("Authorization") String authToken);

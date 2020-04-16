@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -23,28 +23,5 @@ public class HistoryPresenter implements HistoryContract.Presenter {
         this.view = view;
     }
 
-    @Override
-    public void populateOrders(boolean isDone) {
-        Call<List<Order>> call = service.getOrdersHistory(BaseActivity.authToken, isDone);
-        call.enqueue(new Callback<List<Order>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<Order>> call, @NotNull Response<List<Order>> response) {
-                if (response.body() != null && response.body().size() > 0) {
-                    Collections.reverse(response.body());
-                    view.setOrders(response.body());
-                    view.hideProgressBar();
-                } else {
-                    view.showEmptyView();
-                    view.setOrders(response.body());
-                }
-                view.stopRefreshingOrders();
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<List<Order>> call, @NotNull Throwable t) {
-                view.showError();
-            }
-        });
-    }
 
 }

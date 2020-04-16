@@ -2,20 +2,20 @@ package kg.gruzovoz;
 
 import java.util.List;
 
-import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
 
 public interface BaseContract {
 
     interface BaseView {
-        void setOrders(List<Order> orders);
+        void setOrders(List<Results> results);
     }
 
     interface BasePresenter {
-        void populateOrders();
+//        void populateOrders();
     }
 
     interface OnItemClickListener {
-        void onItemClick(Order order);
+        void onItemClick(Results results);
     }
 
     interface OnOrderFinishedListener {

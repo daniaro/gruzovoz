@@ -179,7 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorUserToolbar"
-        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorColor="@color/colorPrimaryBackgroundLight"
         app:tabIndicatorHeight="4dp"
         app:tabTextAppearance="@style/TabLayoutTheme"
         app:tabTextColor="@color/bottom_nav_icons">
@@ -190,7 +190,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColorPrimary">
+        android:background="@color/colorWhite">
 
     </androidx.viewpager.widget.ViewPager>
 

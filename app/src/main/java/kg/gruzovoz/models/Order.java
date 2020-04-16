@@ -1,116 +1,54 @@
 package kg.gruzovoz.models;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
-import java.io.Serializable;
+public class Order {
 
-public class Order implements Serializable {
+    private long count;
+    private String next;
+    private String previous;
+    private List<Results> results;
 
-    private long id;
-    @SerializedName("type_of_car")
-    private String carType;
-    @SerializedName("type_of_transport")
-    private int typeOfTransport;
-    @SerializedName("type_of_cargo")
-    private String typeOfCargo;
-    @SerializedName("start_address")
-    private String startAddress;
-    @SerializedName("finish_address")
-    private String finishAddress;
-    @SerializedName("order_price")
-    private double price;
-    @SerializedName("commission")
-    private String commission;
-    @SerializedName("lead_time")
-    private int leadTime;
-    @SerializedName("date_of_created")
-    private String dateOfCreated;
-    @SerializedName("phone_number")
-    private String phoneNumber;
-    @SerializedName("comments")
-    private String comments;
-    @SerializedName("active")
-    private boolean isActive;
-    @SerializedName("done")
-    private boolean isDone;
-    @SerializedName("calculated")
-    private boolean calculate;
-
-    public Order(long id, String carType, int typeOfTransport,String typeOfCargo, String startAddress, String finishAddress, double price, String commission, int leadTime,String dateOfCreated, String phoneNumber, String comments, boolean active, boolean done, boolean calculate) {
-        this.id = id;
-        this.carType = carType;
-        this.typeOfTransport = typeOfTransport;
-        this.typeOfCargo = typeOfCargo;
-        this.startAddress = startAddress;
-        this.finishAddress = finishAddress;
-        this.price = price;
-        this.commission = commission;
-        this.leadTime = leadTime;
-        this.dateOfCreated = dateOfCreated;
-        this.phoneNumber = phoneNumber;
-        this.comments = comments;
-        this.isActive = active;
-        this.isDone = done;
-        this.calculate = calculate;
+    public Order(){
+        super();
     }
 
-    public Order() {
-
+    public Order(long count, String next, String previous, List<Results> results) {
+        this.count = count;
+        this.next = next;
+        this.previous = previous;
+        this.results = results;
     }
 
-    public long getId() {
-        return id;
+    public long getCount() {
+        return count;
     }
 
-    public String getCarType() {
-        return carType;
+    public void setCount(long count) {
+        this.count = count;
     }
 
-    public String getStartAddress() {
-        return startAddress;
+    public String getNext() {
+        return next;
     }
 
-    public String getFinishAddress() {
-        return finishAddress;
+    public void setNext(String next) {
+        this.next = next;
     }
 
-    public double getPrice() {
-        return price;
+    public String getPrevious() {
+        return previous;
     }
 
-    public String getCommission() {
-        return commission;
+    public void setPrevious(String previous) {
+        this.previous = previous;
     }
 
-    public int getLeadTime() {
-        return leadTime;
+    public List<Results> getResults() {
+        return results;
     }
 
-    public String getDateOfCreated() {
-        return dateOfCreated;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public String getTypeOfCargo() {
-        return typeOfCargo;
-    }
-
-    public boolean isCalculated() {
-        return calculate;
+    public void setResults(List<Results> results) {
+        this.results = results;
     }
 }

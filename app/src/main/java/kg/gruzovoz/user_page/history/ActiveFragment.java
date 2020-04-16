@@ -17,24 +17,46 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
 import java.util.List;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
+import kg.gruzovoz.adapters.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
+import kg.gruzovoz.network.CargoService;
+import kg.gruzovoz.network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static kg.gruzovoz.adapters.PaginationListener.PAGE_START;
 
 
 public class ActiveFragment extends Fragment implements HistoryContract.View{
 
     private HistoryContract.Presenter presenter;
+    private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
+
 
     private OrdersAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager linearLayoutManager;
+
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
 
     private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
 
@@ -46,7 +68,6 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_active, container, false);
 
         progressBar = root.findViewById(R.id.progressBar_historyActive);
@@ -60,7 +81,13 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout_historyActive);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders(false));
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+            itemCount = 0;
+            currentPage = PAGE_START;
+            isLastPage = false;
+            adapter.clear();
+            populateOrders(false);
+        });
     }
 
     @Override
@@ -75,16 +102,34 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerViewActive);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-
-        adapter = new OrdersAdapter(this::openDetailScreen);
+        adapter = new OrdersAdapter(new Order(), results -> openDetailScreen(results));
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         presenter = new HistoryPresenter(this);
-        presenter.populateOrders(false);
+        populateOrders(false);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new PaginationListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                populateOrders(false);
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
     }
 
     @Override
@@ -97,14 +142,14 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     }
 
     @Override
-    public void setOrders(List<Order> orderList) {
-        adapter.setValues(orderList);
+    public void setOrders(List<Results> resultsList) {
+        adapter.setValues(resultsList);
     }
 
     @Override
-    public void openDetailScreen(Order order) {
+    public void openDetailScreen(Results results) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("order", order);
+        intent.putExtra("order", results);
         startActivityForResult(intent, 101);
     }
 
@@ -127,11 +172,47 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
-            presenter.populateOrders(false);
+            populateOrders(false);
 
             onOrderFinishedListener.onOrderFinished();
         }
     }
+
+    public void populateOrders(boolean isDone) {
+        Call<Order> call = service.getOrdersHistory(BaseActivity.authToken, isDone);
+        final Order[] orders = new Order[1];
+        call.enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {
+                orders[0] = response.body();
+                if (response.body() != null && response.body().getResults().size() >0) {
+                    if (currentPage != PAGE_START)
+                        adapter.removeLoading();
+                    Collections.reverse(response.body().getResults());
+                    adapter.addItems(orders[0]);
+                    // setOrders(response.body().getResults());
+                    stopRefreshingOrders();
+                    hideProgressBar();
+
+                    if (response.body().getNext() != null) {
+                        adapter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
+                }else {
+                    showEmptyView();
+                }
+                stopRefreshingOrders();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Order> call, @NotNull Throwable t) {
+                showError();
+            }
+        });
+    }
+
 
 
 }

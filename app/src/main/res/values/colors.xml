@@ -17,6 +17,7 @@
     <color name="textColorPrimary">#928C8C</color>
 <!--    <color name="backgroundColorPrimary">#f2f3f4</color>-->
     <color name="backgroundColorPrimary">#e6e6e6</color>
+    <color name="colorWhite">#ffffff</color>
     <color name="blackTextColor">#000000</color>
     <color name="callButtonColor">#148629</color>
     <color name="yellowButtonColor">#f8c602</color>

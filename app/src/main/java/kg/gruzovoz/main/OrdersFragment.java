@@ -3,6 +3,7 @@ package kg.gruzovoz.main;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Objects;
 
+import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
+import kg.gruzovoz.adapters.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
+import kg.gruzovoz.network.CargoService;
+import kg.gruzovoz.network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static kg.gruzovoz.adapters.PaginationListener.PAGE_START;
 
 public class OrdersFragment extends Fragment implements OrdersContract.View {
 
@@ -34,6 +48,15 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout emptyView;
     private ProgressBar progressBar;
+    private LinearLayoutManager linearLayoutManager;
+    private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
+
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private int totalPage = 10;
+    private boolean isLoading = false;
+    int itemCount = 0;
+
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -57,23 +80,85 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders());
+        swipeRefreshLayout.setOnRefreshListener(() ->{
+            itemCount = 0;
+            currentPage = PAGE_START;
+            isLastPage = false;
+            adapter.clear();
+            populateOrders();
+        });
+//        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders());
     }
 
     private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
         if (adapter == null) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            adapter = new OrdersAdapter(this::showDetailScreen);
+            adapter = new OrdersAdapter(new Order(), this::showDetailScreen);
             presenter = new OrdersPresenter(this);
-            presenter.populateOrders();
+//            presenter.populateOrders();
+            populateOrders();
         }
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new PaginationListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                populateOrders();
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//
+//
+//                visileItemCount = linearLayoutManager.getChildCount();
+//                totalItemCount = linearLayoutManager.getItemCount();
+//                pastVisileItems = linearLayoutManager.findFirstVisibleItemPosition();
+//
+//                if (dy>0){
+//                    visileItemCount = linearLayoutManager.getChildCount();
+//                    totalItemCount = linearLayoutManager.getItemCount();
+//                    pastVisileItems = linearLayoutManager.findFirstVisibleItemPosition();
+//
+//                    if (isLoading){
+//                        if (totalItemCount>previus_total){
+//                            isLoading = false;
+//                            previus_total = totalItemCount;
+//                        }
+//                    }
+//                    if (!isLoading&&(totalItemCount-visileItemCount)<=(pastVisileItems+ view_threshold)){
+//
+//                        page_namber++;
+//                        pagination();
+//                        isLoading = true;
+//                    }
+//                }
+//            }
+//        });
     }
+
+
 
     @Override
     public void hideProgressBar() {
@@ -83,9 +168,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
-    public void showDetailScreen(Order order) {
+    public void showDetailScreen(Results results) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("order", order);
+        intent.putExtra("order", results);
         startActivityForResult(intent, 100);
     }
 
@@ -93,7 +178,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
-            presenter.populateOrders();
+            populateOrders();
+//            presenter.populateOrders();
         }
     }
 
@@ -121,9 +207,47 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
     @Override
-    public void setOrders(List<Order> orders) {
-        adapter.setValues(orders);
+    public void setOrders(List<Results> results) {
+        adapter.setValues(results);
     }
+
+
+
+    public void populateOrders(){
+        final Order[] orders = new Order[1];
+        Call<Order> call = service.getAllOrders(BaseActivity.authToken);
+        call.enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {
+                orders[0] = response.body();
+                if (response.body() != null && response.body().getResults().size() >0) {
+                    if (currentPage != PAGE_START)
+                        adapter.removeLoading();
+
+                    adapter.addItems(orders[0]);
+                   // setOrders(response.body().getResults());
+                    stopRefreshingOrders();
+                    hideProgressBar();
+
+                    if (response.body().getNext() != null) {
+                        adapter.addLoading();
+                    } else {
+                        isLastPage = true;
+                    }
+                    isLoading = false;
+                }else {
+                    showEmptyView();
+                }
+                stopRefreshingOrders();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Order> call, @NotNull Throwable t) {
+                showError();
+            }
+        });
+    }
+
 
 
 }

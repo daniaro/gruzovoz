@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,44 +25,113 @@ import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.Order;
+import kg.gruzovoz.models.Results;
 
-public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
+public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private List<Order> ordersList;
     private BaseContract.OnItemClickListener clickListener;
     private BaseActivity baseActivity = new BaseActivity();
 
-    public OrdersAdapter(BaseContract.OnItemClickListener clickListener) {
-        ordersList = new ArrayList<>();
+    private final int VIEW_TYPE_LOADING = 0;
+    private final int VIEW_TYPE_NORMAL = 1;
+    private boolean isLoaderVisible = false;
+    private List<Results> resultsList;
+
+
+    public OrdersAdapter(Order order, BaseContract.OnItemClickListener clickListener) {
+        resultsList = new ArrayList<>();
+//        resultsList = order.getResults();
         this.clickListener = clickListener;
     }
 
-    public void setValues(List<Order> values) {
-        ordersList.clear();
+    @NonNull
+    @Override
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case VIEW_TYPE_NORMAL:
+                return new OrderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false)) {
+                };
+            case VIEW_TYPE_LOADING:
+                return new LoadingViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_loading, parent, false));
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBind(position, clickListener);
+
+    }
+
+//    @Override
+//    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
+//        holder.bind(resultsList.get(position), clickListener);
+//    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isLoaderVisible) {
+            return position == resultsList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_NORMAL;
+        } else {
+            return VIEW_TYPE_NORMAL;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return resultsList == null ? 0 : resultsList.size();
+    }
+
+
+    public void addItems(Order order) {
+        resultsList.addAll(order.getResults());
+        notifyDataSetChanged();
+    }
+
+
+    public void setValues(List<Results> values) {
+        resultsList.clear();
         if (values != null) {
-            ordersList.addAll(values);
+            resultsList.addAll(values);
         }
         this.notifyDataSetChanged();
     }
 
 
-    @NonNull
-    @Override
-    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new OrderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.order_list_item, parent, false));
+    public void addLoading() {
+        isLoaderVisible = true;
+        resultsList.add(new Results());
+        notifyItemInserted(resultsList.size() - 1);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        holder.bind(ordersList.get(position), clickListener);
+
+    public void removeLoading() {
+        try {
+            isLoaderVisible = false;
+            int position = resultsList.size() - 1;
+            Results result = getOrders(position);
+            if (result != null) {
+                resultsList.remove(position);
+                notifyItemRemoved(position);
+            }
+        } catch (Exception ignored) {
+
+        }
     }
 
-    @Override
-    public int getItemCount() {
-        return ordersList.size();
+
+    public void clear() {
+        resultsList.clear();
+        notifyDataSetChanged();
     }
 
-    class OrderViewHolder extends RecyclerView.ViewHolder {
+
+    private Results getOrders(int position) {
+        return resultsList.get(position);
+    }
+
+
+    class OrderViewHolder extends BaseViewHolder {
 
         TextView dateTextView;
         TextView dateTextView_month;
@@ -84,10 +154,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             culculate2p = itemView.findViewById(R.id.culculate2p);
         }
 
+        @Override
+        protected void clear() {
+
+        }
+
         @SuppressLint({"LongLogTag", "DefaultLocale"})
-        void bind(final Order order, final BaseContract.OnItemClickListener onItemClickListener) {
+        public void onBind(int position, final BaseContract.OnItemClickListener onItemClickListener) {
+            Results results = resultsList.get(position);
+
             itemView.setOnClickListener(view -> {
-                onItemClickListener.onItemClick(order);
+                onItemClickListener.onItemClick(results);
                 itemView.setEnabled(false);
 
                 Timer buttonTimer = new Timer();
@@ -102,8 +179,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
 
 
-            String commission = order.getCommission();
-            double res = order.getPrice() * Integer.parseInt(commission) / 100;
+            String commission = results.getCommission();
+            double res = results.getPrice() * Integer.parseInt(commission) / 100;
             String strRes;
 
             if (res == (long) res) {
@@ -112,13 +189,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                 strRes = String.format("%s", res);
             }
 
-            paymentTextView.setText(String.format("%s  ||  %s", String.valueOf((int) order.getPrice()), strRes));
+            paymentTextView.setText(String.format("%s  ||  %s", String.valueOf((int) results.getPrice()), strRes));
 
-            carTypeTextView.setText(order.getCarType());
-            addressTextView.setText(order.getStartAddress());
-            typeInTextView.setText(order.getTypeOfCargo());
+            carTypeTextView.setText(results.getCarType());
+            addressTextView.setText(results.getStartAddress());
+            typeInTextView.setText(results.getTypeOfCargo());
 
-            if (order.isCalculated()){
+            if (results.isCalculated()){
                 culculate1p.setVisibility(View.VISIBLE);
                 culculate2p.setVisibility(View.VISIBLE);
             }else {
@@ -132,7 +209,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 
             sdf.setTimeZone(timeZone);
-            String dateStr = order.getDateOfCreated();
+            String dateStr = results.getDateOfCreated();
             try {
                 date = sdf.parse(dateStr);
                 assert date != null;
@@ -191,6 +268,30 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             }
 
         }
+
+    }
+
+    class LoadingViewHolder extends BaseViewHolder {
+
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            progressBar = itemView.findViewById(R.id.progressBar);
+        }
+
+        @Override
+        protected void clear() {
+
+        }
+    }
+
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+
+    }
+
+    private void populateItemRows(OrderViewHolder viewHolder, int position) {
 
     }
 }
