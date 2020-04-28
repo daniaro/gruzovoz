@@ -22,11 +22,9 @@ public class UserPagePresenter implements UserPageContract.Presenter {
     private UserPageContract.View view;
     private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
-
     UserPagePresenter(UserPageContract.View view) {
         this.view = view;
     }
-
 
     @Override
     public void getPersonalData() {
@@ -39,16 +37,30 @@ public class UserPagePresenter implements UserPageContract.Presenter {
                 } else {
 
                 }
-
             }
-
             @Override
             public void onFailure(@NotNull Call<UserPage> call, @NotNull Throwable t) {
                 view.showError();
             }
         });
 
+    }
 
+    @Override
+    public void logout(){
+        Call<Void> call = service.logout(BaseActivity.authToken);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
+                Log.i(" onResponse logout",response.message());
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
+                Log.i("onFailure logout",t.getMessage());
+
+            }
+        });
     }
 
 

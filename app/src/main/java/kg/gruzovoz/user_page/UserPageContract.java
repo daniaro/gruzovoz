@@ -15,6 +15,7 @@ public interface UserPageContract {
 
     interface Presenter{
         void getPersonalData();
+        void logout();
     }
 
 

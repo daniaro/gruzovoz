@@ -51,6 +51,19 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBarMessages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:indeterminateTint="@color/rippleColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 
     <LinearLayout
         android:id="@+id/empty_view"

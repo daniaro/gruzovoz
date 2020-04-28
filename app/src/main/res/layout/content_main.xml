@@ -7,6 +7,5 @@
     android:layout_height="match_parent"
     tools:context=".BaseActivity"
     android:background="@color/colorWhite"
-
     tools:showIn="@layout/activity_main">
 </FrameLayout>

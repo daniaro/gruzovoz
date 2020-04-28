@@ -30,23 +30,27 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     @Override
     public void login(String phoneNumber, String password) {
-
         Login login = new Login(phoneNumber, password);
         Call<User> call = service.login(login);
         call.enqueue(new Callback<User>() {
-
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
                     getFirebaseToken(String.format("%s", response.body().getToken()));
-
                 } else {
                     if (loginView.isConnected()) {
-                        loginView.showLoginError();
+                        if (response.code() == 403){
+                            loginView.showAlreadySignedToast();
+                        }
+                        else {
+                            loginView.showLoginError();
+                        }
+
                     } else {
                         loginView.showErrorToast();
+
                     }
                 }
             }

@@ -11,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -30,9 +28,6 @@ import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
-import kg.gruzovoz.chat.messages.MessagesActivity;
-import kg.gruzovoz.chat.messages.MessagesContract;
-import kg.gruzovoz.main.OrdersPresenter;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.user_page.history.ActiveFragment;
 import kg.gruzovoz.user_page.history.CompletedFragment;
@@ -56,8 +51,6 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
     SharedPreferences.Editor editor;
 
 
-
-
     public UserPageFragment() {
         // required empty public constructor
     }
@@ -71,7 +64,7 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
 
-        UserPagePresenter presenter = new UserPagePresenter(this);
+        presenter = new UserPagePresenter(this);
 
         sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences("myNamePreferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -141,6 +134,7 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
         builder.setMessage(getString(R.string.logout_message));
         builder.setNegativeButton(R.string.cancel_order, null);
         builder.setPositiveButton(getString(R.string.action_logout), (dialog, which) -> {
+            presenter.logout();
             BaseActivity.authToken = null;
             SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();

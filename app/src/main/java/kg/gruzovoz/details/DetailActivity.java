@@ -2,10 +2,13 @@ package kg.gruzovoz.details;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import kg.gruzovoz.R;
+import kg.gruzovoz.details.call.CallActivity;
 import kg.gruzovoz.models.Results;
 
 public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
@@ -32,10 +36,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
     TextView carTypeTextView;
     TextView initialAddressTextView;
-    TextView finalAddressTextView;
     TextView paymentTextView;
     TextView cargoTypeTextView;
     TextView commentTextView;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     private static final int REQUEST_CALL = 1;
     private Results results;
@@ -59,9 +64,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             finishButton.setVisibility(View.GONE);
             callButton.setVisibility(View.GONE);
         }
+        sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         initOnClickListeners();
         setViewInfo();
+
+
     }
 
     private void initViews() {
@@ -71,7 +80,6 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         closeIcon = findViewById(R.id.close_icon);
         carTypeTextView = findViewById(R.id.textView);
         initialAddressTextView = findViewById(R.id.textView2);
-        finalAddressTextView = findViewById(R.id.textView3);
         paymentTextView = findViewById(R.id.textView4);
         cargoTypeTextView = findViewById(R.id.textView5);
         commentTextView = findViewById(R.id.commentsTextView);
@@ -126,16 +134,9 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void setViewInfo() {
         carTypeTextView.setText(results.getCarType());
-        initialAddressTextView.setText(results.getStartAddress());
-        if (results.getFinishAddress() == null || results.getFinishAddress().isEmpty() || results.getFinishAddress().equals("")) {
-            finalAddressTextView.setText("Не указано");
-        }
-        else {
-            finalAddressTextView.setText(results.getFinishAddress());
+        initialAddressTextView.setText(results.getShortAddress());
 
-        }
         String commission = results.getCommission();
-        // Here we check if the admin entered the commission's value with or without the percent sign
         double res = results.getPrice()*Integer.parseInt(commission)/100;
         String strRes;
 
@@ -145,18 +146,14 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             strRes = String.format("%s", res);
         }
 
-//        if (commission.charAt(commission.length() - 1) == '%') {
-//            paymentTextView.setText(String.format("%s сом - %s = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-//        } else {
-//            paymentTextView.setText(String.format("%s сом - %s%% = %s сом", String.valueOf((int) order.getPrice()), commission, strRes));
-//        }
-
-            paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) results.getPrice()), strRes));
-
-
+        paymentTextView.setText(String.format("%s сом + %s", String.valueOf((int) results.getPrice()), strRes));
 
         cargoTypeTextView.setText(results.getTypeOfCargo());
         commentTextView.setText(results.getComments());
+
+        editor.putString("detailed_adress", results.getDetailedAdress()).commit();
+
+        Log.e( "setViewInfo:  detailActivity", results.getDetailedAdress());
     }
 
     @Override
@@ -201,9 +198,10 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
 
     @Override
-    public void showError() {
+    public void showCarTypeError() {
         Toast.makeText(getApplicationContext(), "Ваше авто не подходит для этого заказа", Toast.LENGTH_LONG).show();
     }
+
 
     @Override
     public void showBalanceError(){

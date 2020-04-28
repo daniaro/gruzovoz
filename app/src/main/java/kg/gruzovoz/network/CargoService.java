@@ -26,6 +26,9 @@ public interface CargoService {
     @POST("/auth/login/")
     Call<User> login(@Body Login login);
 
+    @POST("/auth/logout/")
+    Call<Void> logout(@Header("Authorization") String authToken );
+
     @PUT("/order/done/{id}/")
     Call<Void> acceptOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body AcceptOrder acceptOrder);
 
@@ -37,7 +40,6 @@ public interface CargoService {
 
     @GET("/order/all/")
     Call<Order> getAllOrders(@Header("Authorization") String authToken);
-
 
     @GET("/auth/driver/")
     Call<UserPage> getPersonalData(@Header("Authorization") String authToken);

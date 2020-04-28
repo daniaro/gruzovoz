@@ -34,6 +34,7 @@
     <string name="acceptOrder_title">Принять заказ</string>
     <string name="cancel_order">Отменить</string>
     <string name="call_unavailable">Невозможно позвонить, пожалуйста свяжитесь с диспетчером</string>
+    <string name="accept_order_error">Невозможно принять заказ, пожалуйста свяжитесь с диспетчером</string>
     <string name="logout_title">Выйти из аккаунта</string>
     <string name="logout_message">Вы уверены, что хотите выйти из аккаунта?</string>
     <string name="action_logout">Выйти</string>
@@ -42,6 +43,7 @@
     <string name="enter_password">Введите пароль</string>
     <string name="number">+996</string>
     <string name="no_internet">Отсутствует интернет-соединение</string>
+    <string name="already_signed">"Пользователь уже авторизован на другом устройстве.</string>
     <string name="update_orders">Попробуйте обновить страницу</string>
     <string name="no_active_orders">Нет активных заказов</string>
     <string name="no_completed_orders">Нет завершенных заказов</string>

@@ -11,7 +11,6 @@ public interface MessagesContract {
     }
 
     interface  View{
-
     }
 
     interface Presenter{

@@ -24,7 +24,7 @@ import java.util.List;
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
-import kg.gruzovoz.adapters.PaginationListener;
+import kg.gruzovoz.pagination.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static kg.gruzovoz.adapters.PaginationListener.PAGE_START;
+import static kg.gruzovoz.pagination.PaginationListener.PAGE_START;
 
 public class CompletedFragment extends Fragment implements HistoryContract.View {
 

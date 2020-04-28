@@ -96,10 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         loginButton.setOnClickListener(view -> {
             presenterL.login(phoneEditText.getText().toString(), Objects.requireNonNull(passwordEditText.getText()).toString());
             loginButton.setEnabled(false);
-//            presenterL.getFirebaseToken();
         });
-
-
 
     }
 
@@ -140,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         editor.putLong("fbUserId", fbUserId).commit();
 
 
-
     }
 
     @Override
@@ -152,6 +148,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    @Override
+    public void showAlreadySignedToast() {
+        passwordEditText.setText("");
+        Toast.makeText(this,getString(R.string.already_signed) , Toast.LENGTH_LONG).show();
 
+
+    }
 
 }

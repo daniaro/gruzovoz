@@ -12,11 +12,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import kg.gruzovoz.chat.ChatFragment;
 import kg.gruzovoz.user_page.UserPageFragment;
 import kg.gruzovoz.login.LoginActivity;
-import kg.gruzovoz.main.OrdersFragment;
+import kg.gruzovoz.order.OrdersFragment;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -45,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        Log.e("authToken: ",authToken);
+        Log.e("authToken: ", authToken);
 
         userPageFragment = new UserPageFragment(() -> {
             Fragment fragment = fragmentManager.findFragmentByTag("3");
@@ -62,7 +67,7 @@ public class BaseActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.main_container, ordersFragment, "1").commit();
         }
-      }
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             item -> {
@@ -73,7 +78,7 @@ public class BaseActivity extends AppCompatActivity {
                         return true;
                     case R.id.navigation_chat:
                         fragmentManager.beginTransaction()
-                                .replace(R.id.main_container, chatFragment,"2").commit();
+                                .replace(R.id.main_container, chatFragment, "2").commit();
                         return true;
                     case R.id.navigation_user_page:
                         fragmentManager.beginTransaction()
@@ -83,5 +88,38 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             };
 
+    private void setPresence(){
+        // Since I can connect from multiple devices, we store each connection instance separately
+        // any time that connectionsRef's value is null (i.e. has no children) I am offline
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myConnectionsRef = database.getReference("learncargo/presence");
+
+
+        final DatabaseReference connectedRef = database.getReference(".info/presence");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    DatabaseReference con = myConnectionsRef.push();
+
+                    // When this device disconnects, remove it
+                    con.onDisconnect().removeValue();
+
+                    // When I disconnect, update the last time I was seen online
+
+                    // Add this device to my connections list
+                    // this value could contain info about the device or a timestamp too
+                    con.setValue(Boolean.TRUE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w("TAG", "Listener was cancelled at .info/connected");
+            }
+        });
+
+    }
 
 }

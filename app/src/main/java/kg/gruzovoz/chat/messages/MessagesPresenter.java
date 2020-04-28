@@ -27,19 +27,16 @@ public class MessagesPresenter implements MessagesContract.Presenter {
     @Override
     public void sendNotify(String fbUserId,String fbUserName, String text){
         Notify notify = new Notify(fbUserId,fbUserName,text);
-        Log.i("Notify",notify.toString());
 
         Call<NotifyStatus> call = service.sendNotify(BaseActivity.authToken, notify);
         call.enqueue(new Callback<NotifyStatus>() {
             @Override
             public void onResponse(@NotNull Call<NotifyStatus> call, @NotNull Response<NotifyStatus> response) {
-                Log.i("Mp OnResponse","notifyStatus"+response.message());
             }
 
             @SuppressLint("LongLogTag")
             @Override
             public void onFailure(@NotNull Call<NotifyStatus> call, @NotNull Throwable t) {
-                Log.i("MessagesPresenter OnFailure","notifyStatus"+t.getMessage());
 
             }
         });

@@ -10,6 +10,7 @@ interface LoginContract {
        void addAuthToken(String authToken);
        void registerFirebaseUser(FirebaseUserData firebaseUserToken);
        boolean isConnected();
+       void showAlreadySignedToast();
     }
 
     interface LoginPresenter{

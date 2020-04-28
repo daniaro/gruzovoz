@@ -78,6 +78,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setContentIntent(pendingIntent)
                         ;
 
@@ -87,10 +88,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
                     "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(channel);
         }
+
 
         assert notificationManager != null;
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());

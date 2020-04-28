@@ -48,6 +48,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     SharedPreferences.Editor editor;
 
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -101,6 +103,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     public void initList(){
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+//        recyclerView.setHasFixedSize(true);
         recyclerView.scrollToPosition(messageList.lastIndexOf(new Messages()));
         adapter = new MessagesAdapter(messageList, String.valueOf(fbUserId), e ->{
 
@@ -148,7 +151,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     private void sendMessage(String text) {
         Map<String, Object> map = new HashMap<>();
         map.put("sentAt", Timestamp.now());
-//        map.put("sentAt", null);
         map.put("text",text);
         map.put("userFullName", fbUserName);
         map.put("isFromSuperAdmin", false);
@@ -170,6 +172,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                     Log.d("subscribing status",msg);
                 });
     }
+
+
 
 
 }

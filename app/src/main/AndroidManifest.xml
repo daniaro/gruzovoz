@@ -30,7 +30,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".details.CallActivity"
+            android:name=".details.call.CallActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".details.DetailActivity"

@@ -26,6 +26,7 @@ import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
+import kg.gruzovoz.pagination.BaseViewHolder;
 
 public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -177,8 +178,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }, 3000);
             });
 
-
-
             String commission = results.getCommission();
             double res = results.getPrice() * Integer.parseInt(commission) / 100;
             String strRes;
@@ -192,7 +191,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             paymentTextView.setText(String.format("%s  ||  %s", String.valueOf((int) results.getPrice()), strRes));
 
             carTypeTextView.setText(results.getCarType());
-            addressTextView.setText(results.getStartAddress());
+            addressTextView.setText(results.getShortAddress());
             typeInTextView.setText(results.getTypeOfCargo());
 
             if (results.isCalculated()){

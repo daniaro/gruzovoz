@@ -34,7 +34,7 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
 
                 if (response.code() == 400) {
-                        view.showError();
+                        view.showCarTypeError();
                 }
                 else if (response.code() == 403) {
                     view.showBalanceError();
@@ -47,7 +47,7 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
 
             @Override
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
-                view.showError();
+                view.showCarTypeError();
                 t.getMessage();
             }
 
