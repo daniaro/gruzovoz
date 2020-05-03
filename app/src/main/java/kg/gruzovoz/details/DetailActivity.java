@@ -180,13 +180,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         builder.setPositiveButton(getString(R.string.finish), (dialog, which) -> {
             setResult(RESULT_OK);
             presenter.finishOrder(results.getId());
-
             finish();
-
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
 
     @Override
     public void startCallActivity() {
@@ -198,14 +198,20 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
 
 
     @Override
+    public void showAcceptError() {
+        Toast.makeText(getApplicationContext(), R.string.accept_order_error, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
     public void showCarTypeError() {
-        Toast.makeText(getApplicationContext(), "Ваше авто не подходит для этого заказа", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.car_error, Toast.LENGTH_LONG).show();
     }
 
 
     @Override
     public void showBalanceError(){
-        Toast.makeText(getApplicationContext(), "У Вас недостаточно средств, пополните баланс", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.balance_error, Toast.LENGTH_LONG).show();
     }
 
 

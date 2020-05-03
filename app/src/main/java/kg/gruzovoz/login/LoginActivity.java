@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     LoginPresenter presenterL = new LoginPresenter(this);
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    
+
     @SuppressLint({"CommitPrefEdits", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {

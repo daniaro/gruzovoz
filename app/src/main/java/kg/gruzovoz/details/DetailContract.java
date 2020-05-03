@@ -10,6 +10,8 @@ public interface DetailContract {
         void showCarTypeError();
         void showBalanceError();
         void showConfirmFinishAlertDialog();
+
+        void showAcceptError();
     }
 
     interface DetailPresenter {

@@ -32,13 +32,16 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-
-                if (response.code() == 400) {
-                        view.showCarTypeError();
+                if (response.code() == 402){
+                    view.showAcceptError();
                 }
                 else if (response.code() == 403) {
                     view.showBalanceError();
                 }
+                else if (response.code() == 400) {
+                    view.showCarTypeError();
+                }
+
                 else {
                     view.startCallActivity();
                 }
