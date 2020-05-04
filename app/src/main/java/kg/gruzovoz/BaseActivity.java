@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kg.gruzovoz.chat.ChatFragment;
 import kg.gruzovoz.user_page.UserPageFragment;
@@ -32,6 +38,8 @@ public class BaseActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
     public static String authToken;
+    public static Long fbUserId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class BaseActivity extends AppCompatActivity {
 
         sharedPreferences = getApplicationContext()
                 .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+
+        fbUserId = sharedPreferences.getLong("fbUserId",0);
 
         authToken = "Token " + sharedPreferences.getString("authToken", null);
         if (sharedPreferences.getString("authToken", null) == null) {
@@ -60,6 +70,26 @@ public class BaseActivity extends AppCompatActivity {
             ft.commit();
         });
 
+
+
+//        ordersFragment = new OrdersFragment(() -> {
+//            Timer buttonTimer = new Timer();
+//            buttonTimer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    baseActivity.runOnUiThread(() -> {
+//                        Fragment fragment = fragmentManager.findFragmentByTag("1");
+//                        final FragmentTransaction ft = fragmentManager.beginTransaction();
+//                        ft.detach(fragment);
+//                        ft.attach(fragment);
+//                        ft.commit();
+//                    });
+//                }
+//            }, 2000);
+//
+//        });
+
+        setPresence();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -88,35 +118,27 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             };
 
-    private void setPresence(){
-        // Since I can connect from multiple devices, we store each connection instance separately
-        // any time that connectionsRef's value is null (i.e. has no children) I am offline
+    private void setPresence()  {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myConnectionsRef = database.getReference("learncargo/presence");
+        final DatabaseReference myConnectionsRef = database.getReference("presence");
 
-
-        final DatabaseReference connectedRef = database.getReference(".info/presence");
+        final DatabaseReference connectedRef = database.getReference(".info/connected");
         connectedRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
-                    DatabaseReference con = myConnectionsRef.push();
-
-                    // When this device disconnects, remove it
-                    con.onDisconnect().removeValue();
-
-                    // When I disconnect, update the last time I was seen online
-
-                    // Add this device to my connections list
-                    // this value could contain info about the device or a timestamp too
+                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
+                    con.onDisconnect().setValue(Boolean.FALSE);
                     con.setValue(Boolean.TRUE);
-                }
+                 }
+                Log.e("onDataChange", " msg");
+
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                Log.w("TAG", "Listener was cancelled at .info/connected");
+            public void onCancelled(@NotNull DatabaseError error) {
+                Log.e("error onCancelled", "Listener was cancelled at .info/connected");
             }
         });
 

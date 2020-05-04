@@ -48,8 +48,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     SharedPreferences.Editor editor;
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -88,7 +86,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
             onBackPressed();
             finish();
             editor.putInt("message_counter",0).commit();
-
 
         });
     }

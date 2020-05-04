@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
@@ -142,10 +144,25 @@ public class ChatFragment extends Fragment implements ChatContract.View {
             imageViewMessageCounter.setVisibility(View.GONE);
         }
 
-        chatCardView.setOnClickListener(e ->{
+//        chatCardView.setOnClickListener(e ->{
+//            message_counter = 0;
+//            editor.putInt("message_counter",message_counter).commit();
+//            startActivity( new Intent(getContext(), MessagesActivity.class));
+//        });
+
+        chatCardView.setOnClickListener(e -> {
             message_counter = 0;
-            editor.putInt("message_counter",message_counter).commit();
-            startActivity( new Intent(getContext(), MessagesActivity.class));
+            editor.putInt("message_counter", message_counter).commit();
+            startActivity(new Intent(getContext(), MessagesActivity.class));
+
+            chatCardView.setEnabled(false);
+            Timer buttonTimer = new Timer();
+            buttonTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    getActivity().runOnUiThread(() -> chatCardView.setEnabled(true));
+                }
+            }, 3000);
         });
 
 
