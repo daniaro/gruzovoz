@@ -39,6 +39,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     assert response.body() != null;
                     loginView.addAuthToken(String.format("%s", response.body().getToken()));
                     getFirebaseToken(String.format("%s", response.body().getToken()));
+
                 } else {
                     if (loginView.isConnected()) {
                         if (response.code() == 403){

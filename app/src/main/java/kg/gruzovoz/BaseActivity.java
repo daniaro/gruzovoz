@@ -1,12 +1,15 @@
 package kg.gruzovoz;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     public static String authToken;
     public static Long fbUserId;
-
+    boolean online;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,6 @@ public class BaseActivity extends AppCompatActivity {
         });
 
 
-
 //        ordersFragment = new OrdersFragment(() -> {
 //            Timer buttonTimer = new Timer();
 //            buttonTimer.schedule(new TimerTask() {
@@ -89,7 +92,8 @@ public class BaseActivity extends AppCompatActivity {
 //
 //        });
 
-        setPresence();
+        setPresence(Boolean.TRUE);
+//        initAutoStart();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -118,7 +122,19 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             };
 
-    private void setPresence()  {
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setPresence(Boolean.FALSE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setPresence(Boolean.TRUE);
+    }
+
+    private void setPresence(boolean online)  {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myConnectionsRef = database.getReference("presence");
 
@@ -129,11 +145,9 @@ public class BaseActivity extends AppCompatActivity {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
                     DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
-                    con.onDisconnect().setValue(Boolean.FALSE);
-                    con.setValue(Boolean.TRUE);
-                 }
-                Log.e("onDataChange", " msg");
+                    con.setValue(online);
 
+                }
             }
 
             @Override
@@ -141,7 +155,48 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("error onCancelled", "Listener was cancelled at .info/connected");
             }
         });
-
     }
 
+//    private void initAutoStart() {
+//        if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(this));
+//                builder.setTitle("Важно для Xiaomi")
+//                        .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+//                        .setCancelable(false)
+//                        .setNegativeButton(R.string.cancel, null)
+//                        .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+//                    try {
+//                        Intent intent = new Intent();
+//                        intent.setComponent(new ComponentName(
+//                                "com.miui.securitycenter",
+//                                "com.miui.permcenter.autostart.AutoStartManagementActivity"
+//                        ));
+//                        startActivity(intent);
+//                    } catch (ActivityNotFoundException e) {
+//
+//                    }
+//                });
+//                builder.show();
+//
+//        } else if (Build.BRAND.equals("Honor")) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(this));
+//            builder.setTitle("Важно для Honor")
+//                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+//                    .setCancelable(false)
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+//                        try {
+//                            Intent intent = new Intent();
+//                            intent.setComponent(new ComponentName(
+//                                    "com.huawei.systemmanager",
+//                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+//                            ));
+//                            startActivity(intent);
+//                        } catch (ActivityNotFoundException e) {
+//
+//                        }
+//                    });
+//            builder.show();
+//        }
+//    }
 }

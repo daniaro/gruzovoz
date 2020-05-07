@@ -26,7 +26,7 @@ import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
-import kg.gruzovoz.pagination.BaseViewHolder;
+import kg.gruzovoz.paging.BaseViewHolder;
 
 public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -39,8 +39,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private List<Results> resultsList;
 
 
-    public OrdersAdapter(Order order, BaseContract.OnItemClickListener clickListener) {
-        resultsList = new ArrayList<>();
+    public OrdersAdapter(Order order, List<Results> results, BaseContract.OnItemClickListener clickListener) {
+        resultsList = new ArrayList();
 //        resultsList = order.getResults();
         this.clickListener = clickListener;
     }
@@ -63,11 +63,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         holder.onBind(position, clickListener);
 
     }
-
-//    @Override
-//    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-//        holder.bind(resultsList.get(position), clickListener);
-//    }
 
     @Override
     public int getItemViewType(int position) {

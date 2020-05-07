@@ -1,4 +1,4 @@
-package kg.gruzovoz.pagination;
+package kg.gruzovoz.paging;
 
 import android.view.View;
 

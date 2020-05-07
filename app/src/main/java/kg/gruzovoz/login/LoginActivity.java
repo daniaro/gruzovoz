@@ -1,12 +1,16 @@
 package kg.gruzovoz.login;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -14,6 +18,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -44,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         setContentView(R.layout.activity_login_screen);
 
         initViews();
+        initAutoStart();
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -154,6 +160,53 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         Toast.makeText(this,getString(R.string.already_signed) , Toast.LENGTH_LONG).show();
 
 
+    }
+
+    @Override
+    public void initAutoStart() {
+        if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            builder.setTitle("Важно для Xiaomi")
+                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+                        try {
+                            setResult(RESULT_OK);
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName(
+                                    "com.miui.securitycenter",
+                                    "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                            ));
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        } else if (Build.BRAND.equals("Honor")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            builder.setTitle("Важно для Honor")
+                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.cancel, null)
+                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+                        try {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName(
+                                    "com.huawei.systemmanager",
+                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+                            ));
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
 }

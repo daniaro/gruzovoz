@@ -20,13 +20,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
-import kg.gruzovoz.pagination.PaginationListener;
+import kg.gruzovoz.paging.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
@@ -36,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static kg.gruzovoz.pagination.PaginationListener.PAGE_START;
+import static kg.gruzovoz.paging.PaginationListener.PAGE_START;
 
 public class OrdersFragment extends Fragment implements OrdersContract.View {
 
@@ -47,7 +48,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private LinearLayout emptyView;
     private ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
-    private CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
 
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
@@ -75,6 +75,50 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         return root;
     }
 
+//    private void refreshList() {
+//
+//        Thread t = new Thread(new Runnable() {
+//            public void run() {
+//                try {
+//                    TimeUnit.SECONDS.sleep(2);
+//                    Objects.requireNonNull(getActivity()).runOnUiThread( () -> {
+//                        populateOrders();
+//                    });
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        t.start();
+
+//        Thread({ sleep(1000); runOnUIThread{update()}});
+//
+//        new Thread(() -> {
+//            try {
+//                sleep(3000);
+//
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }).start();
+
+//        (Thread thread = new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    while(true) {
+//                        sleep(2000);
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//
+//        thread.start();)
+//    }
+
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
@@ -84,22 +128,20 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             isLastPage = false;
             adapter.clear();
             populateOrders();
+
         });
-//        swipeRefreshLayout.setOnRefreshListener(() -> presenter.populateOrders());
     }
 
     private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getContext()); //getActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         if (adapter == null) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
-            adapter = new OrdersAdapter(new Order(), this::showDetailScreen);
-            presenter = new OrdersPresenter(this);
-//            presenter.populateOrders();
+            adapter = new OrdersAdapter(new Order(),new ArrayList<>(), this::showDetailScreen);
             populateOrders();
         }
         recyclerView.setAdapter(adapter);
@@ -126,7 +168,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
 
-
     @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
@@ -147,6 +188,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             populateOrders();
 //            presenter.populateOrders();
+//            refreshList();
+
         }
     }
 
@@ -179,8 +222,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
 
-
-    public void populateOrders(){
+    private void populateOrders(){
+        CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
         final Order[] orders = new Order[1];
         Call<Order> call = service.getAllOrders(BaseActivity.authToken);
         call.enqueue(new Callback<Order>() {
@@ -188,14 +231,11 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {
                 orders[0] = response.body();
                 if (response.body() != null && response.body().getResults().size() >0) {
-                    if (currentPage != PAGE_START)
-                        adapter.removeLoading();
-
+                    if (currentPage != PAGE_START) adapter.removeLoading();
                     adapter.addItems(orders[0]);
                    // setOrders(response.body().getResults());
                     stopRefreshingOrders();
                     hideProgressBar();
-
                     if (response.body().getNext() != null) {
                         adapter.addLoading();
                     } else {
@@ -204,8 +244,9 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                     isLoading = false;
                 }else {
                     showEmptyView();
+                    stopRefreshingOrders();
+
                 }
-                stopRefreshingOrders();
             }
 
             @Override

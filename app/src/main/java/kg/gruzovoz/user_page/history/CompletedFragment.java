@@ -18,13 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
-import kg.gruzovoz.pagination.PaginationListener;
+import kg.gruzovoz.paging.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
@@ -34,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static kg.gruzovoz.pagination.PaginationListener.PAGE_START;
+import static kg.gruzovoz.paging.PaginationListener.PAGE_START;
 
 public class CompletedFragment extends Fragment implements HistoryContract.View {
 
@@ -80,7 +81,7 @@ public class CompletedFragment extends Fragment implements HistoryContract.View 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new OrdersAdapter(new Order(), results -> openDetailScreen(results));
+        adapter = new OrdersAdapter(new Order(),new ArrayList<>(),results -> openDetailScreen(results));
 
 
         recyclerView.setVisibility(View.GONE);

@@ -58,4 +58,6 @@
     <string name="drivers_chat_title">Водители</string>
     <string name="car_error">Ваше авто не подходит для этого заказа</string>
     <string name="balance_error">У Вас недостаточно средств, пополните баланс</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
 </resources>
