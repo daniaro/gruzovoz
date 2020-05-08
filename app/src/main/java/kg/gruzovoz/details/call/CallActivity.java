@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import kg.gruzovoz.R;
+import kg.gruzovoz.order.OrdersFragment;
 
 public class CallActivity extends AppCompatActivity implements CallContract.CallView {
 
@@ -44,9 +45,6 @@ public class CallActivity extends AppCompatActivity implements CallContract.Call
 
         detailedAdressIntent = sharedPreferences.getString("detailed_adress", null);
         detailedAdress.setText(detailedAdressIntent);
-        Log.e("setViewInfo: call str", detailedAdressIntent);
-
-
 
         presenter = new CallPresenter(this);
         presenter.parsePhoneNumber(phoneNumber);

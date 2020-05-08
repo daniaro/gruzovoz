@@ -222,7 +222,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
 
-    private void populateOrders(){
+    public void populateOrders(){
         CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
         final Order[] orders = new Order[1];
         Call<Order> call = service.getAllOrders(BaseActivity.authToken);
