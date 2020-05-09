@@ -95,8 +95,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         swipeRefreshLayout.setOnRefreshListener(() -> {
             curentPage++;
             indexForScroll = false;
-            getMessages(indexForScroll);
             messageList.clear();
+            getMessages(indexForScroll);
             swipeRefreshLayout.setRefreshing(false);
         });
     }

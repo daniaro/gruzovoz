@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,7 +85,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
-//        getOrdersCount(root);
+        getOrdersCount(root);
         return root;
     }
 
@@ -145,6 +146,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         });
     }
 
+
     private void initRecyclerViewWithAdapter(View root) {
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -188,12 +190,14 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         emptyView.setVisibility(View.GONE);
     }
 
+
     @Override
     public void showDetailScreen(Results results) {
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("order", results);
         startActivityForResult(intent, 100);
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -229,14 +233,17 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         recyclerView.setVisibility(View.GONE);
     }
 
+
     @Override
     public void setOrders(List<Results> results) {
         adapter.setValues(results);
     }
 
+
     private void getOrdersCount(View root) {
-        FirebaseFirestore.getInstance().collection("orders_count")
-                .addSnapshotListener((snapshots, e) -> {
+//        FirebaseFirestore.getInstance().collection("orders_count")
+//                .document("actives_count")
+//                .addSnapshotListener((snapshots, e) -> {
 //                    try {
 //                        assert snapshots != null;
 //                        for (DocumentChange change : snapshots.getDocumentChanges()) {
@@ -262,25 +269,54 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
 //                    adapter.notifyDataSetChanged();
 //                });
 
-                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    final DatabaseReference myConnectionsRef = database.getReference("orders_count");
-                    myConnectionsRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Integer value = dataSnapshot.getValue(Integer.class);
-//                populateOrders();
-                            initRecyclerViewWithAdapter(root);
-                            Log.d(TAG, "Value is: " + value);
-                        }
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myConnectionsRef = database.getReference("orders_count");
+        myConnectionsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Integer value = dataSnapshot.getValue(Integer.class);
+//               pulateOrders();
+                initRecyclerViewWithAdapter(root);
+                Log.e(TAG, "Value is: " + value);
+            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.w(TAG, "Failed to read value.", databaseError.toException());
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                        }
-                    });
-                    adapter.notifyDataSetChanged();
-                });
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//        myConnectionsRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Integer value = dataSnapshot.getValue(Integer.class);
+////               pulateOrders();
+//                initRecyclerViewWithAdapter(root);
+//                Log.d(TAG, "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Log.w(TAG, "Failed to read value.", databaseError.toException());
+//
+//            }
+//        });
+//        adapter.notifyDataSetChanged();
+
 
     }
 

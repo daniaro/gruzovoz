@@ -49,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("FCM","onMessageReceived");
         if (remoteMessage.getNotification() != null ){
             if (!MessagesActivity.active) {
-                sendNotification3(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
                 message_counter++;
                 editor.putInt("message_counter",message_counter).commit();
                 Log.e("message_counterMFMS", String.valueOf(message_counter));
@@ -91,61 +91,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //
 //
 //    }
+
+
     private void sendNotification(String title, String messageBody) {
-        Intent intent = new Intent(this, MessagesActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(title)
-                        .setContentText(messageBody)
-                        .setContentIntent(pendingIntent)
-                        .setAutoCancel(true)
-                        .setDefaults( DEFAULT_SOUND| DEFAULT_VIBRATE)
-                        .setPriority(Notification.PRIORITY_MAX)
-                ;
-
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_HIGH);
-
-            channel.setShowBadge(true);
-            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-
-            assert notificationManager != null;
-//            channel.setVibrationPattern(new long[]{300, 300, 300});
-
-//            if (defaultSoundUri != null) {
-//                AudioAttributes att = new AudioAttributes.Builder()
-//                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-//                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-//                        .build();
-//                channel.setSound(defaultSoundUri, att);
-//            }
-
-            notificationManager.createNotificationChannel(channel);
-
-        }
-
-        assert notificationManager != null;
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-    }
-
-
-    private void sendNotification3(String title, String messageBody) {
-
 
         Intent intent = new Intent(this, MessagesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
