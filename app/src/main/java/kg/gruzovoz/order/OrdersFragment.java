@@ -62,11 +62,13 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
 
+
     private int currentPage = PAGE_START;
+    private static final int TOTAL_ITEMS_TO_LOAD = 8;
     private boolean isLastPage = false;
-    private int totalPage = 10;
     private boolean isLoading = false;
     int itemCount = 0;
+
 
 
     public OrdersFragment() {
@@ -324,7 +326,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private void populateOrders () {
             CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
             final Order[] orders = new Order[1];
-            Call<Order> call = service.getAllOrders(BaseActivity.authToken);
+            Call<Order> call = service.getAllOrders(BaseActivity.authToken,currentPage );
             call.enqueue(new Callback<Order>() {
                 @Override
                 public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {

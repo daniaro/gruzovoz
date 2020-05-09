@@ -39,7 +39,7 @@ public interface CargoService {
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
 
     @GET("/order/all/")
-    Call<Order> getAllOrders(@Header("Authorization") String authToken);
+    Call<Order> getAllOrders(@Header("Authorization") String authToken, @Query("page") int page);
 
     @GET("/auth/driver/")
     Call<UserPage> getPersonalData(@Header("Authorization") String authToken);

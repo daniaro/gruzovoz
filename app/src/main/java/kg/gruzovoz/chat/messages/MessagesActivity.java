@@ -31,6 +31,7 @@ import java.util.Map;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
 import kg.gruzovoz.models.Messages;
+import kg.gruzovoz.models.Results;
 
 public class MessagesActivity extends AppCompatActivity implements MessagesContract.View{
 
@@ -46,9 +47,10 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     public static String fbUserName;
     public static Long fbUserId;
     public static boolean active = false;
-    private static final int TOTAL_ITEMS_TO_LOAD = 100;
     private boolean indexForScroll = true;
+    private static final int TOTAL_ITEMS_TO_LOAD = 100;
     private int curentPage = 1;
+
 
     SharedPreferences.Editor editor;
 
