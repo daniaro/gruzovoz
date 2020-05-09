@@ -74,24 +74,6 @@ public class BaseActivity extends AppCompatActivity {
             ft.commit();
         });
 
-
-//        ordersFragment = new OrdersFragment(() -> {
-//            Timer buttonTimer = new Timer();
-//            buttonTimer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    baseActivity.runOnUiThread(() -> {
-//                        Fragment fragment = fragmentManager.findFragmentByTag("1");
-//                        final FragmentTransaction ft = fragmentManager.beginTransaction();
-//                        ft.detach(fragment);
-//                        ft.attach(fragment);
-//                        ft.commit();
-//                    });
-//                }
-//            }, 2000);
-//
-//        });
-
         setPresence(Boolean.TRUE);
 //        initAutoStart();
 

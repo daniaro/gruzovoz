@@ -1,8 +1,14 @@
 package kg.gruzovoz.paging;
 
+import android.util.Log;
+import android.widget.Toast;
+import android.widget.Toolbar;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import kg.gruzovoz.adapters.OrdersAdapter;
 
 public abstract class PaginationListener extends RecyclerView.OnScrollListener {
 
@@ -24,9 +30,12 @@ public abstract class PaginationListener extends RecyclerView.OnScrollListener {
         int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
         if (!isLoading() && !isLastPage()) {
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                    && firstVisibleItemPosition >= 0) {
+                    && firstVisibleItemPosition >= 0){
 //                    && totalItemCount >= PAGE_SIZE) {
                 loadMoreItems();
+                Log.e("log","loading items");
+
+
             }
         }
     }

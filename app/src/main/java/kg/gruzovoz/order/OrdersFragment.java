@@ -3,6 +3,7 @@ package kg.gruzovoz.order;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,9 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +48,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
 import static kg.gruzovoz.paging.PaginationListener.PAGE_START;
 
 public class OrdersFragment extends Fragment implements OrdersContract.View {
@@ -72,6 +84,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
+//        getOrdersCount(root);
         return root;
     }
 
@@ -221,41 +234,90 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         adapter.setValues(results);
     }
 
+    private void getOrdersCount(View root) {
+        FirebaseFirestore.getInstance().collection("orders_count")
+                .addSnapshotListener((snapshots, e) -> {
+//                    try {
+//                        assert snapshots != null;
+//                        for (DocumentChange change : snapshots.getDocumentChanges()) {
+//                            switch (change.getType()) {
+//                                case ADDED:
+//                                    Integer value = change.getDocument().toObject(Integer.class);
+//                                    initRecyclerViewWithAdapter(root);
+//                                    Log.d(TAG, "Value is: " + value);
+//                                    break;
+//                                case REMOVED:
+//                                    break;
+//                                case MODIFIED:
+//                                    break;
+//                            }
+//                        }
+//                    }
+//                    catch (NullPointerException ex){
+//                        recyclerView.setVisibility(View.GONE);
+//                        emptyView.setVisibility(View.VISIBLE);
+//
+//                    }
+//
+//                    adapter.notifyDataSetChanged();
+//                });
 
-    public void populateOrders(){
-        CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
-        final Order[] orders = new Order[1];
-        Call<Order> call = service.getAllOrders(BaseActivity.authToken);
-        call.enqueue(new Callback<Order>() {
-            @Override
-            public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {
-                orders[0] = response.body();
-                if (response.body() != null && response.body().getResults().size() >0) {
-                    if (currentPage != PAGE_START) adapter.removeLoading();
-                    adapter.addItems(orders[0]);
-                   // setOrders(response.body().getResults());
-                    stopRefreshingOrders();
-                    hideProgressBar();
-                    if (response.body().getNext() != null) {
-                        adapter.addLoading();
-                    } else {
-                        isLastPage = true;
-                    }
-                    isLoading = false;
-                }else {
-                    showEmptyView();
-                    stopRefreshingOrders();
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    final DatabaseReference myConnectionsRef = database.getReference("orders_count");
+                    myConnectionsRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Integer value = dataSnapshot.getValue(Integer.class);
+//                populateOrders();
+                            initRecyclerViewWithAdapter(root);
+                            Log.d(TAG, "Value is: " + value);
+                        }
 
-                }
-            }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.w(TAG, "Failed to read value.", databaseError.toException());
 
-            @Override
-            public void onFailure(@NotNull Call<Order> call, @NotNull Throwable t) {
-                showError();
-            }
-        });
+                        }
+                    });
+                    adapter.notifyDataSetChanged();
+                });
+
     }
 
+
+    private void populateOrders () {
+            CargoService service = RetrofitClientInstance.getRetrofitInstance().create(CargoService.class);
+            final Order[] orders = new Order[1];
+            Call<Order> call = service.getAllOrders(BaseActivity.authToken);
+            call.enqueue(new Callback<Order>() {
+                @Override
+                public void onResponse(@NotNull Call<Order> call, @NotNull Response<Order> response) {
+                    orders[0] = response.body();
+                    if (response.body() != null && response.body().getResults().size() > 0) {
+                        if (currentPage != PAGE_START) adapter.removeLoading();
+                        adapter.addItems(orders[0]);
+                        // setOrders(response.body().getResults());
+                        stopRefreshingOrders();
+                        hideProgressBar();
+                        if (response.body().getNext() != null) {
+                            adapter.addLoading();
+                        } else {
+                            isLastPage = true;
+                        }
+                        isLoading = false;
+                    } else {
+                        showEmptyView();
+                        stopRefreshingOrders();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Order> call, @NotNull Throwable t) {
+                    showError();
+                }
+            });
+        }
 
 
 }

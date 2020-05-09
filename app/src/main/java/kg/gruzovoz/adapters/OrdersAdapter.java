@@ -45,6 +45,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.clickListener = clickListener;
     }
 
+
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
