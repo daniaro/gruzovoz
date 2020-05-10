@@ -33,7 +33,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
@@ -243,65 +245,70 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
 
 
     private void getOrdersCount(View root) {
-//        FirebaseFirestore.getInstance().collection("orders_count")
-//                .document("actives_count")
-//                .addSnapshotListener((snapshots, e) -> {
-//                    try {
-//                        assert snapshots != null;
-//                        for (DocumentChange change : snapshots.getDocumentChanges()) {
-//                            switch (change.getType()) {
-//                                case ADDED:
-//                                    Integer value = change.getDocument().toObject(Integer.class);
-//                                    initRecyclerViewWithAdapter(root);
-//                                    Log.d(TAG, "Value is: " + value);
-//                                    break;
-//                                case REMOVED:
-//                                    break;
-//                                case MODIFIED:
-//                                    break;
-//                            }
-//                        }
-//                    }
-//                    catch (NullPointerException ex){
-//                        recyclerView.setVisibility(View.GONE);
-//                        emptyView.setVisibility(View.VISIBLE);
+        Log.d(TAG, "getOrdersCount");
+        FirebaseFirestore.getInstance().collection("orders")
+                .addSnapshotListener((snapshots, e) -> {
+                    try {
+                        assert snapshots != null;
+                        for (DocumentChange change : snapshots.getDocumentChanges()) {
+                            switch (change.getType()) {
+                                case ADDED:
+                                    break;
+                                case REMOVED:
+                                    break;
+                                case MODIFIED:
+                                    Map<String, Object> map = change.getDocument().getData();
+                                    map.get("actives_count");
+                                    adapter.clear();
+                                    initRecyclerViewWithAdapter(root);
+                                    Log.d(TAG, " MODIFIED Value is: " + map.get("actives_count"));
+//                                    messageList.add(0,messages);
+                                    break;
+                            }
+                        }
+                    }
+                    catch (NullPointerException ex){
+                        recyclerView.setVisibility(View.GONE);
+                        emptyView.setVisibility(View.VISIBLE);
+                    }
+                    adapter.notifyDataSetChanged();
+                });
+    }
+
+
+//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        final DatabaseReference myConnectionsRef = database.getReference("orders_count");
+//        myConnectionsRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                Integer value = dataSnapshot.getValue(Integer.class);
+////               pulateOrders();
+//                initRecyclerViewWithAdapter(root);
+//                Log.e(TAG, "Value is: " + value);
+//            }
 //
-//                    }
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 //
-//                    adapter.notifyDataSetChanged();
-//                });
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myConnectionsRef = database.getReference("orders_count");
-        myConnectionsRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Integer value = dataSnapshot.getValue(Integer.class);
-//               pulateOrders();
-                initRecyclerViewWithAdapter(root);
-                Log.e(TAG, "Value is: " + value);
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 //        myConnectionsRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -319,8 +326,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
 //        });
 //        adapter.notifyDataSetChanged();
 
-
-    }
 
 
     private void populateOrders () {

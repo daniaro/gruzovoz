@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -16,17 +15,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
-
-import static android.app.Notification.DEFAULT_SOUND;
-import static android.app.Notification.DEFAULT_VIBRATE;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -46,18 +42,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.e("FCM","onMessageReceived");
-        if (remoteMessage.getNotification() != null ){
+        Log.e("FCM", "onMessageReceived");
+        if (remoteMessage.getNotification() != null) {
             if (!MessagesActivity.active) {
-                sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                sendNotification(this, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
                 message_counter++;
-                editor.putInt("message_counter",message_counter).commit();
+                editor.putInt("message_counter", message_counter).commit();
                 Log.e("message_counterMFMS", String.valueOf(message_counter));
 
-            }
-            else {
+            } else {
                 message_counter = 0;
-                editor.putInt("message_counter",message_counter).commit();
+                editor.putInt("message_counter", message_counter).commit();
             }
 
         }
@@ -92,45 +87,38 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //
 //    }
 
+    public static void sendNotification(Context context, String title, String messageBody) {
 
-    private void sendNotification(String title, String messageBody) {
-
-        Intent intent = new Intent(this, MessagesActivity.class);
+        Intent intent = new Intent(context, MessagesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+        Notification notification =
+                new NotificationCompat.Builder(context, context.getString(R.string.app_name))
                         .setSmallIcon(R.drawable.ic_stat_ic_notification)
                         .setContentIntent(pendingIntent)
                         .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setSound(defaultSoundUri)
-                        .setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                        .build();
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat.from(context).notify(0, notification);
+    }
 
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
+    public static void createNotificationChannel(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(context.getString(R.string.app_name),
                     "Channel human readable title",
-                    NotificationManager.IMPORTANCE_MAX);
-
-
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(channel);
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManagerCompat.from(context).createNotificationChannel(channel);
 
         }
-
-        assert notificationManager != null;
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 }

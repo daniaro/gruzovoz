@@ -29,6 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import kg.gruzovoz.chat.ChatFragment;
+import kg.gruzovoz.fcm.MyFirebaseMessagingService;
 import kg.gruzovoz.user_page.UserPageFragment;
 import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.order.OrdersFragment;
@@ -48,9 +49,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
+        MyFirebaseMessagingService.sendNotification(this, "AAAA", "BBBB");
         sharedPreferences = getApplicationContext()
                 .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
 
