@@ -8,9 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
@@ -158,55 +161,67 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     public void showAlreadySignedToast() {
         passwordEditText.setText("");
         Toast.makeText(this,getString(R.string.already_signed) , Toast.LENGTH_LONG).show();
-
-
     }
 
     @Override
     public void initAutoStart() {
-        if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-            builder.setTitle("Важно для Xiaomi")
-                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-                        try {
-                            setResult(RESULT_OK);
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName(
-                                    "com.miui.securitycenter",
-                                    "com.miui.permcenter.autostart.AutoStartManagementActivity"
-                            ));
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
 
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-        } else if (Build.BRAND.equals("Honor")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-            builder.setTitle("Важно для Honor")
-                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.cancel, null)
-                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-                        try {
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName(
-                                    "com.huawei.systemmanager",
-                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
-                            ));
-                            startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-
-                        }
-                    });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            assert pm != null;
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                Log.e("packegename",packageName);
+                startActivity(intent);
+            }
         }
+
+//        if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+//            builder.setTitle("Важно для Xiaomi")
+//                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+//                    .setCancelable(false)
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+//                        try {
+//                            setResult(RESULT_OK);
+//                            Intent intent = new Intent();
+//                            intent.setComponent(new ComponentName(
+//                                    "com.miui.securitycenter",
+//                                    "com.miui.permcenter.autostart.AutoStartManagementActivity"
+//                            ));
+//                            startActivity(intent);
+//                        } catch (ActivityNotFoundException e) {
+//
+//                        }
+//                    });
+//            AlertDialog dialog = builder.create();
+//            dialog.show();
+//
+//        } else if (Build.BRAND.equals("Honor")) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+//            builder.setTitle("Важно для Honor")
+//                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
+//                    .setCancelable(false)
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+//                        try {
+//                            Intent intent = new Intent();
+//                            intent.setComponent(new ComponentName(
+//                                    "com.huawei.systemmanager",
+//                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+//                            ));
+//                            startActivity(intent);
+//                        } catch (ActivityNotFoundException e) {
+//
+//                        }
+//                    });
+//            AlertDialog dialog = builder.create();
+//            dialog.show();
+//        }
     }
 
 }

@@ -180,7 +180,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     }
 
     public void populateOrders(boolean isDone) {
-        Call<Order> call = service.getOrdersHistory(BaseActivity.authToken, isDone);
+        Call<Order> call = service.getOrdersHistory(BaseActivity.authToken, isDone,currentPage);
         final Order[] orders = new Order[1];
         call.enqueue(new Callback<Order>() {
             @Override

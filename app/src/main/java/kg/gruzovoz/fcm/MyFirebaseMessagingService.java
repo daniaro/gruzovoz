@@ -58,35 +58,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-//    private void sendN(String title, String messageBody){
-//        Intent intent = new Intent(this, MessagesActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//
-//        PendingIntent notificationIntent = PendingIntent.getActivity(this, 999, intent,
-//                PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        NotificationCompat.Builder builder =
-//                new NotificationCompat.Builder(this.getApplicationContext());
-//        builder.setContentIntent(notificationIntent);
-//        builder.setAutoCancel(true);
-//        builder.setLargeIcon(BitmapFactory.decodeResource(this.getResources(), android.R.drawable.ic_menu_view));
-//        builder.setSmallIcon(android.R.drawable.ic_dialog_map);
-//        builder.setContentText("Test Message Text");
-//        builder.setTicker("Test Ticker Text");
-//        builder.setContentTitle("Test Message Title");
-//
-//        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-//        builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-//
-//        if (Build.VERSION.SDK_INT >= 21) builder.setVibrate(new long[0]);
-//
-//        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//        mNotificationManager.notify(999, builder.build());
-//
-//
-//
-//    }
-
     public static void sendNotification(Context context, String title, String messageBody) {
 
         Intent intent = new Intent(context, MessagesActivity.class);
@@ -104,7 +75,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setSound(defaultSoundUri)
                         .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                         .build();
@@ -116,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(context.getString(R.string.app_name),
                     "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
             NotificationManagerCompat.from(context).createNotificationChannel(channel);
 
         }

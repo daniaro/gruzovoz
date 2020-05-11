@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/historyfrgment"
@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,6 +27,11 @@
                 android:layout_width="300dp"
                 android:layout_height="?attr/actionBarSize"
                 android:addStatesFromChildren="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/logout"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/title_user_page"
                 app:titleTextAppearance="@style/ToolbarTheme"
                 app:titleTextColor="@color/colorAccent"
@@ -40,10 +46,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:layout_width="18dp"
@@ -69,18 +75,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
         android:indeterminateTint="@color/rippleColor"
-        />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs" />
 
     <LinearLayout
         android:id="@+id/empty_view_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs">
 
         <ImageView
             android:id="@+id/imageView7"
@@ -93,24 +106,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/data_unavailable"/>
+            android:text="@string/data_unavailable" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update_orders"/>
+            android:text="@string/update_orders" />
 
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="184dp"
-        android:background="@color/colorPrimaryBackgroundLight">
+        android:background="@color/colorPrimaryBackgroundLight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyBarLayout">
 
         <TextView
             android:id="@+id/name_user_page"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
             android:fontFamily="@font/roboto_slab"
@@ -123,7 +139,7 @@
         <TextView
             android:id="@+id/phone_number_user_page"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/roboto_slab"
             android:textColor="@color/colorAccent"
@@ -135,12 +151,15 @@
         <TextView
             android:id="@+id/balance_user_page"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="25.5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
             android:fontFamily="@font/roboto_slab"
             android:textColor="@color/colorAccent"
             android:textSize="60sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phone_number_user_page"
             tools:text="1000" />
@@ -148,20 +167,22 @@
         <TextView
             android:id="@+id/car_name_user_page"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="116dp"
             android:layout_marginEnd="24dp"
             android:fontFamily="@font/roboto_slab"
             android:textColor="@color/colorAccent"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/balance_user_page"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="ЗИЛ(Голибой)" />
 
         <TextView
             android:id="@+id/cane_number_user_page"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="58dp"
             android:fontFamily="@font/roboto_slab"
             android:textColor="@color/colorAccent"
@@ -179,6 +200,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorUserToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:tabIndicatorColor="@color/colorPrimaryBackgroundLight"
         app:tabIndicatorHeight="4dp"
         app:tabTextAppearance="@style/TabLayoutTheme"
@@ -189,9 +213,12 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:layout_height="434dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs">
 
     </androidx.viewpager.widget.ViewPager>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

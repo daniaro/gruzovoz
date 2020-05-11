@@ -33,7 +33,7 @@ public interface CargoService {
     Call<Void> acceptOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body AcceptOrder acceptOrder);
 
     @GET("/order/user-orders/")
-    Call<Order> getOrdersHistory(@Header("Authorization") String authToken, @Query("search") boolean isDone);
+    Call<Order> getOrdersHistory(@Header("Authorization") String authToken, @Query("search") boolean isDone, @Query("page") int page);
 
     @PUT("order/done/{id}/")
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
@@ -49,6 +49,6 @@ public interface CargoService {
     @GET("/auth/firebase_token/")
     Call<FirebaseUserData> getFirebaseUserData(@Header("Authorization") String authToken);
 
-    @POST("api/chat/notify")
+    @POST("/api/chat/notify")
     Call<NotifyStatus> sendNotify(@Header("Authorization") String authToken, @Body Notify notify);
 }

@@ -10,38 +10,43 @@
     <TextView
         android:id="@+id/dateTextView_month"
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="9dp"
         android:layout_marginTop="14dp"
         android:fontFamily="@font/roboto_slab"
-        tools:text="Фев."
-        android:textSize="12sp"
         android:textColor="@color/colorGrayDark"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Фев." />
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="15dp"
         android:fontFamily="@font/roboto_slab"
-        tools:text="12"
+
         android:textColor="@color/colorBlueDark"
         android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateTextView_month" />
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView_month"
+        tools:text="12" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="14dp"
-        app:cardCornerRadius="10dp"
         android:background="@color/colorAccent"
+        app:cardCornerRadius="10dp"
         app:cardElevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,13 +56,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
-            >
+            android:background="@color/colorWhite">
 
             <TextView
                 android:id="@+id/paymentTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/roboto"
@@ -70,9 +74,9 @@
             <TextView
                 android:id="@+id/carTypeTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_marginTop="7dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="7dp"
                 android:textColor="@color/blackTextColor"
                 android:textSize="@dimen/main_address_text_size"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +103,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto"
-                android:textSize="@dimen/main_payment_text_size"
                 android:paddingBottom="7dp"
+                android:textSize="@dimen/main_payment_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/typeIn"
                 tools:text="Восток 5" />
@@ -109,21 +113,24 @@
                 android:id="@+id/culculate1p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="23dp"
                 android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paymentTextView"
-                app:srcCompat="@drawable/ic_vector" />
+                app:srcCompat="@drawable/ic_vector"
+                />
 
             <ImageView
                 android:id="@+id/culculate2p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
+                android:layout_marginTop="35.6dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paymentTextView"
-                app:srcCompat="@drawable/ic_vect" />
+                app:srcCompat="@drawable/ic_vect"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

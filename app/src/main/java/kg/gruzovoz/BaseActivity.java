@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MyFirebaseMessagingService.sendNotification(this, "AAAA", "BBBB");
+//        MyFirebaseMessagingService.sendNotification(this, "AAAA", "BBBB");
         sharedPreferences = getApplicationContext()
                 .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
 

@@ -260,9 +260,8 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                                     Map<String, Object> map = change.getDocument().getData();
                                     map.get("actives_count");
                                     adapter.clear();
-                                    initRecyclerViewWithAdapter(root);
+                                    populateOrders();
                                     Log.d(TAG, " MODIFIED Value is: " + map.get("actives_count"));
-//                                    messageList.add(0,messages);
                                     break;
                             }
                         }
