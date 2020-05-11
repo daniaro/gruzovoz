@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
     }
     public void initNotificationAcces(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        builder.setTitle("Важно для Xiaomi")
+        builder.setTitle("Важно для Грузовоза")
                 .setMessage("Чтобы не пропустить уведомления о новых сообщених, нужно их настроить")
                 .setCancelable(false)
                 .setNegativeButton(R.string.cancel, null)
