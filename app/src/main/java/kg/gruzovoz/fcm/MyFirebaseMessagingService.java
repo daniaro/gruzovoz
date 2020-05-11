@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -56,6 +57,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
         }
+        broadcastIntent();
+
+    }
+
+    private void broadcastIntent() {
+        Intent intent = new Intent("myFunction");
+        intent.putExtra("title", "title");
+        intent.putExtra("body", "body");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        Log.e("broadcastIntent", "worked");
+
+
     }
 
     public static void sendNotification(Context context, String title, String messageBody) {
@@ -66,6 +79,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
+
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification notification =

@@ -75,7 +75,6 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         setPresence(Boolean.TRUE);
-//        initAutoStart();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -139,46 +138,4 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-//    private void initAutoStart() {
-//        if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(this));
-//                builder.setTitle("Важно для Xiaomi")
-//                        .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
-//                        .setCancelable(false)
-//                        .setNegativeButton(R.string.cancel, null)
-//                        .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-//                    try {
-//                        Intent intent = new Intent();
-//                        intent.setComponent(new ComponentName(
-//                                "com.miui.securitycenter",
-//                                "com.miui.permcenter.autostart.AutoStartManagementActivity"
-//                        ));
-//                        startActivity(intent);
-//                    } catch (ActivityNotFoundException e) {
-//
-//                    }
-//                });
-//                builder.show();
-//
-//        } else if (Build.BRAND.equals("Honor")) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(this));
-//            builder.setTitle("Важно для Honor")
-//                    .setMessage("Чтобы не пропустить уведомления о новых сообщених, включите AutoStart")
-//                    .setCancelable(false)
-//                    .setNegativeButton(R.string.cancel, null)
-//                    .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-//                        try {
-//                            Intent intent = new Intent();
-//                            intent.setComponent(new ComponentName(
-//                                    "com.huawei.systemmanager",
-//                                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
-//                            ));
-//                            startActivity(intent);
-//                        } catch (ActivityNotFoundException e) {
-//
-//                        }
-//                    });
-//            builder.show();
-//        }
-//    }
 }

@@ -93,50 +93,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         return root;
     }
 
-//    private void refreshList() {
-//
-//        Thread t = new Thread(new Runnable() {
-//            public void run() {
-//                try {
-//                    TimeUnit.SECONDS.sleep(2);
-//                    Objects.requireNonNull(getActivity()).runOnUiThread( () -> {
-//                        populateOrders();
-//                    });
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//        t.start();
-
-//        Thread({ sleep(1000); runOnUIThread{update()}});
-//
-//        new Thread(() -> {
-//            try {
-//                sleep(3000);
-//
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }).start();
-
-//        (Thread thread = new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    while(true) {
-//                        sleep(2000);
-//                    }
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//
-//        thread.start();)
-//    }
-
     private void initSwipeRefreshLayout(View root) {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
@@ -208,16 +164,16 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             populateOrders();
-//            presenter.populateOrders();
-//            refreshList();
 
         }
     }
+
 
     @Override
     public void stopRefreshingOrders() {
         swipeRefreshLayout.setRefreshing(false);
     }
+
 
     @Override
     public void showError() {
@@ -273,58 +229,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                     adapter.notifyDataSetChanged();
                 });
     }
-
-
-//        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        final DatabaseReference myConnectionsRef = database.getReference("orders_count");
-//        myConnectionsRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                Integer value = dataSnapshot.getValue(Integer.class);
-////               pulateOrders();
-//                initRecyclerViewWithAdapter(root);
-//                Log.e(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
-
-//        myConnectionsRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                Integer value = dataSnapshot.getValue(Integer.class);
-////               pulateOrders();
-//                initRecyclerViewWithAdapter(root);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Log.w(TAG, "Failed to read value.", databaseError.toException());
-//
-//            }
-//        });
-//        adapter.notifyDataSetChanged();
-
 
 
     private void populateOrders () {

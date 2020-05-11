@@ -1,11 +1,15 @@
 package kg.gruzovoz.chat.messages;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,11 +21,16 @@ import android.widget.LinearLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +88,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         initList();
         getMessages(indexForScroll);
         subscribeTopic();
+        setPresence(Boolean.TRUE);
 
     }
 
@@ -189,6 +199,58 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                     Log.d("msg", msg);
                     Log.d("subscribing status",msg);
                 });
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            String t = intent.getStringExtra("title");
+            String t1 = intent.getStringExtra("body");
+            //alert data here
+        }
+    };
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("myFunction"));
+        Log.e("onResume", "broadcastIntent");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        Log.e("onPause", "broadcastIntent");
+
+    }
+
+
+    private void setPresence(boolean online)  {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myConnectionsRef = database.getReference("presence");
+
+        final DatabaseReference connectedRef = database.getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
+                    con.setValue(online);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError error) {
+                Log.e("error onCancelled", "Listener was cancelled at .info/connected");
+            }
+        });
     }
 
 
