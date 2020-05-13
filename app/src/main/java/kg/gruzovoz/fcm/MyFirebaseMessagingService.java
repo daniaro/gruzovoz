@@ -5,9 +5,11 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.firebase.BuildConfig;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -73,6 +76,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static void sendNotification(Context context, String title, String messageBody) {
 
+//        MediaPlayer sound = MediaPlayer.create(context, R.raw.car_sound);
+//        sound.start();
+//
         Intent intent = new Intent(context, MessagesActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -80,8 +86,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-
-
+//        final Uri NOTIFICATION_SOUND_URI = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+//                "://" + BuildConfig.APPLICATION_ID + "/" + R.raw.car_sound);
+//        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+//                context.getPackageName() + "/" + R.raw.car_sound);
+//        Uri defaultSoundUri = Uri.parse("android.resource://"+context.getPackageName()+"/"+R.raw.car_sound);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification notification =
@@ -97,6 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .build();
 
         NotificationManagerCompat.from(context).notify(0, notification);
+
     }
 
     public static void createNotificationChannel(Context context) {

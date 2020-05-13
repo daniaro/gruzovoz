@@ -1,5 +1,6 @@
 package kg.gruzovoz;
 
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,6 +51,10 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+
 //        MyFirebaseMessagingService.sendNotification(this, "AAAA", "BBBB");
         sharedPreferences = getApplicationContext()
                 .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
