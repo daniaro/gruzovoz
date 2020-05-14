@@ -2,12 +2,14 @@ package kg.gruzovoz.chat;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -37,6 +39,8 @@ import kg.gruzovoz.chat.messages.MessagesActivity;
 import kg.gruzovoz.fcm.MyFirebaseMessagingService;
 import kg.gruzovoz.models.Messages;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ChatFragment extends Fragment implements ChatContract.View {
 
     private TextView lastMessage;
@@ -50,6 +54,8 @@ public class ChatFragment extends Fragment implements ChatContract.View {
     private List<Messages> messageList = new ArrayList<>();
     private SharedPreferences.Editor editor;
     private  static int message_counter;
+    private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +71,15 @@ public class ChatFragment extends Fragment implements ChatContract.View {
         shwProgressBar();
 
         return root;
+    }
+
+    public ChatFragment() {
+
+    }
+
+
+    public ChatFragment(BaseContract.OnOrderFinishedListener onOrderFinishedListener) {
+        this.onOrderFinishedListener = onOrderFinishedListener;
     }
 
     private void sharedPreferences() {
@@ -86,7 +101,6 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                     switch (change.getType()) {
                         case ADDED:
                             Messages messages = change.getDocument().toObject(Messages.class);
-
                             messageList.add(messages);
                             if (!(messages.getUid().equals(String.valueOf(fbUserId)))) {
                                 lastsender.setText(messages.getUserFullName() + ": ");
@@ -113,8 +127,6 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                             }
 
                             hideProgressBar();
-
-
                             break;
                         case REMOVED:
                             break;
@@ -144,28 +156,36 @@ public class ChatFragment extends Fragment implements ChatContract.View {
             imageViewMessageCounter.setVisibility(View.GONE);
         }
 
-//        chatCardView.setOnClickListener(e ->{
-//            message_counter = 0;
-//            editor.putInt("message_counter",message_counter).commit();
-//            startActivity( new Intent(getContext(), MessagesActivity.class));
-//        });
 
         chatCardView.setOnClickListener(e -> {
             message_counter = 0;
             editor.putInt("message_counter", message_counter).commit();
-            startActivity(new Intent(getContext(), MessagesActivity.class));
+            startActivityForResult(new Intent(getContext(), MessagesActivity.class),101);
 
             chatCardView.setEnabled(false);
             Timer buttonTimer = new Timer();
             buttonTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    getActivity().runOnUiThread(() -> chatCardView.setEnabled(true));
+                        getActivity().runOnUiThread(() -> chatCardView.setEnabled(true));
                 }
             }, 3000);
         });
 
 
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("onActivityResult","result");
+
+        if (resultCode == RESULT_OK && requestCode ==101) {
+            Log.e("onActivityResult","resultOK");
+//            setViews();
+            message_counter = 0;
+            onOrderFinishedListener.onOrderFinished();
+
+        }
     }
 
     @Override

@@ -5,11 +5,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,10 +19,10 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.firebase.BuildConfig;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
 
@@ -49,10 +47,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("FCM", "onMessageReceived");
         if (remoteMessage.getNotification() != null) {
             if (!MessagesActivity.active) {
-                sendNotification(this, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                showNotification(this, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
                 message_counter++;
                 editor.putInt("message_counter", message_counter).commit();
                 Log.e("message_counterMFMS", String.valueOf(message_counter));
+                int m = sharedPreferences.getInt("message_counterForMFMR",1);
+                if (m == 0 ) message_counter = 0;
+
 
             } else {
                 message_counter = 0;
@@ -70,42 +71,57 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("body", "body");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         Log.e("broadcastIntent", "worked");
-
-
     }
 
-    public static void sendNotification(Context context, String title, String messageBody) {
+    public static void showNotification(Context context, String title, String messageBody) {
+        Log.e("message title", title);
+        if(!title.equals("Новый заказ")) {
+            Intent intent = new Intent(context, MessagesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-//        MediaPlayer sound = MediaPlayer.create(context, R.raw.car_sound);
-//        sound.start();
-//
-        Intent intent = new Intent(context, MessagesActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
-//        final Uri NOTIFICATION_SOUND_URI = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
-//                "://" + BuildConfig.APPLICATION_ID + "/" + R.raw.car_sound);
-//        Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-//                context.getPackageName() + "/" + R.raw.car_sound);
-//        Uri defaultSoundUri = Uri.parse("android.resource://"+context.getPackageName()+"/"+R.raw.car_sound);
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Notification notification =
+                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                            .setContentIntent(pendingIntent)
+                            .setContentTitle(title)
+                            .setContentText(messageBody)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setSound(defaultSoundUri)
+                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .build();
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Notification notification =
-                new NotificationCompat.Builder(context, context.getString(R.string.app_name))
-                        .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentIntent(pendingIntent)
-                        .setContentTitle(title)
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setSound(defaultSoundUri)
-                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                        .build();
+            NotificationManagerCompat.from(context).notify(0, notification);
+        }else {
+            Intent intent = new Intent(context, BaseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        NotificationManagerCompat.from(context).notify(0, notification);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Notification notification =
+                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                            .setContentIntent(pendingIntent)
+                            .setContentTitle(title)
+                            .setContentText(messageBody)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setSound(defaultSoundUri)
+                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .build();
+
+            NotificationManagerCompat.from(context).notify(0, notification);
+        }
 
     }
 

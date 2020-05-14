@@ -52,10 +52,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-
-//        MyFirebaseMessagingService.sendNotification(this, "AAAA", "BBBB");
         sharedPreferences = getApplicationContext()
                 .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
 
@@ -73,6 +69,14 @@ public class BaseActivity extends AppCompatActivity {
 
         userPageFragment = new UserPageFragment(() -> {
             Fragment fragment = fragmentManager.findFragmentByTag("3");
+            final FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.detach(fragment);
+            ft.attach(fragment);
+            ft.commit();
+        });
+
+        chatFragment = new ChatFragment(() -> {
+            Fragment fragment = fragmentManager.findFragmentByTag("2");
             final FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.detach(fragment);
             ft.attach(fragment);

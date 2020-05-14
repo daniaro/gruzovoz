@@ -59,6 +59,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     private boolean indexForScroll = true;
     private static final int TOTAL_ITEMS_TO_LOAD = 100;
     private int curentPage = 1;
+    public static int message_counter;
+
 
 
     SharedPreferences.Editor editor;
@@ -89,7 +91,8 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         getMessages(indexForScroll);
         subscribeTopic();
         setPresence(Boolean.TRUE);
-
+        message_counter = 0;
+        editor.putInt("message_counterForMFMR", message_counter).commit();
     }
 
 
@@ -100,7 +103,6 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
         ImageView closeIcon = findViewById(R.id.close_icon);
         closeIcon.setOnClickListener(e ->{
             onBackPressed();
-            finish();
             editor.putInt("message_counter",0).commit();
         });
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout_message);
@@ -221,6 +223,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -254,5 +257,10 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
     }
 
 
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
+    }
 
 }
