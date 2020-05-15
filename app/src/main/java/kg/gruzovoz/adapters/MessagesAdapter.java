@@ -106,7 +106,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             text.setText(messages.getText());
-            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+            try {
+                time.setText(String.valueOf(messages.getSentAt()).substring(0,16));
+
+            }catch (StringIndexOutOfBoundsException ex){
+
+            }
+//            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 
         }
 
@@ -144,7 +150,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 //            messages.setSentAt(Timestamp.now());
             text.setText(messages.getText());
-            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+            try {
+                time.setText(String.valueOf(messages.getSentAt()).substring(0,16));
+            }catch (StringIndexOutOfBoundsException ex){
+
+            }
+//            time.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 
 
         }

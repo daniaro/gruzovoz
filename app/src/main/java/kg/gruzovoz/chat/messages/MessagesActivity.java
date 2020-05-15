@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -40,6 +41,7 @@ import java.util.Map;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
 import kg.gruzovoz.login.LoginActivity;
+import kg.gruzovoz.models.FinishOrder;
 import kg.gruzovoz.models.Messages;
 import kg.gruzovoz.models.Results;
 
@@ -180,11 +182,14 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
     private void sendMessage(String text) {
         Map<String, Object> map = new HashMap<>();
-        map.put("sentAt", Timestamp.now());
+        Log.e("santAt", String.valueOf(FieldValue.serverTimestamp()));
+        map.put("sentAt", FieldValue.serverTimestamp());
+//        map.put("sentAt", Timestamp.now());
         map.put("text",text);
         map.put("userFullName", fbUserName);
         map.put("isFromSuperAdmin", false);
         map.put("uid", String.valueOf(fbUserId));
+
         FirebaseFirestore.getInstance().collection("messages").add(map);
 
         presenter.sendNotify(String.valueOf(fbUserId),fbUserName,text);

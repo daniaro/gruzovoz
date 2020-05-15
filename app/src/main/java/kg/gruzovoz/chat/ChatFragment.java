@@ -109,7 +109,12 @@ public class ChatFragment extends Fragment implements ChatContract.View {
                                 lastsender.setText("Вы: ");
                             }
                             lastMessage.setText(messages.getText());
-                            lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
+                            try {
+                                lastMessageTime.setText(String.valueOf(messages.getSentAt()).substring(0,16));
+                            }catch (StringIndexOutOfBoundsException ex){
+
+                            }
+//                            lastMessageTime.setText(String.valueOf(messages.getSentAt().toDate()).substring(11,16));
 
                             Log.e("message_counter", String.valueOf(message_counter));
 

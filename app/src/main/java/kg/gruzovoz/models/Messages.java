@@ -3,10 +3,13 @@ package kg.gruzovoz.models;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.util.Date;
+
 public class Messages  {
 
     @ServerTimestamp
-    private Timestamp sentAt;
+    private Date sentAt;
+//    private Timestamp sentAt;
     private String text;
     private String userFullName;
     private boolean isFromSuperAdmin;
@@ -16,7 +19,9 @@ public class Messages  {
 
     }
 
-    public Messages(Timestamp sentAt, String text, String userFullName, boolean isFromSuperAdmin, String uid) {
+
+
+    public Messages(Date sentAt, String text, String userFullName, boolean isFromSuperAdmin, String uid) {
         this.sentAt = sentAt;
         this.text = text;
         this.userFullName = userFullName;
@@ -41,11 +46,11 @@ public class Messages  {
     }
 
 
-    public Timestamp getSentAt() {
+    public Date getSentAt() {
         return sentAt;
     }
 
-    public void setSentAt(Timestamp sentAt) {
+    public void setSentAt(Date sentAt) {
         this.sentAt = sentAt;
     }
 
@@ -65,10 +70,11 @@ public class Messages  {
         this.userFullName = userFullName;
     }
 
+//                    "sentAt=" + sentAt.toDate()+
     @Override
     public String toString() {
         return "Messages{" +
-                "sentAt=" + sentAt.toDate()+
+                "sentAt=" + sentAt+
                 ", text='" + text + '\'' +
                 ", userFullName='" + userFullName + '\'' +
                 ", isFromSuperAdmin=" + isFromSuperAdmin +
