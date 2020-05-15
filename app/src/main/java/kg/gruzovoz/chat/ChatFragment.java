@@ -167,7 +167,7 @@ public class ChatFragment extends Fragment implements ChatContract.View {
             buttonTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                        getActivity().runOnUiThread(() -> chatCardView.setEnabled(true));
+                        Objects.requireNonNull(getActivity()).runOnUiThread(() -> chatCardView.setEnabled(true));
                 }
             }, 3000);
         });
@@ -180,8 +180,6 @@ public class ChatFragment extends Fragment implements ChatContract.View {
         Log.e("onActivityResult","result");
 
         if (resultCode == RESULT_OK && requestCode ==101) {
-            Log.e("onActivityResult","resultOK");
-//            setViews();
             message_counter = 0;
             onOrderFinishedListener.onOrderFinished();
 

@@ -11,7 +11,8 @@ interface LoginContract {
         void registerFirebaseUser(FirebaseUserData firebaseUserToken);
         boolean isConnected();
         void showAlreadySignedToast();
-        void initAutoStart();
+
+        void notAuthorized();
     }
 
     interface LoginPresenter{

@@ -9,6 +9,7 @@ public interface UserPageContract {
     interface View{
         void showConfirmLogoutDialog();
         void setAllData(UserPage userPage);
+        void notAuthorized();
         void showError();
 
     }

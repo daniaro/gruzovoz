@@ -4,18 +4,13 @@ import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import kg.gruzovoz.BaseActivity;
-import kg.gruzovoz.chat.messages.MessagesContract;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class UserPagePresenter implements UserPageContract.Presenter {
 
@@ -34,8 +29,8 @@ public class UserPagePresenter implements UserPageContract.Presenter {
             public void onResponse(@NotNull Call<UserPage> call, @NotNull Response<UserPage> response) {
                 if (response.body() != null) {
                     view.setAllData(response.body());
-                } else {
-
+                } else if (response.code() == 401) {
+                    view.notAuthorized();
                 }
             }
             @Override
@@ -52,13 +47,14 @@ public class UserPagePresenter implements UserPageContract.Presenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-                Log.i(" onResponse logout",response.message());
+                 if (response.code() == 401) {
+                     view.notAuthorized();
+                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
-                Log.i("onFailure logout",t.getMessage());
-
+                view.showError();
             }
         });
     }

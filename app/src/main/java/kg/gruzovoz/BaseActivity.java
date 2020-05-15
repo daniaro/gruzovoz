@@ -1,16 +1,11 @@
 package kg.gruzovoz;
 
-import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,15 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import kg.gruzovoz.chat.ChatFragment;
-import kg.gruzovoz.fcm.MyFirebaseMessagingService;
-import kg.gruzovoz.user_page.UserPageFragment;
 import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.order.OrdersFragment;
+import kg.gruzovoz.user_page.UserPageFragment;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -45,7 +35,6 @@ public class BaseActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     public static String authToken;
     public static Long fbUserId;
-    boolean online;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

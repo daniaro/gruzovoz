@@ -11,6 +11,7 @@ public interface MessagesContract {
     }
 
     interface  View{
+        void notAuthorized();
     }
 
     interface Presenter{

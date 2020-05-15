@@ -21,8 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.Objects;
+
 import kg.gruzovoz.R;
 import kg.gruzovoz.details.call.CallActivity;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.models.Results;
 
 public class DetailActivity extends AppCompatActivity implements DetailContract.DetailView {
@@ -201,6 +204,14 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     public void showAcceptError() {
         Toast.makeText(getApplicationContext(), R.string.accept_order_error, Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void notAuthorized() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        editor.putString("authToken", null).commit();
+        startActivity(intent);
+        finish();
     }
 
     @Override

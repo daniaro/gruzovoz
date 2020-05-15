@@ -29,6 +29,9 @@ public interface CargoService {
     @POST("/auth/logout/")
     Call<Void> logout(@Header("Authorization") String authToken );
 
+    @GET("/order/all/")
+    Call<Order> getAllOrders(@Header("Authorization") String authToken, @Query("page") int page);
+
     @PUT("/order/done/{id}/")
     Call<Void> acceptOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body AcceptOrder acceptOrder);
 
@@ -37,9 +40,6 @@ public interface CargoService {
 
     @PUT("order/done/{id}/")
     Call<Void> finishOrder(@Path("id") long id, @Header("Authorization") String authToken, @Body FinishOrder finishOrder);
-
-    @GET("/order/all/")
-    Call<Order> getAllOrders(@Header("Authorization") String authToken, @Query("page") int page);
 
     @GET("/auth/driver/")
     Call<UserPage> getPersonalData(@Header("Authorization") String authToken);

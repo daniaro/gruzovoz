@@ -11,7 +11,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.text.Editable;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -53,12 +51,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         setContentView(R.layout.activity_login_screen);
 
         initViews();
+        initSharedPref();
+
         initBattaryOptimithtion();
         initAutoStart();
         initNotificationAcces();
-
-        sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
 
         phoneEditText.setText("+996");
         Selection.setSelection(phoneEditText.getText(), Objects.requireNonNull(phoneEditText.getText()).length());
@@ -110,6 +107,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             loginButton.setEnabled(false);
         });
 
+
+    }
+
+    private void initSharedPref() {
+        sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
     private void initViews(){
@@ -120,16 +123,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         passwordInputLayout = findViewById(R.id.password_text_field);
     }
 
-    @Override
-    public void showLoginError() {
-        passwordInputLayout.setError(getString(R.string.shr_error_password));
-        passwordEditText.setText("");
-    }
-
-    @Override
-    public void showErrorToast() {
-        Toast.makeText(this,getString(R.string.no_internet) , Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void addAuthToken(String authToken) {
@@ -137,6 +130,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         startActivity(new Intent(LoginActivity.this, BaseActivity.class));
         finish();
     }
+
 
     @Override
     public void registerFirebaseUser(FirebaseUserData firebaseUserData) {
@@ -151,6 +145,33 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
 
     }
 
+
+    @Override
+    public void showLoginError() {
+        passwordInputLayout.setError(getString(R.string.shr_error_password));
+        passwordEditText.setText("");
+    }
+
+
+    @Override
+    public void showErrorToast() {
+        Toast.makeText(this,getString(R.string.no_internet) , Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void showAlreadySignedToast() {
+        passwordEditText.setText("");
+        Toast.makeText(this,getString(R.string.already_signed) , Toast.LENGTH_LONG).show();
+    }
+
+
+    @Override
+    public void notAuthorized() {
+        Toast.makeText(this,"Dы не авторизованы",Toast.LENGTH_SHORT);
+    }
+
+
     @Override
     public boolean isConnected() {
         ConnectivityManager cm =
@@ -160,57 +181,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    @Override
-    public void showAlreadySignedToast() {
-        passwordEditText.setText("");
-        Toast.makeText(this,getString(R.string.already_signed) , Toast.LENGTH_LONG).show();
-    }
-
-    public void initBattaryOptimithtion(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Intent intent = new Intent();
-            String packageName = getPackageName();
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            assert pm != null;
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                intent.setData(Uri.parse("package:" + packageName));
-                Log.e("packegename",packageName);
-                startActivity(intent);
-            }
-        }
-
-
-    }
-    public void initNotificationAcces(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
-        builder.setTitle("Важно для Грузовоза")
-                .setMessage("Чтобы не пропустить уведомления о новых сообщених, нужно их настроить")
-                .setCancelable(false)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-                    try {
-                        setResult(RESULT_OK);
-                        Intent intent = new Intent();
-                        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-                        //for Android 5-7
-                        intent.putExtra("app_package", getPackageName());
-                        intent.putExtra("app_uid", getApplicationInfo().uid);
-
-                        // for Android 8 and above
-                        intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    @Override
+//    @Override
     public void initAutoStart() {
         if (Build.MANUFACTURER.equals("Xiaomi") || Build.MANUFACTURER.equals("xiaomi") ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
@@ -256,5 +227,51 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Lo
             dialog.show();
         }
     }
+
+
+    public void initBattaryOptimithtion(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Intent intent = new Intent();
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            assert pm != null;
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                intent.setData(Uri.parse("package:" + packageName));
+                Log.e("packegename",packageName);
+                startActivity(intent);
+            }
+        }
+    }
+
+
+    public void initNotificationAcces(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        builder.setTitle("Важно для Грузовоза")
+                .setMessage("Чтобы не пропустить уведомления о новых сообщених, нужно их настроить")
+                .setCancelable(false)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+                    try {
+                        setResult(RESULT_OK);
+                        Intent intent = new Intent();
+                        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+
+                        //for Android 5-7
+                        intent.putExtra("app_package", getPackageName());
+                        intent.putExtra("app_uid", getApplicationInfo().uid);
+
+                        // for Android 8 and above
+                        intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException ignored) {
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 }

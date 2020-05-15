@@ -1,10 +1,15 @@
 package kg.gruzovoz.details;
 
 
+import android.content.Intent;
+
 import org.jetbrains.annotations.NotNull;
 
 
+import java.util.Objects;
+
 import kg.gruzovoz.BaseActivity;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.models.AcceptOrder;
 import kg.gruzovoz.models.FinishOrder;
 import kg.gruzovoz.network.CargoService;
@@ -32,7 +37,10 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-                if (response.code() == 402){
+                if (response.code() == 401) {
+                    view.notAuthorized();
+                }
+                else if (response.code() == 402){
                     view.showAcceptError();
                 }
                 else if (response.code() == 403) {
@@ -64,12 +72,13 @@ public class DetailPresenter implements DetailContract.DetailPresenter {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NotNull Call<Void> call, @NotNull Response<Void> response) {
-
+                if (response.code() == 401) {
+                    view.notAuthorized();
+                }
             }
 
             @Override
             public void onFailure(@NotNull Call<Void> call, @NotNull Throwable t) {
-
             }
         });
     }

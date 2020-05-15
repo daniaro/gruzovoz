@@ -39,6 +39,7 @@ import java.util.Map;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.MessagesAdapter;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.models.Messages;
 import kg.gruzovoz.models.Results;
 
@@ -254,6 +255,14 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
                 Log.e("error onCancelled", "Listener was cancelled at .info/connected");
             }
         });
+    }
+
+    @Override
+    public void notAuthorized() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        editor.putString("authToken", null).commit();
+        startActivity(intent);
+        finish();
     }
 
 

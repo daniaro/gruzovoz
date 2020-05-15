@@ -28,6 +28,7 @@ import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.FixedTabsPagerAdapter;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.models.UserPage;
 import kg.gruzovoz.user_page.history.ActiveFragment;
 import kg.gruzovoz.user_page.history.CompletedFragment;
@@ -168,7 +169,12 @@ public class UserPageFragment extends Fragment implements UserPageContract.View 
 
         editor.putString("myName", user_page.getUser().getUsername()).commit();
 
+    }
 
+    @Override
+    public void notAuthorized() {
+        editor.putString("authToken", null).commit();
+        Objects.requireNonNull(getActivity()).recreate();
     }
 
 

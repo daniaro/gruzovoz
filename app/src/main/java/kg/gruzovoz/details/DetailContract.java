@@ -4,14 +4,14 @@ public interface DetailContract {
 
     interface DetailView {
         void setViewInfo();
-        void showAcceptAlertDialog();
         void startCallActivity();
-
+        void showAcceptAlertDialog();
+        void showConfirmFinishAlertDialog();
         void showCarTypeError();
         void showBalanceError();
-        void showConfirmFinishAlertDialog();
-
         void showAcceptError();
+        void notAuthorized();
+
     }
 
     interface DetailPresenter {

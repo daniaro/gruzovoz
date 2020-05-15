@@ -2,7 +2,9 @@ package kg.gruzovoz.user_page.history;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +24,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.BaseContract;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.paging.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
 import kg.gruzovoz.models.Order;
@@ -52,12 +56,12 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutManager linearLayoutManager;
+    private SharedPreferences.Editor editor;
+
 
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
-    private int totalPage = 10;
     private boolean isLoading = false;
-    int itemCount = 0;
 
     private BaseContract.OnOrderFinishedListener onOrderFinishedListener;
 
@@ -73,6 +77,10 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
 
         progressBar = root.findViewById(R.id.progressBar_historyActive);
         emptyView = root.findViewById(R.id.emptyView_historyActive);
+
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
 
@@ -83,7 +91,6 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout_historyActive);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(() ->{
-            itemCount = 0;
             currentPage = PAGE_START;
             isLastPage = false;
             adapter.clear();
@@ -106,7 +113,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        adapter = new OrdersAdapter(new Order(),new ArrayList<>(),results -> openDetailScreen(results));
+        adapter = new OrdersAdapter(new Order(),new ArrayList<>(), this::openDetailScreen);
 
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -179,7 +186,7 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
         }
     }
 
-    public void populateOrders(boolean isDone) {
+    private void populateOrders(boolean isDone) {
         Call<Order> call = service.getOrdersHistory(BaseActivity.authToken, isDone,currentPage);
         final Order[] orders = new Order[1];
         call.enqueue(new Callback<Order>() {
@@ -191,7 +198,6 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
                         adapter.removeLoading();
                     Collections.reverse(response.body().getResults());
                     adapter.addItems(orders[0]);
-                    // setOrders(response.body().getResults());
                     stopRefreshingOrders();
                     hideProgressBar();
 
@@ -201,6 +207,11 @@ public class ActiveFragment extends Fragment implements HistoryContract.View{
                         isLastPage = true;
                     }
                     isLoading = false;
+
+                }else if (response.code() == 401) {
+                    editor.putString("authToken", null).commit();
+                    Objects.requireNonNull(getActivity()).recreate();
+
                 }else {
                     showEmptyView();
                 }

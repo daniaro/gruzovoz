@@ -6,6 +6,7 @@ import android.util.Log;
 import org.jetbrains.annotations.NotNull;
 
 
+import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.models.FirebaseUserData;
 import kg.gruzovoz.models.Login;
 import kg.gruzovoz.models.User;
@@ -42,7 +43,10 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                 } else {
                     if (loginView.isConnected()) {
-                        if (response.code() == 403){
+                        if (response.code() == 401) {
+                            loginView.notAuthorized();
+                        }
+                        else if (response.code() == 403){
                             loginView.showAlreadySignedToast();
                         }
                         else {
@@ -68,23 +72,15 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     }
 
+
     public void getFirebaseToken(String token){
         Call<FirebaseUserData> call = service.getFirebaseUserData("Token " + token);
         call.enqueue(new Callback<FirebaseUserData>() {
             @Override
             public void onResponse(@NotNull Call<FirebaseUserData> call, @NotNull Response<FirebaseUserData> response) {
-                if (response.body() != null) {
+                if (response.body() != null){
                     loginView.registerFirebaseUser(response.body());
-                    //loginView.addFirebaseToken(String.format("%s", response.body()));
-
-
-                }else {
-                    Log.e(TAG, "onResponse firebasetoken: is null");
-                    Log.e(TAG, "onResponse token: Token "+token);
-
                 }
-
-
             }
 
             @Override
@@ -94,6 +90,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         });
 
     }
+
+
 
 
 

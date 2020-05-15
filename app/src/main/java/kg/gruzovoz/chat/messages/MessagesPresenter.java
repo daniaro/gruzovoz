@@ -32,6 +32,9 @@ public class MessagesPresenter implements MessagesContract.Presenter {
         call.enqueue(new Callback<NotifyStatus>() {
             @Override
             public void onResponse(@NotNull Call<NotifyStatus> call, @NotNull Response<NotifyStatus> response) {
+                if (response.code() == 401) {
+                    view.notAuthorized();
+                }
             }
 
             @SuppressLint("LongLogTag")

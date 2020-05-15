@@ -1,7 +1,9 @@
 package kg.gruzovoz.order;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,20 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,12 +34,13 @@ import java.util.Objects;
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.adapters.OrdersAdapter;
-import kg.gruzovoz.paging.PaginationListener;
 import kg.gruzovoz.details.DetailActivity;
+import kg.gruzovoz.login.LoginActivity;
 import kg.gruzovoz.models.Order;
 import kg.gruzovoz.models.Results;
 import kg.gruzovoz.network.CargoService;
 import kg.gruzovoz.network.RetrofitClientInstance;
+import kg.gruzovoz.paging.PaginationListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,15 +57,12 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     private LinearLayout emptyView;
     private ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
+    private SharedPreferences.Editor editor;
 
 
     private int currentPage = PAGE_START;
-    private static final int TOTAL_ITEMS_TO_LOAD = 8;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    int itemCount = 0;
-
-
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -80,16 +71,22 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
+
         Toolbar toolbar = root.findViewById(R.id.app_bar);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+
+        SharedPreferences sharedPreferences = getActivity().getApplicationContext()
+                .getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         progressBar = root.findViewById(R.id.indeterminateBar);
         emptyView = root.findViewById(R.id.empty_view);
+
         setHasOptionsMenu(true);
         initSwipeRefreshLayout(root);
         initRecyclerViewWithAdapter(root);
-        getOrdersCount(root);
+        getOrdersCount();
         return root;
     }
 
@@ -97,7 +94,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
         swipeRefreshLayout = root.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.rippleColor), getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(() ->{
-            itemCount = 0;
             currentPage = PAGE_START;
             isLastPage = false;
             adapter.clear();
@@ -200,7 +196,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     }
 
 
-    private void getOrdersCount(View root) {
+    private void getOrdersCount() {
         Log.d(TAG, "getOrdersCount");
         FirebaseFirestore.getInstance().collection("orders")
                 .addSnapshotListener((snapshots, e) -> {
@@ -217,7 +213,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                                     map.get("actives_count");
                                     adapter.clear();
                                     populateOrders();
-                                    Log.d(TAG, " MODIFIED Value is: " + map.get("actives_count"));
                                     break;
                             }
                         }
@@ -241,16 +236,23 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                     orders[0] = response.body();
                     if (response.body() != null && response.body().getResults().size() > 0) {
                         if (currentPage != PAGE_START) adapter.removeLoading();
+
                         adapter.addItems(orders[0]);
-                        // setOrders(response.body().getResults());
                         stopRefreshingOrders();
                         hideProgressBar();
+
                         if (response.body().getNext() != null) {
                             adapter.addLoading();
                         } else {
                             isLastPage = true;
                         }
+
                         isLoading = false;
+
+                    } else if (response.code() == 401) {
+                        editor.putString("authToken", null).commit();
+                        Objects.requireNonNull(getActivity()).recreate();
+
                     } else {
                         showEmptyView();
                         stopRefreshingOrders();
