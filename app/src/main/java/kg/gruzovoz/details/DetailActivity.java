@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,8 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import java.util.Objects;
 
 import kg.gruzovoz.R;
 import kg.gruzovoz.details.call.CallActivity;
@@ -38,7 +35,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     ImageView closeIcon;
 
     TextView carTypeTextView;
-    TextView initialAddressTextView;
+    TextView shortAdressTextView;
     TextView paymentTextView;
     TextView cargoTypeTextView;
     TextView commentTextView;
@@ -82,7 +79,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         callButton = findViewById(R.id.callButton2);
         closeIcon = findViewById(R.id.close_icon);
         carTypeTextView = findViewById(R.id.textView);
-        initialAddressTextView = findViewById(R.id.textView2);
+        shortAdressTextView = findViewById(R.id.textView2);
         paymentTextView = findViewById(R.id.textView4);
         cargoTypeTextView = findViewById(R.id.textView5);
         commentTextView = findViewById(R.id.commentsTextView);
@@ -137,7 +134,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void setViewInfo() {
         carTypeTextView.setText(results.getCarType());
-        initialAddressTextView.setText(results.getShortAddress());
+        shortAdressTextView.setText(results.getShortAddress());
 
         String commission = results.getCommission();
         double res = results.getPrice()*Integer.parseInt(commission)/100;
@@ -154,9 +151,9 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         cargoTypeTextView.setText(results.getTypeOfCargo());
         commentTextView.setText(results.getComments());
 
-        editor.putString("detailed_adress", results.getDetailedAdress()).commit();
+        editor.putString("detailed_address", results.getDetailedAdress()).commit();
+        editor.putString("short_address", results.getShortAddress()).commit();
 
-        Log.e( "setViewInfo:  detailActivity", results.getDetailedAdress());
     }
 
     @Override

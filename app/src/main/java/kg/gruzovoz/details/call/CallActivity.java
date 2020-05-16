@@ -30,6 +30,8 @@ public class CallActivity extends AppCompatActivity implements CallContract.Call
 
     String phoneNumber;
     String detailedAdressIntent;
+    String shortAdressIntent;
+    String fullAddress;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -43,8 +45,10 @@ public class CallActivity extends AppCompatActivity implements CallContract.Call
 
         sharedPreferences = getApplicationContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
 
-        detailedAdressIntent = sharedPreferences.getString("detailed_adress", null);
-        detailedAdress.setText(detailedAdressIntent);
+        detailedAdressIntent = sharedPreferences.getString("detailed_address", null);
+        shortAdressIntent = sharedPreferences.getString("short_address", null);
+        fullAddress = detailedAdressIntent + " " + shortAdressIntent;
+        detailedAdress.setText(fullAddress);
 
         presenter = new CallPresenter(this);
         presenter.parsePhoneNumber(phoneNumber);

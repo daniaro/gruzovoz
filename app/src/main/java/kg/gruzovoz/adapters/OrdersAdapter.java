@@ -1,6 +1,7 @@
 package kg.gruzovoz.adapters;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,7 +176,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             });
 
             String commission = results.getCommission();
-            double res = results.getPrice() * Integer.parseInt(commission) / 100;
+            double res;
+            if (!TextUtils.isEmpty(commission) && TextUtils.isDigitsOnly(commission)) {
+                res = results.getPrice() * Integer.parseInt(commission) / 100;
+            } else {
+                res = 0;
+            }
             String strRes;
 
             if (res == (long) res) {
@@ -197,6 +203,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 culculate1p.setVisibility(View.GONE);
                 culculate2p.setVisibility(View.GONE);
             }
+
 
             Date date;
             TimeZone timeZone = TimeZone.getTimeZone("Asia/Bishkek");
@@ -256,7 +263,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 }
 
-            } catch (ParseException e) {
+            } catch (Exception e ) {
                 e.printStackTrace();
                 Log.e("ParseException catched", "ParseException");
 

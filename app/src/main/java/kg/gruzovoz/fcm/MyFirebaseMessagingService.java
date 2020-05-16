@@ -53,8 +53,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.e("message_counterMFMS", String.valueOf(message_counter));
                 int m = sharedPreferences.getInt("message_counterForMFMR",1);
                 if (m == 0 ) message_counter = 0;
-
-
             } else {
                 message_counter = 0;
                 editor.putInt("message_counter", message_counter).commit();
@@ -74,40 +72,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public static void showNotification(Context context, String title, String messageBody) {
-        Log.e("message title", title);
+        Intent intent;
+        PendingIntent pendingIntent;
+
         if(!title.equals("Новый заказ")) {
-            Intent intent = new Intent(context, MessagesActivity.class);
+            intent = new Intent(context, MessagesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-
-
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Notification notification =
-                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
-                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                            .setContentIntent(pendingIntent)
-                            .setContentTitle(title)
-                            .setContentText(messageBody)
-                            .setAutoCancel(true)
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .setSound(defaultSoundUri)
-                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                            .build();
-
-            NotificationManagerCompat.from(context).notify(0, notification);
         }else {
-            Intent intent = new Intent(context, BaseActivity.class);
+            intent = new Intent(context, BaseActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
+        pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
 
-
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Notification notification =
                     new NotificationCompat.Builder(context, context.getString(R.string.app_name))
                             .setSmallIcon(R.drawable.ic_stat_ic_notification)
@@ -121,7 +102,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .build();
 
             NotificationManagerCompat.from(context).notify(0, notification);
-        }
+
+//        }
+//
+//            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//            Notification notification =
+//                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+//                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+//                            .setContentIntent(pendingIntent)
+//                            .setContentTitle(title)
+//                            .setContentText(messageBody)
+//                            .setAutoCancel(true)
+//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                            .setSound(defaultSoundUri)
+//                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+//                            .build();
+//
+//            NotificationManagerCompat.from(context).notify(0, notification);
+//        }
 
     }
 
