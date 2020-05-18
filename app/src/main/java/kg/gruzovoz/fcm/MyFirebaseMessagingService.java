@@ -22,6 +22,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+import java.util.Objects;
+
 import kg.gruzovoz.BaseActivity;
 import kg.gruzovoz.R;
 import kg.gruzovoz.chat.messages.MessagesActivity;
@@ -44,13 +47,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.e("FCM", "onMessageReceived");
         if (remoteMessage.getNotification() != null) {
             if (!MessagesActivity.active) {
-                showNotification(this, remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                showNotification(this, Objects.requireNonNull(remoteMessage.getNotification().getTitle()), remoteMessage.getNotification().getBody());
                 message_counter++;
                 editor.putInt("message_counter", message_counter).commit();
-                Log.e("message_counterMFMS", String.valueOf(message_counter));
                 int m = sharedPreferences.getInt("message_counterForMFMR",1);
                 if (m == 0 ) message_counter = 0;
             } else {
@@ -59,6 +60,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
         }
+        Log.e("TAG", "Message data payload: " + remoteMessage.getData());
+
+
+//        if (remoteMessage.getData().size() > 0) {
+//            Log.e("TAG if", "Message data payload: " + remoteMessage.getData());
+//            Map<String, String> receivedMap = remoteMessage.getData();
+//            if (!MessagesActivity.active) {
+//                String title= receivedMap.get("title");
+//                String body= receivedMap.get("body");
+//                assert title != null;
+//                showNotification(this, title,body);
+//                Log.e("TAG", "title " + title);
+//                Log.e("TAG", "body " + body);
+//
+//                message_counter++;
+//                editor.putInt("message_counter", message_counter).commit();
+//                int m = sharedPreferences.getInt("message_counterForMFMR",1);
+//                if (m == 0 ) message_counter = 0;
+//            } else {
+//                message_counter = 0;
+//                editor.putInt("message_counter", message_counter).commit();
+//            }
+//        }
         broadcastIntent();
 
     }
@@ -72,21 +96,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public static void showNotification(Context context, String title, String messageBody) {
-        Intent intent;
-        PendingIntent pendingIntent;
 
         if(!title.equals("Новый заказ")) {
-            intent = new Intent(context, MessagesActivity.class);
+            Intent intent = new Intent(context, MessagesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }else {
-            intent = new Intent(context, BaseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }
 
-        pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Notification notification =
@@ -103,23 +120,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             NotificationManagerCompat.from(context).notify(0, notification);
 
-//        }
-//
-//            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//            Notification notification =
-//                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
-//                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
-//                            .setContentIntent(pendingIntent)
-//                            .setContentTitle(title)
-//                            .setContentText(messageBody)
-//                            .setAutoCancel(true)
-//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                            .setSound(defaultSoundUri)
-//                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-//                            .build();
-//
-//            NotificationManagerCompat.from(context).notify(0, notification);
-//        }
+        }else {
+            Intent intent = new Intent(context, BaseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            PendingIntent  pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Notification notification =
+                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                            .setContentIntent(pendingIntent)
+                            .setContentTitle(title)
+                            .setContentText(messageBody)
+                            .setAutoCancel(true)
+                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+                            .setSound(defaultSoundUri)
+                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                            .build();
+
+            NotificationManagerCompat.from(context).notify(0, notification);
+        }
 
     }
 
