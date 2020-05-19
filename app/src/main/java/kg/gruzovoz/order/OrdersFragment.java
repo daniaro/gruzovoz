@@ -113,6 +113,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
             emptyView.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
             adapter = new OrdersAdapter(new Order(),new ArrayList<>(), this::showDetailScreen);
+            adapter.clear();
             populateOrders();
         }
         recyclerView.setAdapter(adapter);
@@ -159,6 +160,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            adapter.clear();
             populateOrders();
 
         }
@@ -236,7 +238,6 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                     orders[0] = response.body();
                     if (response.body() != null && response.body().getResults().size() > 0) {
                         if (currentPage != PAGE_START) adapter.removeLoading();
-
                         adapter.addItems(orders[0]);
                         stopRefreshingOrders();
                         hideProgressBar();

@@ -35,7 +35,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     ImageView closeIcon;
 
     TextView carTypeTextView;
-    TextView shortAdressTextView;
+    TextView shortAddressTextView;
+    TextView detailedAddressTextView;
     TextView paymentTextView;
     TextView cargoTypeTextView;
     TextView commentTextView;
@@ -56,11 +57,15 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         initViews();
         if (!results.isActive() && !results.isDone()) {
             acceptButton.setVisibility(View.GONE);
+            detailedAddressTextView.setVisibility(View.VISIBLE);
+            detailedAddressTextView.setText(results.getDetailedAdress());
             finishButton.setVisibility(View.VISIBLE);
             callButton.setVisibility(View.VISIBLE);
 
         } else if (results.isDone()) {
             acceptButton.setVisibility(View.GONE);
+            detailedAddressTextView.setVisibility(View.VISIBLE);
+            detailedAddressTextView.setText(results.getDetailedAdress());
             finishButton.setVisibility(View.GONE);
             callButton.setVisibility(View.GONE);
         }
@@ -79,10 +84,11 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         callButton = findViewById(R.id.callButton2);
         closeIcon = findViewById(R.id.close_icon);
         carTypeTextView = findViewById(R.id.textView);
-        shortAdressTextView = findViewById(R.id.textView2);
+        shortAddressTextView = findViewById(R.id.textView2);
         paymentTextView = findViewById(R.id.textView4);
         cargoTypeTextView = findViewById(R.id.textView5);
         commentTextView = findViewById(R.id.commentsTextView);
+        detailedAddressTextView = findViewById(R.id.detailed_address_active);
     }
 
     private void initOnClickListeners() {
@@ -134,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void setViewInfo() {
         carTypeTextView.setText(results.getCarType());
-        shortAdressTextView.setText(results.getShortAddress());
+        shortAddressTextView.setText(results.getShortAddress());
 
         String commission = results.getCommission();
         double res = results.getPrice()*Integer.parseInt(commission)/100;
