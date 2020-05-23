@@ -24,7 +24,13 @@
         tools:targetApi="o">
         <activity
             android:name=".chat.messages.MessagesActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+<!--                <action android:name=".Activities.MessagesActivity" />-->
+                <action android:name=".chat.messages.MessagesActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="login.LoginActivity"
             android:excludeFromRecents="true"
@@ -46,7 +52,8 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name=".BaseActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

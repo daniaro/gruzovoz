@@ -73,6 +73,7 @@ public class OrdersFragment extends Fragment implements OrdersContract.View {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
+
         Toolbar toolbar = root.findViewById(R.id.app_bar);
         ((AppCompatActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
 

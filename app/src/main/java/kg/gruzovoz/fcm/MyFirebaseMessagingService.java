@@ -36,6 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     SharedPreferences.Editor editor;
     public static int message_counter;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -63,29 +64,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("TAG", "Message data payload: " + remoteMessage.getData());
 
 
-//        if (remoteMessage.getData().size() > 0) {
-//            Log.e("TAG if", "Message data payload: " + remoteMessage.getData());
-//            Map<String, String> receivedMap = remoteMessage.getData();
-//            if (!MessagesActivity.active) {
-//                String title= receivedMap.get("title");
-//                String body= receivedMap.get("body");
-//                assert title != null;
-//                showNotification(this, title,body);
-//                Log.e("TAG", "title " + title);
-//                Log.e("TAG", "body " + body);
-//
-//                message_counter++;
-//                editor.putInt("message_counter", message_counter).commit();
-//                int m = sharedPreferences.getInt("message_counterForMFMR",1);
-//                if (m == 0 ) message_counter = 0;
-//            } else {
-//                message_counter = 0;
-//                editor.putInt("message_counter", message_counter).commit();
-//            }
-//        }
         broadcastIntent();
 
     }
+
 
     private void broadcastIntent() {
         Intent intent = new Intent("myFunction");
@@ -95,18 +77,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e("broadcastIntent", "worked");
     }
 
-    public static void showNotification(Context context, String title, String messageBody) {
+
+    public void showNotification(Context context, String title, String messageBody) {
 
         if(!title.equals("Новый заказ")) {
             Intent intent = new Intent(context, MessagesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                     PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Notification notification =
+            NotificationCompat.Builder customerRebateBuilder=
                     new NotificationCompat.Builder(context, context.getString(R.string.app_name))
                             .setSmallIcon(R.drawable.ic_stat_ic_notification)
                             .setContentIntent(pendingIntent)
@@ -115,10 +99,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .setAutoCancel(true)
                             .setPriority(NotificationCompat.PRIORITY_HIGH)
                             .setSound(defaultSoundUri)
-                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                            .build();
+                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
-            NotificationManagerCompat.from(context).notify(0, notification);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            assert notificationManager != null;
+            notificationManager.notify(0, customerRebateBuilder.build());
+            Log.e("TAG", "Show notificatoin");
+
+
+//            Notification notification =
+//                    new NotificationCompat.Builder(context, context.getString(R.string.app_name))
+//                            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+//                            .setContentIntent(pendingIntent)
+//                            .setContentTitle(title)
+//                            .setContentText(messageBody)
+//                            .setAutoCancel(true)
+//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                            .setSound(defaultSoundUri)
+//                            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+//                            .build();
+//
+//            NotificationManagerCompat.from(context).notify(0, notification);
 
         }else {
             Intent intent = new Intent(context, BaseActivity.class);
@@ -145,6 +146,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
     }
+
 
     public static void createNotificationChannel(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

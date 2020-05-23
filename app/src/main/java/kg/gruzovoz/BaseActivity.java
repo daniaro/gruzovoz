@@ -6,17 +6,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.Keep;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FieldValue;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -82,6 +85,31 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //TODO: last seen
+    private void setLastTimePresence() {
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myConnectionsRef = database.getReference("presence");
+
+        final DatabaseReference connectedRef = database.getReference(".info/connected");
+        connectedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (!connected) {
+                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
+                    con.setValue(Timestamp.now());
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NotNull DatabaseError error) {
+                Log.e("error onCancelled", "Listener was cancelled at .info/connected");
+            }
+        });
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             item -> {
                 switch (item.getItemId()) {
@@ -105,6 +133,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         setPresence(Boolean.FALSE);
+        setLastTimePresence();
+
     }
 
     @Override
@@ -113,7 +143,7 @@ public class BaseActivity extends AppCompatActivity {
         setPresence(Boolean.TRUE);
     }
 
-    private void setPresence(boolean online)  {
+    public void setPresence(boolean online)  {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myConnectionsRef = database.getReference("presence");
 
@@ -127,6 +157,13 @@ public class BaseActivity extends AppCompatActivity {
                     con.setValue(online);
 
                 }
+                else{
+//                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
+//                    con.setValue(Timestamp.now());
+                }
+
+//                con.setValue(FieldValue.serverTimestamp());
+
             }
 
             @Override
@@ -135,5 +172,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }
