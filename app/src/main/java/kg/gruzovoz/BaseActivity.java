@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.Keep;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,10 +17,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FieldValue;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 import kg.gruzovoz.chat.ChatFragment;
 import kg.gruzovoz.login.LoginActivity;
@@ -75,7 +76,7 @@ public class BaseActivity extends AppCompatActivity {
             ft.commit();
         });
 
-        setPresence(Boolean.TRUE);
+        setPresence(Boolean.TRUE,ServerValue.TIMESTAMP);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -86,30 +87,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     //TODO: last seen
-    private void setLastTimePresence() {
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myConnectionsRef = database.getReference("presence");
-
-        final DatabaseReference connectedRef = database.getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NotNull DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (!connected) {
-                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
-                    con.setValue(Timestamp.now());
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NotNull DatabaseError error) {
-                Log.e("error onCancelled", "Listener was cancelled at .info/connected");
-            }
-        });
-    }
-
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             item -> {
                 switch (item.getItemId()) {
@@ -132,18 +109,18 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        setPresence(Boolean.FALSE);
-        setLastTimePresence();
+        setPresence(Boolean.FALSE,ServerValue.TIMESTAMP);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        setPresence(Boolean.TRUE);
+        setPresence(Boolean.TRUE, ServerValue.TIMESTAMP);
+//        setPresence(Boolean.TRUE, FieldValue.serverTimestamp());
     }
 
-    public void setPresence(boolean online)  {
+    public void setPresence(boolean online, Map<String, String> lastSeen)  {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myConnectionsRef = database.getReference("presence");
 
@@ -152,17 +129,14 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NotNull DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
+                DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
                 if (connected) {
-                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
                     con.setValue(online);
-
                 }
-                else{
-//                    DatabaseReference con = myConnectionsRef.child(String.valueOf(fbUserId));
-//                    con.setValue(Timestamp.now());
+                if (!online){
+                    Log.e("lastseen",lastSeen.toString());
+                    con.setValue(lastSeen);
                 }
-
-//                con.setValue(FieldValue.serverTimestamp());
 
             }
 

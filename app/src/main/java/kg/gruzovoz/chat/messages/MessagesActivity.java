@@ -195,6 +195,7 @@ public class MessagesActivity extends AppCompatActivity implements MessagesContr
 
         presenter.sendNotify(String.valueOf(fbUserId),fbUserName,text);
 
+
     }
 
 
